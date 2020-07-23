@@ -6,3 +6,26 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// Font Awesome
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+
+// Custom CSS
+
+.adminTileLink {
+    color:#212529;
+}
+.adminTileLink:hover {
+    text-decoration:none;
+}
+
+.adminTile:hover {
+    -moz-box-shadow: 0 0 10px $blue !important;
+    -webkit-box-shadow: 0 0 10px $blue !important;
+    box-shadow: 0 0 10px $blue !important;
+    color: $blue;
+    cursor: pointer;
+}

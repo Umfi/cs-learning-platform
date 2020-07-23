@@ -23,4 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware(['hasAdminRole'])->group(function(){
     Route::get('/admin', 'AdminController@index')->name('admin');
+    Route::get('/admin/users', 'AdminController@users')->name('admin-users');
+    Route::post('/admin/users/activate', 'AdminController@activateUser')->name('admin-activateUser');
+    Route::post('/admin/users/deactivate', 'AdminController@deactivateUser')->name('admin-deactivateUser');
 });
