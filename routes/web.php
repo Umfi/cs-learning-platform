@@ -26,4 +26,5 @@ Route::middleware(['hasAdminRole'])->group(function(){
     Route::get('/admin/users', 'AdminController@users')->name('admin-users');
     Route::post('/admin/users/activate', 'AdminController@activateUser')->name('admin-activateUser');
     Route::post('/admin/users/deactivate', 'AdminController@deactivateUser')->name('admin-deactivateUser');
+    Route::post('/admin/users/changeRole', 'AdminController@changeRoleForUser')->name('admin-changeUserRole');
 });

@@ -49,7 +49,7 @@ class AdminController extends Controller
         $user->active = true;
         $user->save();
 
-        session()->flash('message', 'User ' . $user->name . ' has been activated.');
+        session()->flash('status', 'User "' . $user->name . '" has been activated.');
 
         return back();
     }
@@ -65,7 +65,23 @@ class AdminController extends Controller
         $user->active = false;
         $user->save();
 
-        session()->flash('message', 'User ' . $user->name . ' has been deactivated.');
+        session()->flash('status', 'User "' . $user->name . '" has been deactivated.');
+
+        return back();
+    }
+
+    /**
+     * Change a user role in admin area
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function changeRoleForUser()
+    {
+        $user = User::find(request()->id);
+        $user->role = request()->role;
+        $user->save();
+
+        session()->flash('status', 'User "' . $user->name . '" role has been updated to ' . $user->role . '.');
 
         return back();
     }

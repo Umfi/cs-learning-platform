@@ -30,7 +30,18 @@
                                 <tr>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
-                                    <td>{{ $user->role }}</td>
+                                    <td>
+                                        <form method="POST" action="{{ route('admin-changeUserRole') }}">
+                                            {{csrf_field()}}
+                                            <input type="hidden" name="id" value="{{ $user->_id }}">
+
+                                            <select name="role" class="custom-select" onchange="this.form.submit()">
+                                                <option value="{{ \App\User::ROLE_ADMIN }}" {{ ( $user->role == \App\User::ROLE_ADMIN) ? 'selected' : '' }}>{{ \App\User::ROLE_ADMIN }}</option>
+                                                <option value="{{ \App\User::ROLE_TEACHER }}" {{ ( $user->role == \App\User::ROLE_TEACHER) ? 'selected' : '' }}>{{ \App\User::ROLE_TEACHER }}</option>
+                                                <option value="{{ \App\User::ROLE_STUDENT }}" {{ ( $user->role == \App\User::ROLE_STUDENT) ? 'selected' : '' }}>{{ \App\User::ROLE_STUDENT }}</option>
+                                            </select>
+                                        </form>
+                                    </td>
                                     <td>
                                         @if( $user->active )
                                             <form method="POST" action="{{ route('admin-deactivateUser') }}">
