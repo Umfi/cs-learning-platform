@@ -1,12 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "umfahrer/cs-learningplatform",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": [
-        "framework",
-        "laravel"
-    ],
-    "license": "MIT",
+    "description": "Platform to learn CS related topics easily.",
     "require": {
         "php": "^7.2.5",
         "fideloper/proxy": "^4.2",
