@@ -27,4 +27,7 @@ Route::middleware(['hasAdminRole'])->group(function(){
     Route::post('/admin/users/activate', 'AdminController@activateUser')->name('admin-activateUser');
     Route::post('/admin/users/deactivate', 'AdminController@deactivateUser')->name('admin-deactivateUser');
     Route::post('/admin/users/changeRole', 'AdminController@changeRoleForUser')->name('admin-changeUserRole');
+
+    Route::get('/admin/courses', 'AdminController@courses')->name('admin-courses');
+    Route::get('/admin/courses/getParticipants/{id}', 'AdminController@getCourseParticipants')->name('admin-getCourseParticipants');
 });

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header">{{ __('Admin Dashboard') }}</div>
 
@@ -32,7 +32,7 @@
                         </div>
 
                         <div class="col-md-4 col-sm-6 mt-2">
-                            <a href="#" class="adminTileLink">
+                            <a href="{{ route('admin-courses') }}" class="adminTileLink">
                                 <div class="adminTile card-body border shadow text-center">
                                     <div>
                                         <div>

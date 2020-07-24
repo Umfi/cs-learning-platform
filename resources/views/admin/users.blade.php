@@ -1,23 +1,10 @@
 @extends('layouts.app')
 
-@section('imports')
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
-    <script
-        src="https://code.jquery.com/jquery-3.5.1.min.js"
-        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-        crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-
-@endsection
-
 @section('content')
-
-
 
     <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header">{{ __('Users') }}</div>
 
@@ -61,7 +48,7 @@
                                             <form method="POST" action="{{ route('admin-deactivateUser') }}">
                                                 {{csrf_field()}}
                                                 <input type="hidden" name="id" value="{{ $user->_id }}">
-                                                <button class="btn-success" title="Deactivate User">
+                                                <button class="btn btn-sm btn-success" title="Deactivate User">
                                                     <i class="fa fa-check"></i>
                                                 </button>
                                             </form>
@@ -69,7 +56,7 @@
                                             <form method="POST" action="{{ route('admin-activateUser') }}">
                                                 {{csrf_field()}}
                                                 <input type="hidden" name="id" value="{{ $user->_id }}">
-                                                <button class="btn-danger" title="Activate User">
+                                                <button class="btn btn-sm btn-danger" title="Activate User">
                                                     <i class="fas fa-times-circle"></i>
                                                 </button>
                                             </form>
@@ -90,10 +77,11 @@
 @endsection
 
 @section('scripts')
-    $(document).ready( function () {
+    <script>
 
-    $.noConflict();
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#userTable').DataTable();
+        });
 
-    $('#userTable').DataTable();
-    } );
+    </script>
 @endsection
