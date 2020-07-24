@@ -18,6 +18,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- Custom imports -->
+    @yield('imports')
 </head>
 <body>
     <div id="app">
@@ -83,5 +86,8 @@
             @yield('content')
         </main>
     </div>
+    <script>
+        @yield('scripts')
+    </script>
 </body>
 </html>
