@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Topic;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -94,33 +95,7 @@ class AdminController extends Controller
      */
     public function courses()
     {
-
-        /*
-        $user = User::find('5f199739ce0834782b024f42');
-
-        $course = Course::create([
-            'name' => "Test 1234",
-            'code' => "ABCDE",
-            'shared' => false,
-            'active' => true
-        ]);
-
-        $course->owner()->associate($user);
-        $course->save();
-
-        $user1 = User::find('5f1adde3a11d6f2489c1142f');
-        $user2 = User::find('5f1addeea11d6f2489c11430');
-        $user3 = User::find('5f1addfea11d6f2489c11431');
-
-        $course->participants()->save($user1);
-        $course->participants()->save($user2);
-        $course->participants()->save($user3);
-        //$course->save();
-
-        */
-
         $courses = Course::all();
-
 
         return view('admin/courses', compact('courses'));
     }
@@ -142,6 +117,17 @@ class AdminController extends Controller
     }
 
 
+    /**
+     * Show the topics.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function topics()
+    {
+        $topics = Topic::all();
 
+        return view('admin/topics', compact('topics'));
+    }
+    
 
 }

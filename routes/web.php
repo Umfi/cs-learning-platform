@@ -30,4 +30,6 @@ Route::middleware(['hasAdminRole'])->group(function(){
 
     Route::get('/admin/courses', 'AdminController@courses')->name('admin-courses');
     Route::get('/admin/courses/getParticipants/{id}', 'AdminController@getCourseParticipants')->name('admin-getCourseParticipants');
+
+    Route::get('/admin/topics', 'AdminController@topics')->name('admin-topics');
 });
