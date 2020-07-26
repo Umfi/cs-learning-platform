@@ -101,6 +101,38 @@ class AdminController extends Controller
     }
 
     /**
+     * Activate a course in admin area
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function activateCourse()
+    {
+        $course = Course::find(request()->id);
+        $course->active = true;
+        $course->save();
+
+        session()->flash('status', 'Course "' . $course->name . '" has been activated.');
+
+        return back();
+    }
+
+    /**
+     * Deactivate a curse in admin area
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function deactivateCourse()
+    {
+        $course = Course::find(request()->id);
+        $course->active = false;
+        $course->save();
+
+        session()->flash('status', 'Course "' . $course->name . '" has been deactivated.');
+
+        return back();
+    }
+
+    /**
      * Get the course participants to render in modal
      *
      * @param Request $request
@@ -128,6 +160,6 @@ class AdminController extends Controller
 
         return view('admin/topics', compact('topics'));
     }
-    
+
 
 }

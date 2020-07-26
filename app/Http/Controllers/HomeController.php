@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -24,7 +26,8 @@ class HomeController extends Controller
     public function index()
     {
         if (auth()->user()->isAdmin() || auth()->user()->isTeacher()) {
-            return view('home-teacher');
+            $myCourses = Course::where('owner_id', Auth::id())->get();
+            return view('home-teacher')->with('myCourses', $myCourses);
         } else {
             return view('home-student');
         }

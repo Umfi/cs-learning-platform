@@ -45,8 +45,7 @@
                                     </td>
                                     <td>
                                         @if( $course->active )
-                                            <!-- TODO edit route -->
-                                            <form method="POST" action="{{ route('admin-deactivateUser') }}">
+                                            <form method="POST" action="{{ route('admin-deactivateCourse') }}">
                                                 {{csrf_field()}}
                                                 <input type="hidden" name="id" value="{{ $course->_id }}">
                                                 <button class="btn btn-sm btn-success" title="Deactivate course">
@@ -54,8 +53,7 @@
                                                 </button>
                                             </form>
                                         @else
-                                            <!-- TODO edit route -->
-                                            <form method="POST" action="{{ route('admin-activateUser') }}">
+                                            <form method="POST" action="{{ route('admin-activateCourse') }}">
                                                 {{csrf_field()}}
                                                 <input type="hidden" name="id" value="{{ $course->_id }}">
                                                 <button class="btn btn-sm btn-danger" title="Activate course">

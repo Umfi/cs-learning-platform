@@ -29,7 +29,14 @@ Route::middleware(['hasAdminRole'])->group(function(){
     Route::post('/admin/users/changeRole', 'AdminController@changeRoleForUser')->name('admin-changeUserRole');
 
     Route::get('/admin/courses', 'AdminController@courses')->name('admin-courses');
+    Route::post('/admin/courses/activate', 'AdminController@activateCourse')->name('admin-activateCourse');
+    Route::post('/admin/courses/deactivate', 'AdminController@deactivateCourse')->name('admin-deactivateCourse');
     Route::get('/admin/courses/getParticipants/{id}', 'AdminController@getCourseParticipants')->name('admin-getCourseParticipants');
 
     Route::get('/admin/topics', 'AdminController@topics')->name('admin-topics');
+});
+
+
+Route::middleware(['hasTeacherRole'])->group(function(){
+    Route::post('/teacher/createCourse', 'TeacherController@createCourse')->name('create-course');
 });
