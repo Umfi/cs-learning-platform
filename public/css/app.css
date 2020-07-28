@@ -17254,3 +17254,8 @@ readers do not read off random characters that represent icons */
   cursor: pointer;
 }
 
+.inactive {
+  opacity: 0.6;
+  background: #80808063;
+}
+

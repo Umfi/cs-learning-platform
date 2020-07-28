@@ -38,5 +38,7 @@ Route::middleware(['hasAdminRole'])->group(function(){
 
 
 Route::middleware(['hasTeacherRole'])->group(function(){
+    Route::get('/teacher/getCourse/{id}', 'TeacherController@getCourse')->name('teacher-getCourse');
     Route::post('/teacher/createCourse', 'TeacherController@createCourse')->name('teacher-createCourse');
+    Route::post('/teacher/editCourse', 'TeacherController@editCourse')->name('teacher-editCourse');
 });

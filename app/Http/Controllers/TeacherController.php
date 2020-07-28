@@ -22,6 +22,23 @@ class TeacherController extends Controller
         $this->middleware('auth');
     }
 
+    public function getCourse($id)
+    {
+        $course = Course::find($id);
+
+        if ($course) {
+            if ($course->owner_id == Auth::id()) {
+                return response()->json([
+                    'course' => $course,
+                ], \Illuminate\Http\Response::HTTP_OK);
+            }
+        }
+
+        return response()->json([
+            'course' => null,
+        ], \Illuminate\Http\Response::HTTP_OK);
+    }
+
     /**
      * Create a new course
      *
@@ -52,6 +69,50 @@ class TeacherController extends Controller
                 session()->flash('status', 'Course "' . $request->get('name') . '" has been created.');
             } else {
                 session()->flash('error', 'Course "' . $request->get('name') . '" has not been created.');
+            }
+        }
+
+        return Redirect::back();
+    }
+
+    /**
+     * Edit a course
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function editCourse(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'id' => 'required',
+            'name' => 'required|string|min:3|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            session()->flash('error', 'Course "' . $request->get('name') . '" has not been updated. Invalid data send.');
+        } else {
+            $user = User::find(Auth::id());
+
+            if ($user) {
+
+                $course = Course::find($request->get('id'));
+
+                if ($course) {
+
+                    if ($course->owner_id == Auth::id()) {
+                        $course->name = $request->get('name');
+                        $course->shared = $request->get('shared') == "1";
+                        $course->active = $request->get('active') == "1";
+                        $course->save();
+
+                        session()->flash('status', 'Course "' . $request->get('name') . '" has been updated.');
+
+                    } else {
+                        session()->flash('error', 'Course "' . $request->get('name') . '" has not been updated. Not authorized.');
+                    }
+                }
+            } else {
+                session()->flash('error', 'Course "' . $request->get('name') . '" has not been updated.');
             }
         }
 

@@ -24,15 +24,17 @@
                     <div class="row">
                     @forelse($myCourses as $course)
 
-                            <div class="card m-2" style="width: 18rem;">
+                            <div class="card m-2 {{ $course->active ? "" : "inactive" }}" style="width: 18rem;">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $course->name }}</h5>
+                                    <h5 class="card-title">{{ $course->name }} {{ $course->active ? "" : __('(Inactive)') }}</h5>
                                     <p class="card-text">
                                         <i class="fas fa-users"></i> {{ $course->participants->count() }} <br>
-                                        <i class="fas fa-history"></i> {{ $course->updated_at->format('d.m.Y H:s') }} <br>
+                                        <i class="fas fa-history"></i> {{ $course->updated_at->format('d.m.Y H:i') }} <br>
                                         <i class="fas fa-key"></i> {{ $course->code }} <br>
+                                        <i class="fas {{ $course->shared ? "fa-lock-open" : "fa-lock" }}"></i> {{ $course->shared ? __('Shared') : __('Not shared') }}<br>
                                     </p>
                                     <a href="#" class="btn btn-primary">{{ __('View details') }}</a>
+                                    <button type="button" class="btn btn-secondary" onclick="editCourse('{{ $course->_id }}')">{{ __('Edit course') }}</button>
                                 </div>
                             </div>
                     @empty
@@ -43,7 +45,7 @@
 
                     <br><br>
 
-                    <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#myModal">{{__("Create course")}}</button>
+                    <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#createCourseModal">{{__("Create course")}}</button>
 
                 </div>
             </div>
@@ -51,8 +53,8 @@
     </div>
 </div>
 
-<!-- The Modal -->
-<div class="modal" id="myModal">
+<!-- Create Course Modal -->
+<div class="modal" id="createCourseModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -96,11 +98,79 @@
         </div>
     </div>
 </div>
+
+<!-- Edit Course Modal -->
+<div class="modal" id="editCourseModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">{{ __("Edit course") }}</h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="document.getElementById('editForm').reset();">&times;</button>
+            </div>
+
+            <form id="editForm" method="POST" action="{{ route('teacher-editCourse') }}">
+            {{csrf_field()}}
+            <!-- Modal body -->
+                <div class="modal-body">
+                    <!-- Course ID -->
+                    <input type="hidden" name="id" value="">
+
+                    <div class="form-group">
+                        <label for="name">{{ __("Name") }}</label>
+                        <input type="text" class="form-control" placeholder="{{ __("Enter the course name") }}" name="name" required>
+                    </div>
+
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="shared" value="1">{{ __("Shared") }}
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="active" value="1">{{ __("Active") }}
+                        </label>
+                    </div>
+
+                </div>
+
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="document.getElementById('editForm').reset();">{{ __("Cancle") }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __("Update") }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
     <script>
+        function editCourse(id) {
 
+            $.ajax({
+                url: '{{ route('teacher-getCourse', '') }}/' + id,
+                type: 'get',
+                success: function( data, textStatus, jQxhr ){
 
+                    if (data.course != null) {
+                        $("#editForm input[name='id']").val(data.course._id);
+                        $("#editForm input[name='name']").val(data.course.name);
+                        $("#editForm input[name='shared']").prop('checked', data.course.shared);
+                        $("#editForm input[name='active']").prop('checked', data.course.active);
+                        $('#editCourseModal').modal('show');
+                    }
+
+                },
+                error: function( jqXhr, textStatus, errorThrown ){
+                    console.log( errorThrown );
+                }
+            });
+
+        }
     </script>
 @endsection
