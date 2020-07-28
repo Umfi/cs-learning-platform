@@ -27,7 +27,7 @@ class HomeController extends Controller
     {
         if (auth()->user()->isAdmin() || auth()->user()->isTeacher()) {
             $myCourses = Course::where('owner_id', Auth::id())->get();
-            return view('home-teacher')->with('myCourses', $myCourses);
+            return view('teacher/home')->with('myCourses', $myCourses);
         } else {
             return view('home-student');
         }

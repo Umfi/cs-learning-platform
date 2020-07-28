@@ -22,7 +22,12 @@ class TeacherController extends Controller
         $this->middleware('auth');
     }
 
-    public function getCourse($id)
+    /**
+     * Get course Details
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCourseData($id)
     {
         $course = Course::find($id);
 
@@ -117,6 +122,19 @@ class TeacherController extends Controller
         }
 
         return Redirect::back();
+    }
+
+
+    /**
+     * Show the topics.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function showCourse($id)
+    {
+        $course = Course::find($id);
+
+        return view('teacher/course', compact('course'));
     }
 
 

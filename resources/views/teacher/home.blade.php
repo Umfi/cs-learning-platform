@@ -33,7 +33,7 @@
                                         <i class="fas fa-key"></i> {{ $course->code }} <br>
                                         <i class="fas {{ $course->shared ? "fa-lock-open" : "fa-lock" }}"></i> {{ $course->shared ? __('Shared') : __('Not shared') }}<br>
                                     </p>
-                                    <a href="#" class="btn btn-primary">{{ __('View details') }}</a>
+                                    <a href="{{ route('teacher-showCourse', $course->_id) }}" class="btn btn-primary">{{ __('View details') }}</a>
                                     <button type="button" class="btn btn-secondary" onclick="editCourse('{{ $course->_id }}')">{{ __('Edit course') }}</button>
                                 </div>
                             </div>
