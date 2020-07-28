@@ -25,10 +25,11 @@
                             @forelse($course->topics as $topic)
 
                                 <div class="card m-2 {{ $topic->active ? "" : "inactive" }}" style="width: 18rem;">
+                                    <img class="card-img-top" src="{{ $topic->image ? $topic->image : "https://via.placeholder.com/150" }}" alt="Topic image">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $topic->name }} {{ $topic->active ? "" : __('(Inactive)') }}</h5>
                                         <p class="card-text">
-
+                                            {{ $topic->description }}
                                         </p>
                                         <a href="#" class="btn btn-primary">{{ __('View details') }}</a>
                                         <button type="button" class="btn btn-secondary" onclick="editTopic('{{ $topic->_id }}')">{{ __('Edit topic') }}</button>
@@ -61,17 +62,27 @@
                     <button type="button" class="close" data-dismiss="modal" onclick="document.getElementById('createForm').reset();">&times;</button>
                 </div>
 
-                <form id="createForm" method="POST" action="{{ route('teacher-createCourse') }}">
+                <form id="createForm" method="POST" enctype="multipart/form-data" action="{{ route('teacher-createTopic') }}">
                 {{csrf_field()}}
                 <!-- Modal body -->
                     <div class="modal-body">
+
+                        <input type="hidden" name="course_id" value="{{ $course->_id }}">
 
                         <div class="form-group">
                             <label for="name">{{ __("Name") }}</label>
                             <input type="text" class="form-control" placeholder="{{ __("Enter the topic name") }}" name="name" required>
                         </div>
 
+                        <div class="form-group">
+                            <label for="description">{{ __("Description") }}</label>
+                            <textarea class="form-control" rows="5" name="description"></textarea>
+                        </div>
 
+                        <div class="form-group">
+                            <label for="image">{{ __("Image") }}</label>
+                            <input type="file" class="form-control-file" name="image" accept="image/*">
+                        </div>
 
                         <div class="form-check">
                             <label class="form-check-label">
@@ -103,11 +114,12 @@
                     <button type="button" class="close" data-dismiss="modal" onclick="document.getElementById('editForm').reset();">&times;</button>
                 </div>
 
-                <form id="editForm" method="POST" action="{{ route('teacher-editCourse') }}">
+                <form id="editForm" method="POST" enctype="multipart/form-data" action="{{ route('teacher-editTopic') }}">
                 {{csrf_field()}}
                 <!-- Modal body -->
                     <div class="modal-body">
-                        <!-- Course ID -->
+
+                        <!-- Topic ID -->
                         <input type="hidden" name="id" value="">
 
                         <div class="form-group">
@@ -115,6 +127,15 @@
                             <input type="text" class="form-control" placeholder="{{ __("Enter the topic name") }}" name="name" required>
                         </div>
 
+                        <div class="form-group">
+                            <label for="description">{{ __("Description") }}</label>
+                            <textarea class="form-control" rows="5" name="description"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="image">{{ __("Image") }}</label>
+                            <input type="file" class="form-control-file" name="image" accept="image/*">
+                        </div>
 
                         <div class="form-check">
                             <label class="form-check-label">
@@ -141,15 +162,18 @@
         function editTopic(id) {
 
             $.ajax({
-                url: '{{ route('teacher-getCourse', '') }}/' + id,
+                url: '{{ route('teacher-getTopic', '') }}/' + id,
                 type: 'get',
                 success: function( data, textStatus, jQxhr ){
 
-                    if (data.course != null) {
-                        $("#editForm input[name='id']").val(data.course._id);
-                        $("#editForm input[name='name']").val(data.course.name);
-                        $("#editForm input[name='active']").prop('checked', data.course.active);
-                        $('#editCourseModal').modal('show');
+                    if (data.topic != null) {
+                        console.log(data.topic);
+
+                        $("#editForm input[name='id']").val(data.topic._id);
+                        $("#editForm input[name='name']").val(data.topic.name);
+                        $("#editForm textarea[name='description']").val(data.topic.description);
+                        $("#editForm input[name='active']").prop('checked', data.topic.active);
+                        $('#editTopicModal').modal('show');
                     }
 
                 },
