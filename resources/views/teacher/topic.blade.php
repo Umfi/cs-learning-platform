@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    <div class="card-header">{{ $course->name }}</div>
+                    <div class="card-header">{{ $topic->name }}</div>
 
                     <div class="card-body">
                         @if (session('status'))
@@ -19,31 +19,30 @@
                             </div>
                         @endif
 
-                        <h3>{{ __('Course Topics') }}</h3>
+                        <h3>{{ __('Topic Tasks') }}</h3>
 
                         <div class="row">
-                            @forelse($course->topics as $topic)
+                            @forelse($topic->tasks as $task)
 
                                 <div class="card m-2 {{ $topic->active ? "" : "inactive" }}" style="width: 18rem;">
-                                    <img class="card-img-top" src="{{ $topic->image ? $topic->image : "https://via.placeholder.com/150" }}" alt="Topic image">
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ $topic->name }} {{ $topic->active ? "" : __('(Inactive)') }}</h5>
+                                        <h5 class="card-title">{{ $task->name }} {{ $topic->active ? "" : __('(Inactive)') }}</h5>
                                         <p class="card-text">
-                                            {{ $topic->description }}
+
                                         </p>
-                                        <a href="{{ route('teacher-showTopic', $topic->_id) }}" class="btn btn-primary">{{ __('View details') }}</a>
-                                        <button type="button" class="btn btn-secondary" onclick="editTopic('{{ $topic->_id }}')">{{ __('Edit topic') }}</button>
+                                        <a href="#" class="btn btn-primary">{{ __('Preview') }}</a>
+                                        <button type="button" class="btn btn-secondary" onclick="editTask('{{ $task->_id }}')">{{ __('Edit task') }}</button>
                                     </div>
                                 </div>
                             @empty
-                                <p class="col-12">{{ __("No topics found.") }}</p>
+                                <p class="col-12">{{ __("No tasks found.") }}</p>
                             @endforelse
                         </div>
 
 
                         <br><br>
 
-                        <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#createTopicModal">{{__("Create topic")}}</button>
+                        <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#createTaskModal">{{__("Create task")}}</button>
 
                     </div>
                 </div>
@@ -51,27 +50,36 @@
         </div>
     </div>
 
-    <!-- Create Topic Modal -->
-    <div class="modal" id="createTopicModal">
+    <!-- Create Task Modal -->
+    <div class="modal" id="createTaskModal">
         <div class="modal-dialog">
             <div class="modal-content">
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">{{ __("Create topic") }}</h4>
+                    <h4 class="modal-title">{{ __("Create task") }}</h4>
                     <button type="button" class="close" data-dismiss="modal" onclick="document.getElementById('createForm').reset();">&times;</button>
                 </div>
 
-                <form id="createForm" method="POST" enctype="multipart/form-data" action="{{ route('teacher-createTopic') }}">
+                <form id="createForm" method="POST" enctype="multipart/form-data" action="{{ route('teacher-createTask') }}">
                 {{csrf_field()}}
                 <!-- Modal body -->
                     <div class="modal-body">
 
-                        <input type="hidden" name="course_id" value="{{ $course->_id }}">
+                        <input type="hidden" name="topic_id" value="{{ $topic->_id }}">
 
                         <div class="form-group">
                             <label for="name">{{ __("Name") }}</label>
-                            <input type="text" class="form-control" placeholder="{{ __("Enter the topic name") }}" name="name" required>
+                            <input type="text" class="form-control" placeholder="{{ __("Enter the task name") }}" name="name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="module">{{ __("Module") }}</label>
+                            <select class="form-control" name="module">
+                                @foreach($modules as $module_key => $module_name)
+                                <option value="{{ $module_key }}">{{ $module_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -80,9 +88,26 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="image">{{ __("Image") }}</label>
-                            <input type="file" class="form-control-file" name="image" accept="image/*">
+                            <label for="difficulty">{{ __("Difficulty") }}</label>
+                            <select class="form-control" name="difficulty">
+                                <option value="1">{{ __("1 - very easy") }}</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">{{ __("5 - very difficulty") }}</option>
+                            </select>
                         </div>
+
+                        <div class="form-group">
+                            <label for="intro">{{ __("Intro") }}</label>
+                            <input type="file" class="form-control-file" name="intro" accept="image/*,video/*">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="extro">{{ __("Extro") }}</label>
+                            <input type="file" class="form-control-file" name="extro" accept="image/*,video/*">
+                        </div>
+
 
                         <div class="form-check">
                             <label class="form-check-label">
@@ -103,14 +128,14 @@
         </div>
     </div>
 
-    <!-- Edit Topic Modal -->
-    <div class="modal" id="editTopicModal">
+    <!-- Edit Task Modal -->
+    <div class="modal" id="editTaskModal">
         <div class="modal-dialog">
             <div class="modal-content">
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">{{ __("Edit topic") }}</h4>
+                    <h4 class="modal-title">{{ __("Edit task") }}</h4>
                     <button type="button" class="close" data-dismiss="modal" onclick="document.getElementById('editForm').reset();">&times;</button>
                 </div>
 
@@ -130,11 +155,6 @@
                         <div class="form-group">
                             <label for="description">{{ __("Description") }}</label>
                             <textarea class="form-control" rows="5" name="description"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="image">{{ __("Image") }}</label>
-                            <input type="file" class="form-control-file" name="image" accept="image/*">
                         </div>
 
                         <div class="form-check">
@@ -159,14 +179,15 @@
 
 @section('scripts')
     <script>
-        function editTopic(id) {
+        function editTask(id) {
 
             $.ajax({
                 url: '{{ route('teacher-getTopic', '') }}/' + id,
                 type: 'get',
                 success: function( data, textStatus, jQxhr ){
 
-                    if (data.topic != null) {
+                    if (data.task != null) {
+
                         $("#editForm input[name='id']").val(data.topic._id);
                         $("#editForm input[name='name']").val(data.topic.name);
                         $("#editForm textarea[name='description']").val(data.topic.description);

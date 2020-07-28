@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Task;
 use App\Topic;
 use App\User;
 use Illuminate\Http\Request;
@@ -128,7 +129,7 @@ class TeacherController extends Controller
 
 
     /**
-     * Show the topics.
+     * Show the topics of a course.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -264,6 +265,94 @@ class TeacherController extends Controller
                 }
             } else {
                 session()->flash('error', 'Topic "' . $request->get('name') . '" has not been updated.');
+            }
+        }
+
+        return Redirect::back();
+    }
+
+    /**
+     * Show the tasks of a topic.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function showTopic($id)
+    {
+        $topic = Topic::find($id);
+        $modules = Task::MODULES;
+
+        return view('teacher/topic', compact('topic', 'modules'));
+    }
+
+    /**
+     * Create a new task
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function createTask(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'topic_id' => 'required',
+            'name' => 'required|string|min:3|max:255',
+            'description' => 'required|string|max:4096',
+            'module'=> 'required',
+            'difficulty'=> 'numeric',
+            'intro' => 'mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,ogg|max:51200',
+            'extro' => 'mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,ogg|max:51200',
+        ]);
+
+        if ($validator->fails()) {
+            session()->flash('error', 'Task "' . $request->get('name') . '" has not been created. Invalid data.');
+        } else {
+            $topic = Topic::find($request->get('topic_id'));
+
+            if ($topic) {
+                if ($topic->course->owner_id == Auth::id()) {
+
+                    if ($request->hasFile('intro')) {
+
+                        $file = request()->file('intro');
+                        $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+                        Storage::disk('public')->put('uploads/' . $fileName, file_get_contents($file));
+
+                        $intro =  Storage::url('uploads/' . $fileName);
+                    } else {
+                        $intro = "";
+                    }
+
+                    if ($request->hasFile('extro')) {
+
+                        $file = request()->file('extro');
+                        $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+                        Storage::disk('public')->put('uploads/' . $fileName, file_get_contents($file));
+
+                        $extro =  Storage::url('uploads/' . $fileName);
+                    } else {
+                        $extro = "";
+                    }
+
+                    $task = Task::create([
+                        'name' => $request->get('name'),
+                        'description' => $request->get('description'),
+                        'module' => $request->get('module'),
+                        'difficulty' => $request->get('difficulty'),
+                        'intro' => $intro,
+                        'extro' => $extro,
+                        'active' => $request->get('active') == "1"
+                    ]);
+                    $task->topic()->associate($topic);
+                    $task->save();
+
+                    session()->flash('status', 'Task "' . $request->get('name') . '" has been created.');
+
+                } else {
+                    session()->flash('error', 'Task "' . $request->get('name') . '" has not been created. Not authorized.');
+                }
+            } else {
+                session()->flash('error', 'Task "' . $request->get('name') . '" has not been created.');
             }
         }
 

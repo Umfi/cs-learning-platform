@@ -5,7 +5,7 @@ namespace App;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
-class Topic extends Model
+class Task extends Model
 {
     use SoftDeletes;
 
@@ -14,32 +14,31 @@ class Topic extends Model
     public $timestamps = true;
 
     /**
+     * Task Modules
+     * Add here new modules
+     */
+    const MODULES = array(
+        "MODULE_SPREADSHEAT" => "Spreadsheat",
+    );
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'image', 'active',
+        'name', 'module', 'description', 'intro', 'extro', 'difficulty', 'active',
+        'specification', 'solution', 'tips'
     ];
 
     /**
-     * Course
+     * Topic
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|\Jenssegers\Mongodb\Relations\BelongsTo
      */
-    public function course()
+    public function topic()
     {
-        return $this->belongsTo(Course::class);
-    }
-
-    /**
-     * Tasks
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Jenssegers\Mongodb\Relations\HasMany
-     */
-    public function tasks()
-    {
-        return $this->hasMany(Task::class);
+        return $this->belongsTo(Topic::class);
     }
 
 }
