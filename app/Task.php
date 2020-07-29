@@ -41,4 +41,13 @@ class Task extends Model
         return $this->belongsTo(Topic::class);
     }
 
+    /**
+     * Remove module specific configuration from model
+     */
+    public function removeModuleSpecificConfig() {
+        $this->specification = "";
+        $this->solution = "";
+        $this->tips = "";
+    }
+
 }

@@ -285,6 +285,28 @@ class TeacherController extends Controller
     }
 
     /**
+     * Get Task Details
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTaskData($id)
+    {
+        $task = Task::find($id);
+
+        if ($task) {
+            if ($task->topic->course->owner_id == Auth::id()) {
+                return response()->json([
+                    'task' => $task,
+                ], \Illuminate\Http\Response::HTTP_OK);
+            }
+        }
+
+        return response()->json([
+            'task' => null,
+        ], \Illuminate\Http\Response::HTTP_OK);
+    }
+
+    /**
      * Create a new task
      *
      * @param Request $request
@@ -353,6 +375,80 @@ class TeacherController extends Controller
                 }
             } else {
                 session()->flash('error', 'Task "' . $request->get('name') . '" has not been created.');
+            }
+        }
+
+        return Redirect::back();
+    }
+
+    /**
+     * Edit a task
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function editTask(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'id' => 'required',
+            'name' => 'required|string|min:3|max:255',
+            'description' => 'required|string|max:4096',
+            'module'=> 'required',
+            'difficulty'=> 'numeric',
+            'intro' => 'mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,ogg|max:51200',
+            'extro' => 'mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,ogg|max:51200',
+        ]);
+
+        if ($validator->fails()) {
+            session()->flash('error', 'Task "' . $request->get('name') . '" has not been updated. Invalid data send.');
+        } else {
+
+            $task = Task::find($request->get('id'));
+
+            if ($task) {
+
+                if ($task->topic->course->owner_id == Auth::id()) {
+
+                    $task->name = $request->get('name');
+                    $task->description = $request->get('description');
+
+                    // Module has changed, remove module specific config
+                    if ($task->module != $request->get('module')) {
+                        $task->module = $request->get('module');
+                        $task->removeModuleSpecificConfig();
+                    }
+
+                    $task->difficulty = $request->get('difficulty');
+
+                    if ($request->hasFile('intro')) {
+
+                        $file = request()->file('intro');
+                        $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+                        Storage::disk('public')->put('uploads/' . $fileName, file_get_contents($file));
+
+                        $task->intro =  Storage::url('uploads/' . $fileName);
+                    }
+
+                    if ($request->hasFile('extro')) {
+
+                        $file = request()->file('extro');
+                        $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+                        Storage::disk('public')->put('uploads/' . $fileName, file_get_contents($file));
+
+                        $task->extro =  Storage::url('uploads/' . $fileName);
+                    }
+
+                    $task->active = $request->get('active') == "1";
+                    $task->save();
+
+                    session()->flash('status', 'Task "' . $request->get('name') . '" has been updated.');
+                } else {
+                    session()->flash('error', 'Task "' . $request->get('name') . '" has not been updated. Not authorized.');
+                }
+            } else {
+                session()->flash('error', 'Task "' . $request->get('name') . '" has not been updated.');
             }
         }
 

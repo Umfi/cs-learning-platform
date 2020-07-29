@@ -48,6 +48,8 @@ Route::middleware(['hasTeacherRole'])->group(function(){
     Route::post('/teacher/editTopic', 'TeacherController@editTopic')->name('teacher-editTopic');
 
     Route::get('/teacher/topic/{id}', 'TeacherController@showTopic')->name('teacher-showTopic');
+    Route::get('/teacher/getTask/{id}', 'TeacherController@getTaskData')->name('teacher-getTask');
     Route::post('/teacher/createTask', 'TeacherController@createTask')->name('teacher-createTask');
+    Route::post('/teacher/editTask', 'TeacherController@editTask')->name('teacher-editTask');
 
 });
