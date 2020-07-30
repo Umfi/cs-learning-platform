@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Task;
 use App\Topic;
 use App\User;
 use Illuminate\Http\Request;
@@ -189,6 +190,50 @@ class AdminController extends Controller
         $topic->save();
 
         session()->flash('status', 'Topic "' . $topic->name . '" has been deactivated.');
+
+        return back();
+    }
+
+    /**
+     * Show the tasks.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function tasks()
+    {
+        $tasks = Task::all();
+
+        return view('admin/tasks', compact('tasks'));
+    }
+
+    /**
+     * Activate a task in admin area
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function activateTask()
+    {
+        $task = Task::find(request()->id);
+        $task->active = true;
+        $task->save();
+
+        session()->flash('status', 'Task "' . $task->name . '" has been activated.');
+
+        return back();
+    }
+
+    /**
+     * Deactivate a task in admin area
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function deactivateTask()
+    {
+        $task = Task::find(request()->id);
+        $task->active = false;
+        $task->save();
+
+        session()->flash('status', 'Task "' . $task->name . '" has been deactivated.');
 
         return back();
     }

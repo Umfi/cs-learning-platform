@@ -37,6 +37,10 @@ Route::middleware(['hasAdminRole'])->group(function(){
     Route::post('/admin/topics/activate', 'AdminController@activateTopic')->name('admin-activateTopic');
     Route::post('/admin/topics/deactivate', 'AdminController@deactivateTopic')->name('admin-deactivateTopic');
 
+    Route::get('/admin/tasks', 'AdminController@tasks')->name('admin-tasks');
+    Route::post('/admin/tasks/activate', 'AdminController@activateTask')->name('admin-activateTask');
+    Route::post('/admin/tasks/deactivate', 'AdminController@deactivateTask')->name('admin-deactivateTask');
+
 });
 
 
