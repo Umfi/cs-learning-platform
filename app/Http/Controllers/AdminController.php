@@ -161,5 +161,37 @@ class AdminController extends Controller
         return view('admin/topics', compact('topics'));
     }
 
+    /**
+     * Activate a topic in admin area
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function activateTopic()
+    {
+        $topic = Topic::find(request()->id);
+        $topic->active = true;
+        $topic->save();
+
+        session()->flash('status', 'Topic "' . $topic->name . '" has been activated.');
+
+        return back();
+    }
+
+    /**
+     * Deactivate a topic in admin area
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function deactivateTopic()
+    {
+        $topic = Topic::find(request()->id);
+        $topic->active = false;
+        $topic->save();
+
+        session()->flash('status', 'Topic "' . $topic->name . '" has been deactivated.');
+
+        return back();
+    }
+
 
 }

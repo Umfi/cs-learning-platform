@@ -34,6 +34,9 @@ Route::middleware(['hasAdminRole'])->group(function(){
     Route::get('/admin/courses/getParticipants/{id}', 'AdminController@getCourseParticipants')->name('admin-getCourseParticipants');
 
     Route::get('/admin/topics', 'AdminController@topics')->name('admin-topics');
+    Route::post('/admin/topics/activate', 'AdminController@activateTopic')->name('admin-activateTopic');
+    Route::post('/admin/topics/deactivate', 'AdminController@deactivateTopic')->name('admin-deactivateTopic');
+
 });
 
 

@@ -38,8 +38,7 @@
                                     <td>{{ $topic->course->name }}</td>
                                     <td>
                                         @if( $topic->active )
-                                            <!-- TODO edit route -->
-                                            <form method="POST" action="{{ route('admin-deactivateUser') }}">
+                                            <form method="POST" action="{{ route('admin-deactivateTopic') }}">
                                                 {{csrf_field()}}
                                                 <input type="hidden" name="id" value="{{ $topic->_id }}">
                                                 <button class="btn btn-sm btn-success" title="Deactivate topic">
@@ -47,8 +46,7 @@
                                                 </button>
                                             </form>
                                         @else
-                                            <!-- TODO edit route -->
-                                            <form method="POST" action="{{ route('admin-activateUser') }}">
+                                            <form method="POST" action="{{ route('admin-activateTopic') }}">
                                                 {{csrf_field()}}
                                                 <input type="hidden" name="id" value="{{ $topic->_id }}">
                                                 <button class="btn btn-sm btn-danger" title="Activate topic">
