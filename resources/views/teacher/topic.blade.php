@@ -31,7 +31,8 @@
 
                                         </p>
                                         <button type="button" class="btn btn-primary" onclick="editTask('{{ $task->_id }}')">{{ __('Edit task') }}</button>
-                                        <button type="button" class="btn btn-secondary" title="{{ __('Edit module specific task config') }}" onclick="editTaskModuleSettings('{{ $task->_id }}')"><i class="fas fa-cog"></i></button>
+                                        <!-- Task Module Config -->
+                                        <taskmoduleconfig taskid="{{ $task->_id }}" taskmodule="{{ $task->module }}"></taskmoduleconfig>
                                     </div>
                                 </div>
                             @empty

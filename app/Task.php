@@ -18,7 +18,7 @@ class Task extends Model
      * Add here new modules
      */
     const MODULES = array(
-        "MODULE_SPREADSHEAT" => "Spreadsheat",
+        "MODULE_SPREADSHEET" => "Spreadsheet",
     );
 
     /**

@@ -13,18 +13,23 @@
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
         "cross-env": "^7.0",
-        "jquery": "^3.5.1",
+        "jquery": "^3.2",
         "laravel-mix": "^5.0.1",
         "lodash": "^4.17.19",
         "popper.js": "^1.12",
-        "resolve-url-loader": "^3.1.0",
-        "sass": "^1.15.2",
+        "resolve-url-loader": "^2.3.1",
+        "sass": "^1.20.1",
         "sass-loader": "^8.0.0",
-        "vue-template-compiler": "^2.6.11"
+        "vue": "^2.5.17",
+        "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.13.1",
+        "@handsontable/vue": "^4.1.1",
         "datatables.net": "^1.10.21",
-        "datatables.net-bs4": "^1.10.21"
+        "datatables.net-bs4": "^1.10.21",
+        "handsontable": "^7.4.2",
+        "prismjs": "^1.20.0",
+        "vue-prism-editor": "^0.6.1"
     }
 }

@@ -16,8 +16,10 @@
 // Datatable
 @import '~datatables.net-bs4/css/dataTables.bootstrap4.css';
 
-// Custom CSS
+// Handsontable
+@import "~handsontable/dist/handsontable.full.min.css";
 
+// Custom CSS
 .adminTileLink {
     color:#212529;
 }
