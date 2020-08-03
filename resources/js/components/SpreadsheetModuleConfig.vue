@@ -37,11 +37,11 @@
                     <hr>
 
                     <div>
-                        <hot-table ref="hotTableComponent" :settings="settings"></hot-table>
+                        <hot-table ref="hotTableSpecificationComponent" :data="specificationData" :settings="settings"></hot-table>
                     </div>
 
                     <div v-if="programming">
-                        <prism-editor v-model="code" language="js" :lineNumbers="true"></prism-editor>
+                        <prism-editor v-model="specificationCode" language="js" :lineNumbers="true"></prism-editor>
                     </div>
 
                 </div>
@@ -49,6 +49,13 @@
             <div class="tab-pane fade" id="solution" role="tabpanel" aria-labelledby="solution-tab">
                 <div class="mt-1">
 
+                    <div>
+                        <button type="button" class="btn btn-sm btn-primary" @click="syncData()"><i class="fas fa-sync"></i> Copy values from specification</button>
+                    </div>
+                    <hr>
+                    <div>
+                        <hot-table ref="hotTableSolutionComponent" :data="solutionData" :settings="settings"></hot-table>
+                    </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="tips" role="tabpanel" aria-labelledby="tips-tab">
@@ -78,9 +85,9 @@
                 col: 4,
                 programming: false,
                 dataVisualization: false,
-                hotInstance: null,
+                hotInstanceSpecification: null,
+                hotInstanceSolution: null,
                 settings: {
-                    data: Handsontable.helper.createEmptySpreadsheetData(5, 4),
                     rowHeaders: true,
                     colHeaders: true,
                     formulas: true,
@@ -88,7 +95,10 @@
                     height: 200,
                     licenseKey: process.env.MIX_HANDSONTABLE_KEY
                 },
-                code: ''
+                specificationData: Handsontable.helper.createEmptySpreadsheetData(5, 4),
+                specificationCode: '',
+                solutionData: Handsontable.helper.createEmptySpreadsheetData(5, 4),
+                solutionCode: ''
             };
         },
         components: {
@@ -98,23 +108,41 @@
         mounted() {
             console.log('TaskID:' + this.$props.taskid);
 
-            this.hotInstance = this.$refs.hotTableComponent.hotInstance;
-            var inst = this.hotInstance;
+            this.hotInstanceSpecification = this.$refs.hotTableSpecificationComponent.hotInstance;
+            this.hotInstanceSolution = this.$refs.hotTableSolutionComponent.hotInstance;
+
+            var instSpecification = this.hotInstanceSpecification;
+            var instSolution = this.hotInstanceSolution;
 
             $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {
                 setTimeout(function(){
-                    inst.render();
+                    instSpecification.render();
+                    instSolution.render();
+                }, 200);
+            });
+
+            $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+                setTimeout(function(){
+                    instSpecification.render();
+                    instSolution.render();
                 }, 200);
             })
         },
         watch: {
             row: function(newVal, oldVal) {
-                this.settings.data = Handsontable.helper.createEmptySpreadsheetData(newVal, this.col);
+                this.specificationData = Handsontable.helper.createEmptySpreadsheetData(newVal, this.col);
+                this.solutionData = Handsontable.helper.createEmptySpreadsheetData(newVal, this.col);
             },
             col: function(newVal, oldVal) {
-                this.settings.data = Handsontable.helper.createEmptySpreadsheetData(this.row, newVal);
+                this.specificationData = Handsontable.helper.createEmptySpreadsheetData(this.row, newVal);
+                this.solutionData = Handsontable.helper.createEmptySpreadsheetData(this.row, newVal);
             }
         },
+        methods: {
+            syncData() {
+                this.solutionData = JSON.parse(JSON.stringify(this.specificationData));
+            }
+        }
     }
 </script>
 
