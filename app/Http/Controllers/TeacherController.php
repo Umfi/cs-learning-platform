@@ -455,5 +455,51 @@ class TeacherController extends Controller
         return Redirect::back();
     }
 
+    /**
+     * Set a task module specific config
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function setTaskModuleConfig(Request $request)
+    {
+        $status = false;
+
+        $validator = Validator::make($request->all(),[
+            'id' => 'required',
+            'module' => 'required|string',
+            'data' => 'required|json',
+        ]);
+
+        if ($validator->fails()) {
+            $message = "Tasks module config has not been updated. Invalid data send.";
+        } else {
+
+            $task = Task::find($request->get('id'));
+
+            if ($task) {
+                if ($task->topic->course->owner_id == Auth::id()) {
+
+                    if ($task->storeModuleConfig($request)) {
+                        $task->save();
+                        $status = true;
+                        $message =  'Task "' . $task->name . '" has been updated.';
+                    } else {
+                        $message = 'Task "' . $task->name . '" has not been updated.';
+                    }
+                } else {
+                    $message = 'Task "' . $task->name . '" has not been updated. Not authorized.';
+                }
+            } else {
+                $message = 'Task has not been updated. Task not found.';
+            }
+        }
+
+        return response()->json([
+            'result' => $status,
+            'message' => $message
+        ], \Illuminate\Http\Response::HTTP_OK);
+    }
+
 
 }

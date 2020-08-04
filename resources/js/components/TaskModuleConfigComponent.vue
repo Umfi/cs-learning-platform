@@ -52,18 +52,33 @@
                 $('#taskModuleModal-' + id).modal('show');
             },
             storeData(id) {
-                this.moduleData = this.$refs.activeModule.$data;
 
+                var exportData = this.$refs.activeModule.$data;
 
-                    axios.post('/teacher/topic/' + id + '/taskmoduleconfig', {
-                        id: id,
-                        data: this.moduleData //todo only send important data
-                    }).then(response => {
-                        //response.data
+                /**
+                 * Remove all internal values starting with _
+                 */
+                for (var key in exportData) {
+                    if (key.startsWith("_"))
+                        delete exportData[key];
+                }
+
+                this.moduleData = exportData;
+
+                axios.post('/teacher/setTaskModuleConfig/' + id, {
+                    id: id,
+                    module: this.$props.taskmodule,
+                    data: JSON. stringify(this.moduleData)
+                }).then(response => {
+
+                    if (response.data.result) {
                         $('#taskModuleModal-' + id).modal('hide');
-                    }).catch(function (error) {
-                        console.error(error);
-                    });
+                    } else {
+                        alert(response.data.message);
+                    }
+                }).catch(function (error) {
+                    console.error(error);
+                });
 
             },
         }
