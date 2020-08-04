@@ -56,13 +56,17 @@ class Task extends Model
      */
     public function storeModuleConfig($request) {
 
+        $data = json_decode($request->get('data'));
+
+        if (isset($data->tips)) {
+            $this->tips = $data->tips;
+        } else {
+            $this->tips = array();
+        }
+
         switch ($request->get('module')) {
             case "MODULE_SPREADSHEET": {
-
-                $data = json_decode($request->get('data'));
-
-                $this->tips = $data->tips;
-
+                
                 $specification = new stdClass();
                 $specification->row = $data->row;
                 $specification->col = $data->col;

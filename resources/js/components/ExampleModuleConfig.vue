@@ -24,7 +24,7 @@
             </div>
             <div class="tab-pane fade" v-bind:id="'tips-' + taskid" role="tabpanel" aria-labelledby="tips-tab">
                 <div class="mt-1">
-                    <tip-list :tips="tips"></tip-list>
+                    <tip-list ref="tips" :taskid="taskid"></tip-list>
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
         props: ["taskid"],
         data() {
             return {
-                tips: [],
+                example: null,
                 /*
                 * INTERNAL IS GOING TO BE EXCLUDED FROM EXPORT
                 * starts with _
@@ -47,6 +47,23 @@
         },
         mounted() {
             console.log('TaskID:' + this.$props.taskid);
+
+            var self = this;
+
+            $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {
+
+                axios.get("/teacher/getTask/" + self.$props.taskid)
+                    .then(response => {
+
+                        if (response.data) {
+                            // Fill with stored data
+                            self.example = response.data.example;
+                        }
+                    }).catch(function (error) {
+                        console.error(error);
+                    });
+
+            });
         }
     }
 </script>

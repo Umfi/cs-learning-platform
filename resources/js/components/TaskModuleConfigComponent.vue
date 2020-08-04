@@ -54,6 +54,8 @@
             storeData(id) {
 
                 var exportData = this.$refs.activeModule.$data;
+                var tips = this.$refs.activeModule.$refs.tips.$data.tips;
+                exportData.tips = tips;
 
                 /**
                  * Remove all internal values starting with _

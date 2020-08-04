@@ -60,7 +60,7 @@
             </div>
             <div class="tab-pane fade" v-bind:id="'tips-' + taskid" role="tabpanel" aria-labelledby="tips-tab">
                 <div class="mt-1">
-                    <tip-list :tips="tips"></tip-list>
+                    <tip-list ref="tips" :taskid="taskid"></tip-list>
                 </div>
             </div>
         </div>
@@ -80,7 +80,6 @@
         props: ["taskid"],
         data() {
             return {
-                tips: [],
                 row: 5,
                 col: 4,
                 programming: false,
@@ -118,11 +117,45 @@
             var instSpecification = this._hotInstanceSpecification;
             var instSolution = this._hotInstanceSolution;
 
+            var self = this;
+
             $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {
                 setTimeout(function(){
                     instSpecification.render();
                     instSolution.render();
                 }, 200);
+
+                axios.get("/teacher/getTask/" + self.$props.taskid)
+                    .then(response => {
+                        if (response.data.task) {
+                            var data = {
+                                specification: response.data.task.specification,
+                                solution: response.data.task.solution
+                            };
+
+                            if (data.specification == "" || data.solution == "") {
+                                return;
+                            }
+
+                            self.col = data.specification.col;
+                            self.row = data.specification.row;
+                            self.programming = data.specification.programming;
+                            self.dataVisualization = data.specification.dataVisualization;
+
+
+                            setTimeout(function(){
+                                self.specificationData = data.specification.data;
+                                self.specificationCode = data.specification.code;
+
+                                self.solutionData = data.solution.data;
+                                self.solutionCode = data.solution.code;
+                            }, 500);
+
+
+                        }
+                    }).catch(function (error) {
+                    console.error(error);
+                });
             });
 
             $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
@@ -130,7 +163,12 @@
                     instSpecification.render();
                     instSolution.render();
                 }, 200);
-            })
+            });
+
+
+
+
+
         },
         watch: {
             row: function(newVal, oldVal) {

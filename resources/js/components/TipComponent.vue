@@ -6,7 +6,7 @@
         </div>
         <hr>
         <ul class="list-group">
-            <li class="list-group-item" v-for="(tip, ind) in storedTips" v-bind:key="ind">
+            <li class="list-group-item" v-for="(tip, ind) in tips" v-bind:key="ind">
                 <span>{{tip}}</span>
                 <button type="button" class="btn btn-danger btn-sm float-right" @click="removeTip(tip)"><i class="fa fa-trash"></i></button>
             </li>
@@ -17,24 +17,35 @@
 <script>
 
     export default {
-        props: ["tips"],
+        props: ["taskid"],
         data() {
             return {
-                storedTips: [],
+                tips: [],
                 newTip: ''
             };
         },
-        mounted() {
-            this.storedTips = this.$props.tips;
+        async mounted() {
+            var self = this;
+            axios.get("/teacher/getTask/" + this.$props.taskid)
+                .then(response => {
+                    if (response.data.task) {
+                        self.tips = response.data.task.tips;
+                    }
+                }).catch(function (error) {
+                    console.error(error);
+             });
         },
         methods: {
             addTip() {
-                if (this.newTip.trim() != '')
-                    this.storedTips.push(this.newTip);
+                if (this.tips === "")
+                    this.tips = [];
+
+                if (this.newTip.trim() !== '')
+                    this.tips.push(this.newTip);
                 this.newTip = '';
             },
             removeTip(tip) {
-                this.storedTips = this.storedTips.filter(e => e !== tip)
+                this.tips = this.tips.filter(e => e !== tip)
             }
         }
     }
