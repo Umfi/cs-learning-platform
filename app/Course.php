@@ -40,7 +40,7 @@ class Course extends Model
      */
     public function participants()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class);
     }
 
     /**

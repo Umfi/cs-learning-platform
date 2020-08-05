@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Course;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -29,7 +28,10 @@ class HomeController extends Controller
             $myCourses = Course::where('owner_id', Auth::id())->get();
             return view('teacher/home')->with('myCourses', $myCourses);
         } else {
-            return view('home-student');
+            $myCourses = Course::whereHas('participants', function ($query) {
+                $query->where('_id', Auth::id());
+            })->where('active', true)->get();
+            return view('student/home')->with('myCourses', $myCourses);
         }
 
     }

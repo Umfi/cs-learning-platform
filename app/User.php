@@ -44,6 +44,16 @@ class User extends Authenticatable
     ];
 
     /**
+     * Courses
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Jenssegers\Mongodb\Relations\HasMany
+     */
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
+
+    /**
      * Check if current User has Role ADMIN
      *
      * @return bool
