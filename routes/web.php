@@ -13,9 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::get('/', function () {
-    return view('welcome');
-});
+    if (Auth::check()) {
+        return redirect()->route('home');
+    } else {
+        return view('welcome');
+    }
+})->name('home');
+
 
 Auth::routes();
 
@@ -61,4 +67,5 @@ Route::middleware(['hasTeacherRole'])->group(function(){
 });
 
 Route::post('/student/joinCourse', 'StudentController@joinCourse')->name('student-joinCourse');
+Route::get('/student/course/{id}', 'StudentController@showCourse')->name('student-showCourse');
 

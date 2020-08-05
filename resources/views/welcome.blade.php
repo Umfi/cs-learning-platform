@@ -81,19 +81,15 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Computer Science Learning Platform
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+                <blockquote class="blockquote">
+                <p class="mb-0">
+                    Computer science class in school education covers a variety of topics (text processing, coding, data privacy, social aspects, etc.). The web platform contains all these learning objectives based on standardized computer science curricula. An engaging story serves as a starting point for these objectives. All tasks are related to the narrative and use gamification elements to create a learner-friendly environment. The learning platform should support both students and teachers in an educational context via learning, assessment and scoring.
+                </p>
+                </blockquote>
+
             </div>
         </div>
     </body>

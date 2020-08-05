@@ -55,4 +55,16 @@ class StudentController extends Controller
 
         return Redirect::back();
     }
+
+    /**
+     * Show the topics of a course.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function showCourse($id)
+    {
+        $course = Course::find($id);
+
+        return view('student/course', compact('course'));
+    }
 }
