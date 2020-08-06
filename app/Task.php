@@ -43,15 +43,27 @@ class Task extends Model
     }
 
     /**
+     * Ratings
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|\Jenssegers\Mongodb\Relations\HasMany
+     */
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    /**
      * Remove module specific configuration from model
      */
     public function removeModuleSpecificConfig() {
         $this->specification = "";
         $this->solution = "";
-        $this->tips = "";
+        $this->tips = array();
     }
 
     /**
+     * Store module specific data
+     * Adopt this function if new modules are added!
      * @param $data
      */
     public function storeModuleConfig($request) {
@@ -66,7 +78,7 @@ class Task extends Model
 
         switch ($request->get('module')) {
             case "MODULE_SPREADSHEET": {
-                
+
                 $specification = new stdClass();
                 $specification->row = $data->row;
                 $specification->col = $data->col;

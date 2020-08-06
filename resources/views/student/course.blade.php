@@ -31,7 +31,7 @@
                                             <p class="card-text">
                                                 {{ $topic->description }}
                                             </p>
-                                            <a href="{{ route('teacher-showTopic', $topic->_id) }}" class="btn btn-primary">{{ __('View tasks') }}</a>
+                                            <a href="{{ route('student-showTopic', $topic->_id) }}" class="btn btn-primary">{{ __('View tasks') }}</a>
                                            </div>
                                     </div>
                                 @endif

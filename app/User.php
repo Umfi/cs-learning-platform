@@ -54,6 +54,17 @@ class User extends Authenticatable
     }
 
     /**
+     * Ratings
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|\Jenssegers\Mongodb\Relations\BelongsToMany
+     */
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+
+    /**
      * Check if current User has Role ADMIN
      *
      * @return bool

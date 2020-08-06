@@ -23,6 +23,8 @@ Vue.component('taskmoduleconfig', require('./components/TaskModuleConfigComponen
 Vue.component('tip-list', require('./components/TipComponent.vue').default);
 Vue.component('spreadsheetmoduleconfig', require('./components/SpreadsheetModuleConfig.vue').default);
 
+Vue.component('task', require('./components/student/TaskComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

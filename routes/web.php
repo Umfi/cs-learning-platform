@@ -68,4 +68,5 @@ Route::middleware(['hasTeacherRole'])->group(function(){
 
 Route::post('/student/joinCourse', 'StudentController@joinCourse')->name('student-joinCourse');
 Route::get('/student/course/{id}', 'StudentController@showCourse')->name('student-showCourse');
+Route::get('/student/topic/{id}', 'StudentController@showTopic')->name('student-showTopic');
 

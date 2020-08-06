@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Task;
+use App\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -66,5 +68,22 @@ class StudentController extends Controller
         $course = Course::find($id);
 
         return view('student/course', compact('course'));
+    }
+
+    /**
+     * Show the tasks of a topic.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function showTopic($id)
+    {
+        $topic = Topic::find($id);
+
+        // get all tasks of the topic with rating if one exists for the student
+        $tasks = Task::with(array('ratings'=>function($query){
+            $query->where('student_id', Auth::id());
+        }))->where("topic_id", $id)->get();
+
+        return view('student/topic', compact('topic', 'tasks'));
     }
 }
