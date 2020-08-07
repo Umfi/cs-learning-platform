@@ -17313,3 +17313,13 @@ readers do not read off random characters that represent icons */
   background: #80808063;
 }
 
+.locked {
+  background-image: url(/images/locked.png?ecad76f5761f4a3279c1e97c237f2097);
+  background-position: center;
+  background-size: contain;
+}
+
+.text-gold {
+  color: #e2b007 !important;
+}
+

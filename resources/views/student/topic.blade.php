@@ -24,7 +24,7 @@
                         <div class="row">
                             @forelse($tasks as $task)
                                 @if($task->active)
-                                    <div class="card m-2" style="width: 15rem;">
+                                    <div class="card m-2 {{ $task->userRating ? "" : "locked" }}" style="width: 15rem;">
                                         <div class="card-body">
                                             <h5 class="card-title">{{ $task->name }}</h5>
                                             <p class="card-text">
@@ -38,15 +38,18 @@
                                                 @endfor
 
                                                 <br>
-                                                @forelse ($task->ratings as $rating)
-                                                    <i class="fas fa-trophy"></i> {{ $rating->score . "/" . $rating->score_max }}
-                                                @empty
-                                                    <i class="fas fa-trophy"></i> 0
-                                                @endforelse
                                             </p>
 
+                                            @if ($task->userRating)
                                             <!-- Task -->
                                             <task taskid="{{ $task->_id }}" taskmodule="{{ $task->module }}"></task>
+
+                                            <div class="float-right">
+                                                <button type="button" title="Rating" class="btn">
+                                                <i class="fas fa-trophy fa-2x text-gold"></i> {{ $task->userRating->score . "|" . $task->userRating->score_max }}
+                                                </button>
+                                            </div>
+                                            @endif
                                         </div>
                                     </div>
                                 @endif

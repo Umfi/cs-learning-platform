@@ -25,11 +25,11 @@
                             @forelse($course->topics as $topic)
                                 @if($topic->active)
                                     <div class="card m-2" style="width: 18rem;">
-                                        <img class="card-img-top" src="{{ $topic->image ? $topic->image : "https://via.placeholder.com/150" }}" alt="Topic image">
+                                        <img class="card-img-top" width="100" height="150" src="{{ $topic->image ? $topic->image : "https://via.placeholder.com/100x150" }}" alt="Topic image">
                                         <div class="card-body">
                                             <h5 class="card-title">{{ $topic->name }}</h5>
                                             <p class="card-text">
-                                                {{ $topic->description }}
+                                                {{ \Illuminate\Support\Str::limit($topic->description, 250) }}
                                             </p>
                                             <a href="{{ route('student-showTopic', $topic->_id) }}" class="btn btn-primary">{{ __('View tasks') }}</a>
                                            </div>

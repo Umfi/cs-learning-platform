@@ -53,6 +53,16 @@ class Task extends Model
     }
 
     /**
+     * Get a user rating.
+     *
+     * @return string
+     */
+    public function getUserRatingAttribute()
+    {
+        return $this->ratings()->first();
+    }
+
+    /**
      * Remove module specific configuration from model
      */
     public function removeModuleSpecificConfig() {

@@ -50,7 +50,7 @@ class User extends Authenticatable
      */
     public function courses()
     {
-        return $this->hasMany(Course::class);
+        return $this->hasMany(Course::class, 'user_ids');
     }
 
     /**
@@ -60,7 +60,7 @@ class User extends Authenticatable
      */
     public function ratings()
     {
-        return $this->hasMany(Rating::class);
+        return $this->hasMany(Rating::class, 'student_id');
     }
 
 
