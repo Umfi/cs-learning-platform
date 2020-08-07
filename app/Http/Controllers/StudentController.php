@@ -86,4 +86,29 @@ class StudentController extends Controller
 
         return view('student/topic', compact('topic', 'tasks'));
     }
+
+    /**
+     * Get Task Details
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTaskData($id)
+    {
+        $task = Task::find($id);
+
+        if ($task) {
+                unset($task->solution);
+
+                $task->introType = $task->intro_type;
+                $task->intro = \Illuminate\Support\Facades\Storage::url($task->intro);
+
+                $task->extroType = $task->extro_type;
+                $task->extro = \Illuminate\Support\Facades\Storage::url($task->extro);
+
+
+                return response()->json([
+                    'task' => $task,
+                ], \Illuminate\Http\Response::HTTP_OK);
+        }
+    }
 }

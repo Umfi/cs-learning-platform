@@ -25,7 +25,7 @@
                             @forelse($course->topics as $topic)
 
                                 <div class="card m-2 {{ $topic->active ? "" : "inactive" }}" style="width: 18rem;">
-                                    <img class="card-img-top" src="{{ $topic->image ? $topic->image : "https://via.placeholder.com/150" }}" alt="Topic image">
+                                    <img class="card-img-top" src="{{ $topic->image ? \Illuminate\Support\Facades\Storage::url($topic->image) : "https://via.placeholder.com/150" }}" alt="Topic image">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ $topic->name }} {{ $topic->active ? "" : __('(Inactive)') }}</h5>
                                         <p class="card-text">

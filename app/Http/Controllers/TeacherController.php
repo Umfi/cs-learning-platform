@@ -186,13 +186,7 @@ class TeacherController extends Controller
                 if ($course->owner_id == Auth::id()) {
 
                     if ($request->hasFile('image')) {
-
-                        $file = request()->file('image');
-                        $fileName = time() . '.' . $file->getClientOriginalExtension();
-
-                        Storage::disk('public')->put('uploads/' . $fileName, file_get_contents($file));
-
-                        $image =  Storage::url('uploads/' . $fileName);
+                        $image = Storage::disk('public')->putFile('uploads' , request()->file('image'));
                     } else {
                         $image = "";
                     }
@@ -247,13 +241,13 @@ class TeacherController extends Controller
                     $topic->description = $request->get('description');
 
                     if ($request->hasFile('image')) {
+                        //delete old file
+                        if (!empty($topic->image)) {
+                            Storage::disk('public')->delete($topic->image);
+                        }
 
-                        $file = request()->file('image');
-                        $fileName = time() . '.' . $file->getClientOriginalExtension();
-
-                        Storage::disk('public')->put('uploads/' . $fileName, file_get_contents($file));
-
-                        $topic->image = Storage::url('uploads/' . $fileName);
+                        $image = Storage::disk('public')->putFile('uploads' , request()->file('image'));
+                        $topic->image = $image;
                     }
 
                     $topic->active = $request->get('active') == "1";
@@ -332,26 +326,15 @@ class TeacherController extends Controller
             if ($topic) {
                 if ($topic->course->owner_id == Auth::id()) {
 
+
                     if ($request->hasFile('intro')) {
-
-                        $file = request()->file('intro');
-                        $fileName = time() . '.' . $file->getClientOriginalExtension();
-
-                        Storage::disk('public')->put('uploads/' . $fileName, file_get_contents($file));
-
-                        $intro =  Storage::url('uploads/' . $fileName);
+                        $intro = Storage::disk('public')->putFile('uploads' , request()->file('intro'));
                     } else {
                         $intro = "";
                     }
 
                     if ($request->hasFile('extro')) {
-
-                        $file = request()->file('extro');
-                        $fileName = time() . '.' . $file->getClientOriginalExtension();
-
-                        Storage::disk('public')->put('uploads/' . $fileName, file_get_contents($file));
-
-                        $extro =  Storage::url('uploads/' . $fileName);
+                        $extro = Storage::disk('public')->putFile('uploads' , request()->file('extro'));
                     } else {
                         $extro = "";
                     }
@@ -421,23 +404,23 @@ class TeacherController extends Controller
                     $task->difficulty = $request->get('difficulty');
 
                     if ($request->hasFile('intro')) {
+                        //delete old file
+                        if (!empty($task->intro)) {
+                            Storage::disk('public')->delete($task->intro);
+                        }
 
-                        $file = request()->file('intro');
-                        $fileName = time() . '.' . $file->getClientOriginalExtension();
-
-                        Storage::disk('public')->put('uploads/' . $fileName, file_get_contents($file));
-
-                        $task->intro =  Storage::url('uploads/' . $fileName);
+                        $path = Storage::disk('public')->putFile('uploads' , request()->file('intro'));
+                        $task->intro = $path;
                     }
 
                     if ($request->hasFile('extro')) {
+                        //delete old file
+                        if (!empty($task->extro)) {
+                            Storage::disk('public')->delete($task->extro);
+                        }
 
-                        $file = request()->file('extro');
-                        $fileName = time() . '.' . $file->getClientOriginalExtension();
-
-                        Storage::disk('public')->put('uploads/' . $fileName, file_get_contents($file));
-
-                        $task->extro =  Storage::url('uploads/' . $fileName);
+                        $path = Storage::disk('public')->putFile('uploads' , request()->file('extro'));
+                        $task->extro = $path;
                     }
 
                     $task->active = $request->get('active') == "1";

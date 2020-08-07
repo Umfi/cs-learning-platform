@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use stdClass;
@@ -21,6 +23,13 @@ class Task extends Model
     const MODULES = array(
         "MODULE_SPREADSHEET" => "Spreadsheet",
     );
+
+    /**
+     * INTRO/EXTRO TYPES
+     */
+    const TYPE_NONE = "NONE";
+    const TYPE_VIDEO = "VIDEO";
+    const TYPE_IMAGE = "IMAGE";
 
     /**
      * The attributes that are mass assignable.
@@ -60,6 +69,26 @@ class Task extends Model
     public function getUserRatingAttribute()
     {
         return $this->ratings()->first();
+    }
+
+    /**
+     * Get type of intro.
+     *
+     * @return string
+     */
+    public function getIntroTypeAttribute()
+    {
+        return self::getUploadType($this->intro);
+    }
+
+    /**
+     * Get type of extro.
+     *
+     * @return string
+     */
+    public function getExtroTypeAttribute()
+    {
+        return self::getUploadType($this->extro);
     }
 
     /**
@@ -115,6 +144,28 @@ class Task extends Model
                 return false;
             }
         }
+    }
+
+    /**
+     * Get the Type of a file
+     * @return int
+     */
+    private function getUploadType($file)
+    {
+        if (empty($file)) {
+            return self::TYPE_NONE;
+        }
+
+        if (Storage::disk('public')->exists($file)) {
+            $mime = mime_content_type(Storage::disk('public')->path($file));
+            if (strstr($mime, "video/")){
+                return self::TYPE_VIDEO;
+            }else if(strstr($mime, "image/")){
+                return self::TYPE_IMAGE;
+            }
+        }
+
+        return self::TYPE_NONE;
     }
 
 }

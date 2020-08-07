@@ -24,7 +24,7 @@
                         <div class="row">
                             @forelse($tasks as $task)
                                 @if($task->active)
-                                    <div class="card m-2 {{ $task->userRating ? "" : "locked" }}" style="width: 15rem;">
+                                    <div class="card m-2 {{ $task->userRating || $tasks[$loop->index - 1]->userRating ? "" : "locked" }}" style="width: 15rem;">
                                         <div class="card-body">
                                             <h5 class="card-title">{{ $task->name }}</h5>
                                             <p class="card-text">
@@ -36,19 +36,20 @@
                                                         <i class="far fa-star"></i>
                                                     @endif
                                                 @endfor
-
-                                                <br>
                                             </p>
+                                            <br>
 
-                                            @if ($task->userRating)
-                                            <!-- Task -->
-                                            <task taskid="{{ $task->_id }}" taskmodule="{{ $task->module }}"></task>
+                                            @if ($task->userRating || $tasks[$loop->index - 1]->userRating)
+                                                <!-- Task -->
+                                                <task taskid="{{ $task->_id }}" taskmodule="{{ $task->module }}"></task>
 
-                                            <div class="float-right">
-                                                <button type="button" title="Rating" class="btn">
-                                                <i class="fas fa-trophy fa-2x text-gold"></i> {{ $task->userRating->score . "|" . $task->userRating->score_max }}
-                                                </button>
-                                            </div>
+                                                @if ($task->userRating)
+                                                    <div class="float-right">
+                                                        <button type="button" title="Rating" class="btn">
+                                                        <i class="fas fa-trophy fa-2x text-gold"></i> {{ $task->userRating->score . "|" . $task->userRating->score_max }}
+                                                        </button>
+                                                    </div>
+                                                @endif
                                             @endif
                                         </div>
                                     </div>

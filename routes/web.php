@@ -70,3 +70,5 @@ Route::post('/student/joinCourse', 'StudentController@joinCourse')->name('studen
 Route::get('/student/course/{id}', 'StudentController@showCourse')->name('student-showCourse');
 Route::get('/student/topic/{id}', 'StudentController@showTopic')->name('student-showTopic');
 
+Route::get('/student/getTask/{id}', 'StudentController@getTaskData')->name('student-getTask');
+
