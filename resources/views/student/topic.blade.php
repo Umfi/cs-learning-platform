@@ -24,7 +24,8 @@
                         <div class="row">
                             @forelse($tasks as $task)
                                 @if($task->active)
-                                    <div class="card m-2 {{ $task->userRating || $tasks[$loop->index - 1]->userRating ? "" : "locked" }}" style="width: 15rem;">
+                                    <!-- Task is available if user already has passed it once. If it's the first task. Or the previous task is done and the current one has no rating. -->
+                                    <div class="card m-2 {{ $task->userRating || ($loop->index == 0) || ($tasks[$loop->index - 1]->userRating) ? "" : "locked" }}" style="width: 15rem;">
                                         <div class="card-body">
                                             <h5 class="card-title">{{ $task->name }}</h5>
                                             <p class="card-text">
@@ -39,7 +40,7 @@
                                             </p>
                                             <br>
 
-                                            @if ($task->userRating || $tasks[$loop->index - 1]->userRating)
+                                            @if ($task->userRating || ($loop->index == 0) || ($tasks[$loop->index - 1]->userRating))
                                                 <!-- Task -->
                                                 <task taskid="{{ $task->_id }}" taskmodule="{{ $task->module }}"></task>
 

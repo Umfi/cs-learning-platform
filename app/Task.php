@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Jenssegers\Mongodb\Eloquent\Model;
@@ -68,7 +69,7 @@ class Task extends Model
      */
     public function getUserRatingAttribute()
     {
-        return $this->ratings()->first();
+        return $this->ratings()->where('student_id', Auth::id())->first();
     }
 
     /**
