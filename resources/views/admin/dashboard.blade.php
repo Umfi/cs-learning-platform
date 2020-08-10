@@ -71,7 +71,7 @@
                         </div>
 
                         <div class="col-md-4 col-sm-6 mt-2">
-                            <a href="#" class="adminTileLink">
+                            <a href="{{ route('admin-ratings') }}" class="adminTileLink">
                                 <div class="adminTile card-body border shadow text-center">
                                     <div>
                                         <div>

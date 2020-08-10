@@ -49,6 +49,7 @@ Route::middleware(['hasAdminRole'])->group(function(){
     Route::post('/admin/tasks/activate', 'AdminController@activateTask')->name('admin-activateTask');
     Route::post('/admin/tasks/deactivate', 'AdminController@deactivateTask')->name('admin-deactivateTask');
 
+    Route::get('/admin/ratings', 'AdminController@ratings')->name('admin-ratings');
 });
 
 Route::middleware(['hasTeacherRole'])->group(function(){

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Rating;
 use App\Task;
 use App\Topic;
 use App\User;
@@ -236,6 +237,18 @@ class AdminController extends Controller
         session()->flash('status', 'Task "' . $task->name . '" has been deactivated.');
 
         return back();
+    }
+
+    /**
+     * Show the ratings.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function ratings()
+    {
+        $ratings = Rating::all();
+
+        return view('admin/ratings', compact('ratings'));
     }
 
 

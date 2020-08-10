@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    <div class="card-header">{{ $course->name }}</div>
+                    <div class="card-header"><a href="{{ route('home') }}">Dashboard</a> / {{ $course->name }}</div>
 
                     <div class="card-body">
                         @if (session('status'))
