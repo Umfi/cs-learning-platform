@@ -41,4 +41,17 @@ class Rating extends Model
     {
         return $this->belongsTo(Task::class);
     }
+
+    /**
+     * Calculate a score from given parameters
+     */
+    public function calculateScore($required_time) {
+
+        // TODO: implement correct way for calculating score
+
+        $this->score = 3;
+        $this->score_max = 3;
+        $this->used_tips = 0;
+        $this->required_time = $required_time;
+    }
 }

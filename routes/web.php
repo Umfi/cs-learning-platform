@@ -74,4 +74,5 @@ Route::get('/student/course/{id}', 'StudentController@showCourse')->name('studen
 Route::get('/student/topic/{id}', 'StudentController@showTopic')->name('student-showTopic');
 
 Route::get('/student/getTask/{id}', 'StudentController@getTaskData')->name('student-getTask');
+Route::post('/student/solveTask/{id}', 'StudentController@solveTask')->name('student-solveTask');
 

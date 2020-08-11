@@ -90,7 +90,7 @@
                                     </div>
 
                                     <hr>
-                                    
+
                                     <!-- List all available modules here with same ref -->
                                     <!-- <examplemodule ref="activeModule" v-if="taskmodule === 'MODULE_EXAMPLE'" :taskid="taskid" :taskdata="task"></examplemodule> -->
                                     <spreadsheet-module ref="activeModule" v-if="taskmodule === 'MODULE_SPREADSHEET'" :taskid="taskid" :taskdata="task"></spreadsheet-module>
@@ -114,8 +114,7 @@
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
-                        <button type="button" class="btn btn-primary" @click="stepper.next()">Next</button>
+                        <button type="button" class="btn btn-primary" @click="nextStep()" v-text="stepperBtnText"></button>
                     </div>
                 </div>
             </div>
@@ -133,7 +132,9 @@
         props: ["taskid", "taskmodule"],
         data() {
             return {
-                stepper :null,
+                stepper: null,
+                currentStep: 0,
+                stepperBtnText: 'Next',
                 usedTips: -1,
                 tipsVisible: false,
                 task: {
@@ -143,7 +144,9 @@
                     intro: "",
                     extroType: "",
                     extro: "",
-                }
+                },
+                moduleData: null,
+                timer: 0
             }
         },
         async mounted() {
@@ -167,7 +170,11 @@
                     }).catch(function (error) {
                     console.error(error);
                 });
+            });
 
+            var stepperEl = document.querySelector('#bs-stepper-' + self.$props.taskid);
+            stepperEl.addEventListener('show.bs-stepper', function (event) {
+                self.currentStep = event.detail.indexStep;
             });
         },
         methods: {
@@ -179,6 +186,62 @@
                 if (this.usedTips < this.task.tips.length - 1)
                     this.usedTips++;
             },
+            triggerTimer() {
+                setTimeout(() => {
+                        this.timer += 1;
+                        this.triggerTimer();
+                    }, 1000);
+            },
+            nextStep() {
+
+                var self = this;
+
+                if (this.currentStep === 0) {
+                    this.stepperBtnText = "Solve";
+                    this.stepper.next();
+
+                    //Start timer, to measure the time how long the user needs
+                    this.timer = 0;
+                    this.triggerTimer();
+                } else if (this.currentStep === 1) {
+
+                    // TODO: check if solution is correct, if yes continue, else show message
+
+                    var exportData = this.$refs.activeModule.$data;
+
+                    /**
+                     * Remove all internal values starting with _
+                     */
+                    for (var key in exportData) {
+                        if (key.startsWith("_"))
+                            delete exportData[key];
+                    }
+
+                    this.moduleData = exportData;
+
+                    // send solution to server to verify it
+                    axios.post('/student/solveTask/' + self.$props.taskid, {
+                        id: self.$props.taskid,
+                        module: self.$props.taskmodule,
+                        data: JSON.stringify(this.moduleData),
+                        required_time: this.timer
+                    }).then(response => {
+
+                        if (response.data.result) {
+                            self.stepperBtnText = "Next";
+                            self.stepper.next();
+                        } else {
+                            alert(response.data.message);
+                        }
+                    }).catch(function (error) {
+                        console.error(error);
+                    });
+
+
+                } else if (this.currentStep === 2) {
+                    location.reload();
+                }
+            }
         }
     }
 </script>

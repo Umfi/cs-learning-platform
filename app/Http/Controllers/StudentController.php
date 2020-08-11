@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Rating;
 use App\Task;
 use App\Topic;
 use Illuminate\Http\Request;
@@ -110,5 +111,59 @@ class StudentController extends Controller
                     'task' => $task,
                 ], \Illuminate\Http\Response::HTTP_OK);
         }
+    }
+
+    /**
+     * Send a solution and check if it's correct
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function solveTask(Request $request)
+    {
+        $status = false;
+
+        $validator = Validator::make($request->all(),[
+            'id' => 'required',
+            'module' => 'required|string',
+            'data' => 'required|json',
+            'required_time' => 'required|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            $message = "Invalid data send.";
+        } else {
+
+            $task = Task::find($request->get('id'));
+
+            if ($task) {
+                if ($task->checkSolution($request)) {
+                    $status = true;
+                    $message =  'Task "' . $task->name . '" has been solved.';
+
+                    // Create rating
+                    $rating = Rating::where('task_id', $task->_id)->where('student_id', Auth::id())->first();
+
+                    if ($rating === null) {
+                        $rating = Rating::create();
+                        $rating->student()->associate(Auth::user());
+                        $rating->task()->associate($task);
+                    }
+
+                    $rating->calculateScore($request->get('required_time'));
+                    $rating->save();
+
+                } else {
+                    $message = 'Task "' . $task->name . '" has not been solved.';
+                }
+            } else {
+                $message = 'Task not found.';
+            }
+        }
+
+        return response()->json([
+            'result' => $status,
+            'message' => $message
+        ], \Illuminate\Http\Response::HTTP_OK);
     }
 }

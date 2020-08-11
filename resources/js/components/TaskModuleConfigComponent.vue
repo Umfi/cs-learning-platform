@@ -70,7 +70,7 @@
                 axios.post('/teacher/setTaskModuleConfig/' + id, {
                     id: id,
                     module: this.$props.taskmodule,
-                    data: JSON. stringify(this.moduleData)
+                    data: JSON.stringify(this.moduleData)
                 }).then(response => {
 
                     if (response.data.result) {

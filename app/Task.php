@@ -169,4 +169,32 @@ class Task extends Model
         return self::TYPE_NONE;
     }
 
+
+    /**
+     * Check if a given solution is correct
+     * Adopt this function if new modules are added!
+     * @param $data
+     */
+    public function checkSolution($request) {
+
+        $data = json_decode($request->get('data'));
+
+        switch ($request->get('module')) {
+            case "MODULE_SPREADSHEET": {
+
+                $result = json_encode($data->resultData);
+                $solution = json_encode($this->solution['data']);
+
+                if(strcasecmp($result, $solution) == 0) {
+                    return true;
+                }
+
+                return false;
+            }
+            default: {
+                return false;
+            }
+        }
+    }
+
 }

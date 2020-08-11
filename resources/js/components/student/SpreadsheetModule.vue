@@ -1,11 +1,15 @@
 <template>
-    <div>
-        <div>
-            <hot-table ref="hotTableSpecificationComponent" :data="specificationData" :settings="$data._settings"></hot-table>
+    <div class="container">
+        <div class="row">
+            <button type="button" class="btn btn-secondary" @click="resetSpreadsheet"><i class="fas fa-redo"></i> Reset table</button>
+        </div>
+
+        <div class="row mt-3">
+            <hot-table ref="hotTableSpecificationComponent" :data="resultData" :settings="$data._settings"></hot-table>
         </div>
 
         <div v-if="programming">
-            <prism-editor v-model="specificationCode" language="js" :lineNumbers="true"></prism-editor>
+            <prism-editor v-model="resultCode" language="js" :lineNumbers="true"></prism-editor>
         </div>
 
     </div>
@@ -29,6 +33,8 @@
                 dataVisualization: false,
                 specificationData: Handsontable.helper.createEmptySpreadsheetData(5, 4),
                 specificationCode: '',
+                resultData: Handsontable.helper.createEmptySpreadsheetData(5, 4),
+                resultCode: '',
                 /*
                 * INTERNAL IS GOING TO BE EXCLUDED FROM EXPORT
                 * starts with _
@@ -61,8 +67,10 @@
                 var data = self.$props.taskdata;
                 self.programming = data.specification.programming;
                 self.dataVisualization = data.specification.dataVisualization;
-                self.specificationData = data.specification.data;
-                self.specificationCode = data.specification.code;
+                self.specificationData = JSON.parse(JSON.stringify(data.specification.data));
+                self.specificationCode = '' + data.specification.code;
+                self.resultData = JSON.parse(JSON.stringify(data.specification.data));
+                self.resultCode = '' + data.specification.code;
             });
 
             var stepperEl = document.querySelector('#bs-stepper-' + self.$props.taskid);
@@ -75,7 +83,12 @@
 
         },
         methods: {
-
+            resetSpreadsheet: function() {
+                this.resultData = JSON.parse(JSON.stringify(this.specificationData));
+            },
+            resetCode() {
+                this.resultCode = '' + this.specificationCode;
+            }
         }
     }
 </script>
