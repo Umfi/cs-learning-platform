@@ -24,6 +24,7 @@ Vue.component('tip-list', require('./components/TipComponent.vue').default);
 Vue.component('spreadsheetmoduleconfig', require('./components/SpreadsheetModuleConfig.vue').default);
 
 Vue.component('task', require('./components/student/TaskComponent.vue').default);
+Vue.component('spreadsheet-module', require('./components/student/SpreadsheetModule.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

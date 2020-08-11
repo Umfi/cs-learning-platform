@@ -2,7 +2,7 @@
     <div class="d-inline-block">
         <button type="button" class="btn btn-primary" title="Start task" @click="openTaskModal(taskid)"><i class="fas fa-play"></i></button>
         <div class="modal" :id="'taskModuleModal-' + taskid">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
 
                     <!-- Modal Header -->
@@ -14,11 +14,6 @@
 
                     <!-- Modal body -->
                     <div class="modal-body">
-
-                        <!--
-                        TODO: Include stepper; step 1 intro, step 2 task description, step 3 task, step 4 extro
-                        -->
-
                         <div :id="'bs-stepper-' + taskid" class="bs-stepper">
                             <div class="bs-stepper-header" role="tablist">
                                 <!-- your steps here -->
@@ -57,12 +52,48 @@
                                     </div>
                                 </div>
                                 <div :id="'task-part-' + taskid" class="content" role="tabpanel" :aria-labelledby="'task-part-trigger-' + taskid">
-                                    task
 
 
-                                    <!-- List all available module configs here with same ref -->
-                                    <!-- <examplemoduleconfig ref="activeModule" v-if="taskmodule === 'MODULE_EXAMPLE'" :taskid="taskid"></examplemoduleconfig> -->
+                                    <div class="container">
+                                        <div class="align-items-center row">
+                                            <div class="col-10">
+                                                <div role="alert" class="alert alert-info">
+                                                    <h4 class="alert-heading">Task Description</h4>
+                                                    <p v-text="task.description"></p>
+                                                </div>
+                                            </div>
+                                            <div class="col text-center">
+                                                <button type="button" class="btn btn-lg btn-warning mt-md-n3"
+                                                        :disabled="task.tips.length == 0"
+                                                        v-on:click="showHint">
+                                                    <i class="fa-smile-wink fa-2x far"></i>
+                                                    <br>Tips
+                                                </button>
+                                            </div>
+                                        </div>
 
+                                        <div class="align-items-center row" v-if="usedTips >= 0 && tipsVisible">
+                                            <div class="col">
+                                                <div role="alert" class="alert alert-warning alert-dismissible">
+                                                    <h4 class="alert-heading">Tips</h4>
+                                                    <button type="button" class="close" aria-label="Close" v-on:click="tipsVisible = false">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    <ul class="list-unstyled">
+                                                        <li v-for="(tip, index) in task.tips">
+                                                            <p v-text="tip" v-if="index <= usedTips"></p>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+                                    
+                                    <!-- List all available modules here with same ref -->
+                                    <!-- <examplemodule ref="activeModule" v-if="taskmodule === 'MODULE_EXAMPLE'" :taskid="taskid" :taskdata="task"></examplemodule> -->
+                                    <spreadsheet-module ref="activeModule" v-if="taskmodule === 'MODULE_SPREADSHEET'" :taskid="taskid" :taskdata="task"></spreadsheet-module>
 
                                 </div>
                                 <div :id="'extro-part-' + taskid" class="content" role="tabpanel" :aria-labelledby="'extro-part-trigger-' + taskid">
@@ -95,13 +126,19 @@
 <script>
 
     import Stepper from 'bs-stepper'
+    import SpreadsheetModule from "./SpreadsheetModule";
 
     export default {
+        components: {SpreadsheetModule},
         props: ["taskid", "taskmodule"],
         data() {
             return {
                 stepper :null,
+                usedTips: -1,
+                tipsVisible: false,
                 task: {
+                    description: "",
+                    tips: [],
                     introType: "",
                     intro: "",
                     extroType: "",
@@ -115,11 +152,13 @@
             var self = this;
 
             document.addEventListener('DOMContentLoaded', function () {
+                // Initialize stepper
                 self.stepper = new Stepper(document.querySelector('#bs-stepper-' + self.$props.taskid), {
                     linear: true,
                     animation: true
                 });
 
+                // Get task data
                 axios.get("/student/getTask/" + self.$props.taskid)
                     .then(response => {
                         if (response.data.task) {
@@ -134,6 +173,11 @@
         methods: {
             openTaskModal(id) {
                 $('#taskModuleModal-' + id).modal('show');
+            },
+            showHint() {
+                this.tipsVisible = true;
+                if (this.usedTips < this.task.tips.length - 1)
+                    this.usedTips++;
             },
         }
     }
