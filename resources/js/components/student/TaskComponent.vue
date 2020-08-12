@@ -125,6 +125,7 @@
 <script>
 
     import Stepper from 'bs-stepper'
+    import Swal from 'sweetalert2/src/sweetalert2.js'
     import SpreadsheetModule from "./SpreadsheetModule";
 
     export default {
@@ -232,7 +233,11 @@
                             self.stepperBtnText = "Close";
                             self.stepper.next();
                         } else {
-                            alert(response.data.message);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: response.data.message,
+                            });
                         }
                     }).catch(function (error) {
                         console.error(error);

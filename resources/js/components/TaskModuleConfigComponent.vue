@@ -36,6 +36,9 @@
 </template>
 
 <script>
+
+    import Swal from 'sweetalert2/src/sweetalert2.js'
+
     export default {
         props: ["taskid", "taskmodule"],
         data() {
@@ -76,7 +79,13 @@
                     if (response.data.result) {
                         $('#taskModuleModal-' + id).modal('hide');
                     } else {
-                        alert(response.data.message);
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response.data.message,
+                        });
+
                     }
                 }).catch(function (error) {
                     console.error(error);

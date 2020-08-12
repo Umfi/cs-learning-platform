@@ -132,7 +132,7 @@ class StudentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $message = "Invalid data send.";
+            $message = __('Invalid data send.');
         } else {
 
             $task = Task::find($request->get('id'));
@@ -155,10 +155,10 @@ class StudentController extends Controller
                     $rating->save();
 
                 } else {
-                    $message = 'Task "' . $task->name . '" has not been solved.';
+                    $message = __('This was not the correct solution. Try again.');
                 }
             } else {
-                $message = 'Task not found.';
+                $message = __('Task not found.');
             }
         }
 
