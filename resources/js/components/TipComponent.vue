@@ -2,7 +2,12 @@
     <div>
         <div class="form-group">
             <label>Add new tip:</label>
-            <input type="text" class="form-control" v-model="newTip" v-on:keypress.enter="addTip()">
+            <div class="form-inline">
+                <input type="text" class="col-11 form-control" v-model="newTip" v-on:keypress.enter="addTip()">
+                <button type="button" class="btn btn-primary ml-2" @click="addTip()">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
         </div>
         <hr>
         <ul class="list-group">

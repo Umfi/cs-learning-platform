@@ -98,6 +98,7 @@
                     rowHeaders: true,
                     colHeaders: true,
                     formulas: true,
+                    stretchH: 'all',
                     width: '100%',
                     height: 200,
                     licenseKey: process.env.MIX_HANDSONTABLE_KEY
