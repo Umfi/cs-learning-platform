@@ -14,6 +14,11 @@ class Rating extends Model
     public $timestamps = true;
 
     /**
+     * Max value of score
+     */
+    const MAX_SCORE = 3;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -44,14 +49,53 @@ class Rating extends Model
 
     /**
      * Calculate a score from given parameters
+     * - this could easily be adopted
+     *
+     * @param $required_time
+     * @param $used_tips
+     * @param $tips_max
      */
-    public function calculateScore($required_time) {
+    public function calculateScore($required_time, $used_tips, $tips_max) {
 
-        // TODO: implement correct way for calculating score
+        // 1 point initial for solving the task
+        $score = 1;
 
-        $this->score = 3;
-        $this->score_max = 3;
-        $this->used_tips = 0;
+        // Calculate points for used tips
+        if ($used_tips == 0) { // no tip used = 1 point
+            $tips_points = 1;
+        } else {
+            if ($used_tips == $tips_max) { // all tips used = 0 points
+                $tips_points = 0;
+            } else {
+                $tips_points =  1 - ($used_tips * 0.25);
+
+                if ($tips_points < 0) {
+                    $tips_points = 0;
+                }
+            }
+
+        }
+
+        $score += $tips_points;
+
+        // Calculate points for required time
+        if ($required_time < (60 * 6)) { // less than 6 minutes
+            $time_points = 1;
+        } else if ($required_time < (60 * 10)) { // less than 10 minutes
+            $time_points = 0.75;
+        } else if ($required_time < (60 * 15)) { // less than 15 minutes
+            $time_points = 0.5;
+        } else if ($required_time < (60 * 20)) { // less than 20 minutes
+            $time_points = 0.25;
+        } else {
+            $time_points = 0;
+        }
+
+        $score += $time_points;
+
+        $this->score = $score;
+        $this->score_max = self::MAX_SCORE;
+        $this->used_tips = $used_tips;
         $this->required_time = $required_time;
     }
 }

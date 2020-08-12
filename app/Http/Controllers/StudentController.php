@@ -127,7 +127,8 @@ class StudentController extends Controller
             'id' => 'required',
             'module' => 'required|string',
             'data' => 'required|json',
-            'required_time' => 'required|numeric'
+            'required_time' => 'required|numeric',
+            'used_tips' => 'required|numeric'
         ]);
 
         if ($validator->fails()) {
@@ -150,7 +151,7 @@ class StudentController extends Controller
                         $rating->task()->associate($task);
                     }
 
-                    $rating->calculateScore($request->get('required_time'));
+                    $rating->calculateScore($request->get('required_time'), $request->get('used_tips'), count($task->tips));
                     $rating->save();
 
                 } else {

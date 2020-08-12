@@ -224,11 +224,12 @@
                         id: self.$props.taskid,
                         module: self.$props.taskmodule,
                         data: JSON.stringify(this.moduleData),
-                        required_time: this.timer
+                        required_time: this.timer,
+                        used_tips: this.usedTips + 1,
                     }).then(response => {
 
                         if (response.data.result) {
-                            self.stepperBtnText = "Next";
+                            self.stepperBtnText = "Close";
                             self.stepper.next();
                         } else {
                             alert(response.data.message);
