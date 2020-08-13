@@ -157,11 +157,15 @@
 
                 // REPLACE - getData
 
-                tmp = tmp.replace(/getData/gi, 'self._getData');
+                tmp = tmp.replace(/getData\(/gi, 'self._getData(');
 
                 // REPLACE - setData
 
-                tmp = tmp.replace(/setData/gi, 'self._setData');
+                tmp = tmp.replace(/setData\(/gi, 'self._setData(');
+
+                // REPLACE - sum
+
+                tmp = tmp.replace(/sum\(/gi, 'self._sum(');
 
                 return tmp;
             },
@@ -223,6 +227,13 @@
                 }
 
                 window.table.setDataAtCell(row, col, value);
+            },
+            _sum(...args) {
+                let sum = 0;
+
+                for (let arg of args) sum += this._getData(arg);
+
+                return sum;
             }
         }
     }

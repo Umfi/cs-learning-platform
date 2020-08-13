@@ -17,6 +17,7 @@
                         "<table class='table table-bordered'><tr><th>Description</th><th>Function</th></tr>"+
                         "<tr><td>Read data from cell</td><td>getData('A1')</td></tr>" +
                         "<tr><td>Write data to cell</td><td>setData('A1', value)</td></tr>" +
+                        "<tr><td>Calculate the sum of given cells</td><td>sum('A1', 'A2', 'A3', ...)</td></tr>" +
                         "</table>",
                 });
             },
