@@ -85,6 +85,7 @@
                 specificationCode: '',
                 solutionData: Handsontable.helper.createEmptySpreadsheetData(5, 4),
                 solutionCode: '',
+                solutionDataFormulaEvaluated: null,
                 /*
                 * INTERNAL IS GOING TO BE EXCLUDED FROM EXPORT
                 * starts with _
@@ -115,6 +116,22 @@
             var instSolution = this._hotInstanceSolution;
 
             var self = this;
+
+            instSolution.addHook('afterChange', function(){
+
+                var mydata = self._hotInstanceSolution.getData();
+
+                for (var i = 0; i < mydata.length; i++){
+                    for(var j = 0; j < mydata[i].length; j++){
+                        if(mydata[i][j].toString().indexOf('=') > -1){
+                            mydata[i][j] = self._hotInstanceSolution.getDataAtCell (j, i);
+                        }
+                    }
+                }
+
+                self.solutionDataFormulaEvaluated = mydata;
+            });
+
 
             $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {
                 setTimeout(function(){

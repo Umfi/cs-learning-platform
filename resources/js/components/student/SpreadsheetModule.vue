@@ -45,6 +45,7 @@
                 specificationCode: '',
                 resultData: Handsontable.helper.createEmptySpreadsheetData(5, 4),
                 resultCode: '',
+                resultDataFormulaEvaluated: null,
                 /*
                 * INTERNAL IS GOING TO BE EXCLUDED FROM EXPORT
                 * starts with _
@@ -73,6 +74,22 @@
             var instSpecification = this._hotInstanceSpecification;
 
             var self = this;
+
+            instSpecification.addHook('afterChange', function(){
+
+                var mydata = self._hotInstanceSpecification.getData();
+
+                for (var i = 0; i < mydata.length; i++){
+                    for(var j = 0; j < mydata[i].length; j++){
+                        if(mydata[i][j].toString().indexOf('=') > -1){
+                            mydata[i][j] = self._hotInstanceSpecification.getDataAtCell (j, i);
+                        }
+                    }
+                }
+
+                self.resultDataFormulaEvaluated = mydata;
+            })
+
 
             $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {
                 var data = self.$props.taskdata;

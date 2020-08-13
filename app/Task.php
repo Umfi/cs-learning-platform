@@ -135,6 +135,7 @@ class Task extends Model
                 $solution->programming = $data->programming;
                 $solution->dataVisualization = $data->dataVisualization;
                 $solution->data = $data->solutionData;
+                $solution->dataFormulaEvaluated = $data->solutionDataFormulaEvaluated;
                 $solution->code = $data->solutionCode;
 
                 $this->solution = $solution;
@@ -182,8 +183,13 @@ class Task extends Model
         switch ($request->get('module')) {
             case "MODULE_SPREADSHEET": {
 
-                $result = json_encode($data->resultData);
-                $solution = json_encode($this->solution['data']);
+                if($data->programming) {
+                    $result = json_encode($data->resultDataFormulaEvaluated);
+                    $solution = json_encode($this->solution['dataFormulaEvaluated']);
+                } else {
+                    $result = json_encode($data->resultData);
+                    $solution = json_encode($this->solution['data']);
+                }
 
                 $res = str_replace('"', "", $result);
                 $sol = str_replace('"', "", $solution);
