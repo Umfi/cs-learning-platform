@@ -133,9 +133,19 @@
                         eval(parsedCode);
                     } catch (e) {
                         if (e instanceof SyntaxError) {
-                            alert("SyntaxError: " + e.message);
+
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Syntax Error',
+                                text: e.message,
+                            });
+
                         } else {
-                            alert(e.message);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: e.message,
+                            });
                         }
                     }
                 }, 500);
@@ -158,10 +168,26 @@
             _convertLetterToNumber(str) {
                 return str.toLowerCase().charCodeAt(0) - 97;
             },
-            _getData(col, row) {
+            _getData(cell) {
 
-                var colAsNumber = this._convertLetterToNumber(col);
-                var returnValue = window.table.getDataAtCell(row - 1, colAsNumber);
+                if  (typeof cell === "undefined") {
+                    throw new Error("Wrong usage of getData. Parameter required.");
+                }
+
+                if  (!cell.charAt(0).match(/[a-z]/i)) {
+                    throw new Error("Wrong usage of getData. No valid parameter. Need something like A1.");
+                }
+
+                var col = cell.toLowerCase().charCodeAt(0) - 97;
+                var _row = cell.substring(1) - 1;
+
+                if (Number.isInteger(_row)) {
+                    var row = parseInt(_row);
+                } else {
+                    throw new Error("Wrong usage of getData. No valid parameter. Need something like A1.");
+                }
+
+                var returnValue = window.table.getDataAtCell(row, col);
 
                 if (typeof returnValue === "undefined" || returnValue === "") {
                     return "";
@@ -177,9 +203,26 @@
 
                 return  returnValue;
             },
-            _setData(col, row, value) {
-                var colAsNumber = this._convertLetterToNumber(col);
-                window.table.setDataAtCell(row - 1, colAsNumber, value);
+            _setData(cell, value) {
+
+                if  (typeof cell === "undefined" || typeof value === "undefined") {
+                    throw new Error("Wrong usage of setData. Parameters required.");
+                }
+
+                if  (!cell.charAt(0).match(/[a-z]/i)) {
+                    throw new Error("Wrong usage of setData. No valid parameter. Need something like A1.");
+                }
+
+                var col = cell.toLowerCase().charCodeAt(0) - 97;
+                var _row = cell.substring(1) - 1;
+
+                if (Number.isInteger(_row)) {
+                    var row = parseInt(_row);
+                } else {
+                    throw new Error("Wrong usage of setData. No valid parameter. Need something like A1.");
+                }
+
+                window.table.setDataAtCell(row, col, value);
             }
         }
     }

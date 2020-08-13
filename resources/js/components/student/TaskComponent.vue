@@ -67,7 +67,9 @@
                                                         :disabled="task.tips.length == 0"
                                                         v-on:click="showHint">
                                                     <i class="fa-smile-wink fa-2x far"></i>
-                                                    <br>Tips
+                                                    <br>
+                                                    Tips
+                                                    <small v-text="(usedTips+1) + '/' + task.tips.length"></small>
                                                 </button>
                                             </div>
                                         </div>
