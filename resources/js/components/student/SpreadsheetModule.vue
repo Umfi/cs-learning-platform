@@ -1,7 +1,8 @@
 <template>
     <div class="container">
         <div class="row">
-            <button type="button" class="btn btn-secondary" @click="resetSpreadsheet"><i class="fas fa-redo"></i> Reset table</button>
+            <button type="button" class="btn btn-secondary mr-2" @click="resetSpreadsheet"><i class="fas fa-redo"></i> Reset table</button>
+            <spreadsheet-formula-info></spreadsheet-formula-info>
         </div>
 
         <div class="row mt-3">
@@ -13,7 +14,7 @@
             <div class="row">
                 <button type="button" class="btn btn-secondary mr-2" @click="resetCode"><i class="fas fa-redo"></i> Reset code</button>
                 <button type="button" class="btn btn-success mr-2" @click="runCode"><i class="fas fa-play"></i> Run code</button>
-                <button type="button" class="btn btn-warning mr-2" title="Help" @click="showProgrammingInfo"><i class="fas fa-info"></i></button>
+                <spreadsheet-code-info></spreadsheet-code-info>
             </div>
 
             <div class="row mt-3">
@@ -124,18 +125,6 @@
 
 
             },
-            showProgrammingInfo() {
-                Swal.fire({
-                    icon: 'question',
-                    title: 'Help',
-                    html:
-                        "You can use all the features of the JavaScript language. <hr>" +
-                        "<table class='table table-bordered'><tr><th>Description</th><th>Function</th></tr>"+
-                        "<tr><td>Read data from cell</td><td>getData('A', 1)</td></tr>" +
-                        "<tr><td>Write data to cell</td><td>setData('A', 1, value)</td></tr>" +
-                        "</table>",
-                });
-            },
             _preparseCode(code) {
                 var tmp = '' + code;
 
@@ -146,7 +135,7 @@
                 // REPLACE - setData
 
                 tmp = tmp.replace(/setData/gi, 'self._setData');
-                
+
                 return tmp;
             },
             _convertLetterToNumber(str) {

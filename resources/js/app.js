@@ -25,6 +25,8 @@ Vue.component('spreadsheetmoduleconfig', require('./components/SpreadsheetModule
 
 Vue.component('task', require('./components/student/TaskComponent.vue').default);
 Vue.component('spreadsheet-module', require('./components/student/SpreadsheetModule.vue').default);
+Vue.component('spreadsheet-code-info', require('./components/student/SpreadsheetCodeInfo.vue').default);
+Vue.component('spreadsheet-formula-info', require('./components/student/SpreadsheetFormulaInfo.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

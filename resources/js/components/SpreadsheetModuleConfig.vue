@@ -26,24 +26,25 @@
                         </div>
                         <div class="form-check">
                             <input v-model="programming" type="checkbox" class="form-check-input" id="programming">
-                            <label class="form-check-label" for="programming">Enable Programming View</label>
+                            <label class="form-check-label" for="programming">Programming Task</label>
+                            <i class="fa-info-circle fas ml-1" data-toggle="tooltip" title="Student can only edit spreadsheet by code."></i>
                         </div>
                         <div class="form-check">
                             <input v-model="dataVisualization" type="checkbox" class="form-check-input" id="datavis">
-                            <label class="form-check-label" for="datavis">Enable Data Visualization View</label>
+                            <label class="form-check-label" for="datavis">Data Visualization Task</label>
                         </div>
                     </div>
 
                     <hr>
 
+                    <div class="mb-2">
+                        <button type="button" class="btn btn-secondary mr-2" @click="resetSpreadsheet"><i class="fas fa-redo"></i> Reset table</button>
+                        <spreadsheet-formula-info></spreadsheet-formula-info>
+                    </div>
+
                     <div>
                         <hot-table ref="hotTableSpecificationComponent" :data="specificationData" :settings="$data._settings"></hot-table>
                     </div>
-
-                    <div v-if="programming">
-                        <prism-editor v-model="specificationCode" language="js" :lineNumbers="true"></prism-editor>
-                    </div>
-
                 </div>
             </div>
             <div class="tab-pane fade" v-bind:id="'solution-' + taskid" role="tabpanel" aria-labelledby="solution-tab">
@@ -71,10 +72,6 @@
 
     import { HotTable } from '@handsontable/vue';
     import Handsontable from 'handsontable';
-    import "prismjs";
-    import "prismjs/themes/prism.css";
-    import PrismEditor from 'vue-prism-editor'
-    import "vue-prism-editor/dist/VuePrismEditor.css";
 
     export default {
         props: ["taskid"],
@@ -106,8 +103,7 @@
             };
         },
         components: {
-            HotTable,
-            PrismEditor
+            HotTable
         },
         mounted() {
             console.log('TaskID:' + this.$props.taskid);
@@ -125,6 +121,8 @@
                     instSpecification.render();
                     instSolution.render();
                 }, 200);
+
+                $('[data-toggle="tooltip"]').tooltip();
 
                 axios.get("/teacher/getTask/" + self.$props.taskid)
                     .then(response => {
@@ -165,11 +163,6 @@
                     instSolution.render();
                 }, 200);
             });
-
-
-
-
-
         },
         watch: {
             row: function(newVal, oldVal) {
@@ -182,6 +175,9 @@
             }
         },
         methods: {
+            resetSpreadsheet: function() {
+                this.specificationData = Handsontable.helper.createEmptySpreadsheetData(this.row, this.col);
+            },
             syncData() {
                 this.solutionData = JSON.parse(JSON.stringify(this.specificationData));
             }
