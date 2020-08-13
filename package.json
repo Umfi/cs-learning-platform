@@ -33,6 +33,7 @@
         "handsontable": "^7.4.2",
         "prismjs": "^1.20.0",
         "sweetalert2": "^9.17.1",
+        "vue-confetti": "^2.0.9",
         "vue-prism-editor": "^0.6.1"
     }
 }

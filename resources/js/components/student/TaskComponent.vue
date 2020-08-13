@@ -126,7 +126,10 @@
 
     import Stepper from 'bs-stepper'
     import Swal from 'sweetalert2/src/sweetalert2.js'
+    import VueConfetti from 'vue-confetti'
     import SpreadsheetModule from "./SpreadsheetModule";
+
+    Vue.use(VueConfetti)
 
     export default {
         components: {SpreadsheetModule},
@@ -230,8 +233,22 @@
                     }).then(response => {
 
                         if (response.data.result) {
-                            self.stepperBtnText = "Close";
-                            self.stepper.next();
+
+                            this.$confetti.start();
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Task solved',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+
+                            setTimeout(() => {
+                                this.$confetti.stop();
+                                self.stepperBtnText = "Close";
+                                self.stepper.next();
+                            }, 2000);
+
                         } else {
                             Swal.fire({
                                 icon: 'error',
