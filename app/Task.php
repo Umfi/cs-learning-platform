@@ -185,7 +185,10 @@ class Task extends Model
                 $result = json_encode($data->resultData);
                 $solution = json_encode($this->solution['data']);
 
-                if(strcasecmp($result, $solution) == 0) {
+                $res = str_replace('"', "", $result);
+                $sol = str_replace('"', "", $solution);
+
+                if(strcasecmp($res, $sol) == 0) {
                     return true;
                 }
 

@@ -9,7 +9,16 @@
         </div>
 
         <div v-if="programming">
-            <prism-editor v-model="resultCode" language="js" :lineNumbers="true"></prism-editor>
+
+            <div class="row">
+                <button type="button" class="btn btn-secondary mr-2" @click="resetCode"><i class="fas fa-redo"></i> Reset code</button>
+                <button type="button" class="btn btn-success mr-2" @click="runCode"><i class="fas fa-play"></i> Run code</button>
+                <button type="button" class="btn btn-warning mr-2" title="Help" @click="showProgrammingInfo"><i class="fas fa-info"></i></button>
+            </div>
+
+            <div class="row mt-3">
+                <prism-editor v-model="resultCode" language="js" :lineNumbers="true"></prism-editor>
+            </div>
         </div>
 
     </div>
@@ -23,7 +32,7 @@
     import "prismjs/themes/prism.css";
     import PrismEditor from 'vue-prism-editor'
     import "vue-prism-editor/dist/VuePrismEditor.css";
-    import Stepper from "bs-stepper";
+    import Swal from 'sweetalert2/src/sweetalert2.js'
 
     export default {
         props: ["taskid", "taskdata"],
@@ -72,6 +81,9 @@
                 self.specificationCode = '' + data.specification.code;
                 self.resultData = JSON.parse(JSON.stringify(data.specification.data));
                 self.resultCode = '' + data.specification.code;
+
+                window.table = instSpecification;
+                window.table.updateSettings({ readOnly: self.programming});
             });
 
             var stepperEl = document.querySelector('#bs-stepper-' + self.$props.taskid);
@@ -89,6 +101,79 @@
             },
             resetCode() {
                 this.resultCode = '' + this.specificationCode;
+            },
+            runCode() {
+
+                this.resetSpreadsheet();
+
+                var self = this;
+
+                setTimeout(function(){
+                    var parsedCode = self._preparseCode(self.resultCode);
+
+                    try {
+                        eval(parsedCode);
+                    } catch (e) {
+                        if (e instanceof SyntaxError) {
+                            alert("SyntaxError: " + e.message);
+                        } else {
+                            alert(e.message);
+                        }
+                    }
+                }, 500);
+
+
+            },
+            showProgrammingInfo() {
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Help',
+                    html:
+                        "You can use all the features of the JavaScript language. <hr>" +
+                        "<table class='table table-bordered'><tr><th>Description</th><th>Function</th></tr>"+
+                        "<tr><td>Read data from cell</td><td>getData('A', 1)</td></tr>" +
+                        "<tr><td>Write data to cell</td><td>setData('A', 1, value)</td></tr>" +
+                        "</table>",
+                });
+            },
+            _preparseCode(code) {
+                var tmp = '' + code;
+
+                // REPLACE - getData
+
+                tmp = tmp.replace(/getData/gi, 'self._getData');
+
+                // REPLACE - setData
+
+                tmp = tmp.replace(/setData/gi, 'self._setData');
+                
+                return tmp;
+            },
+            _convertLetterToNumber(str) {
+                return str.toLowerCase().charCodeAt(0) - 97;
+            },
+            _getData(col, row) {
+
+                var colAsNumber = this._convertLetterToNumber(col);
+                var returnValue = window.table.getDataAtCell(row - 1, colAsNumber);
+
+                if (typeof returnValue === "undefined" || returnValue === "") {
+                    return "";
+                }
+
+                if(!isNaN(returnValue)){
+                    if (Number.isInteger(returnValue)) {
+                        return parseInt(returnValue);
+                    } else {
+                        return parseFloat(returnValue);
+                    }
+                }
+
+                return  returnValue;
+            },
+            _setData(col, row, value) {
+                var colAsNumber = this._convertLetterToNumber(col);
+                window.table.setDataAtCell(row - 1, colAsNumber, value);
             }
         }
     }
