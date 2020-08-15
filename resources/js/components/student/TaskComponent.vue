@@ -1,6 +1,6 @@
 <template>
     <div class="d-inline-block">
-        <button type="button" class="btn btn-primary" title="Start task" @click="openTaskModal(taskid)"><i class="fas fa-play"></i></button>
+        <button type="button" class="btn btn-primary" :title="$t('Start task')" @click="openTaskModal(taskid)"><i class="fas fa-play"></i></button>
         <div class="modal" :id="'taskModuleModal-' + taskid">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">

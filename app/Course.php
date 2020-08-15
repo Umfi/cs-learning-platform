@@ -57,12 +57,12 @@ class Course extends Model
     /**
      * Set the course's code. Generates a unique code.
      *
-     * @param  string  $value
+     * @param string $value
      * @return void
      */
     public function setCodeAttribute($value)
     {
-        while( $this->query()->where('code','=', $value)->first() ){
+        while ($this->query()->where('code', '=', $value)->first()) {
             $value = Str::random(6);
         }
 

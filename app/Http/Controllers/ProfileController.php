@@ -52,7 +52,7 @@ class ProfileController extends Controller
         ]);
 
         if ($validator->fails()) {
-            session()->flash('error', 'User has not been updated.');
+            session()->flash('error', __('User has not been updated.'));
         } else {
             $user = User::findOrFail(Auth::id());
 
@@ -63,7 +63,7 @@ class ProfileController extends Controller
             }
 
             $user->save();
-            session()->flash('status', 'User has been updated.');
+            session()->flash('status', __('User has been updated.'));
         }
 
         return Redirect::back();

@@ -106,7 +106,11 @@
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
-            $('#courseTable').DataTable();
+            $('#courseTable').DataTable( {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/{{ config('app.locale') == "de" ? "German" : "English" }}.json"
+                }
+            } );
         });
 
         function showParticipants(id) {

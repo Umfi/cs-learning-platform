@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
@@ -95,18 +94,46 @@ class Task extends Model
     /**
      * Remove module specific configuration from model
      */
-    public function removeModuleSpecificConfig() {
+    public function removeModuleSpecificConfig()
+    {
         $this->specification = "";
         $this->solution = "";
         $this->tips = array();
     }
 
     /**
+     * Get the Type of a file
+     *
+     * @param $file
+     * @return string
+     */
+    private function getUploadType($file)
+    {
+        if (empty($file)) {
+            return self::TYPE_NONE;
+        }
+
+        if (Storage::disk('public')->exists($file)) {
+            $mime = mime_content_type(Storage::disk('public')->path($file));
+            if (strstr($mime, "video/")) {
+                return self::TYPE_VIDEO;
+            } else if (strstr($mime, "image/")) {
+                return self::TYPE_IMAGE;
+            }
+        }
+
+        return self::TYPE_NONE;
+    }
+
+    /**
      * Store module specific data
      * Adopt this function if new modules are added!
-     * @param $data
+     *
+     * @param $request
+     * @return bool
      */
-    public function storeModuleConfig($request) {
+    public function storeModuleConfig($request)
+    {
 
         $data = json_decode($request->get('data'));
 
@@ -117,7 +144,8 @@ class Task extends Model
         }
 
         switch ($request->get('module')) {
-            case "MODULE_SPREADSHEET": {
+            case "MODULE_SPREADSHEET":
+            {
 
                 $specification = new stdClass();
                 $specification->row = $data->row;
@@ -142,48 +170,30 @@ class Task extends Model
 
                 return true;
             }
-            default: {
+            default:
+            {
                 return false;
             }
         }
     }
 
     /**
-     * Get the Type of a file
-     * @return int
-     */
-    private function getUploadType($file)
-    {
-        if (empty($file)) {
-            return self::TYPE_NONE;
-        }
-
-        if (Storage::disk('public')->exists($file)) {
-            $mime = mime_content_type(Storage::disk('public')->path($file));
-            if (strstr($mime, "video/")){
-                return self::TYPE_VIDEO;
-            }else if(strstr($mime, "image/")){
-                return self::TYPE_IMAGE;
-            }
-        }
-
-        return self::TYPE_NONE;
-    }
-
-
-    /**
      * Check if a given solution is correct
      * Adopt this function if new modules are added!
-     * @param $data
+     *
+     * @param $request
+     * @return bool
      */
-    public function checkSolution($request) {
+    public function checkSolution($request)
+    {
 
         $data = json_decode($request->get('data'));
 
         switch ($request->get('module')) {
-            case "MODULE_SPREADSHEET": {
+            case "MODULE_SPREADSHEET":
+            {
 
-                if($data->programming) {
+                if ($data->programming) {
                     $result = json_encode($data->resultDataFormulaEvaluated);
                     $solution = json_encode($this->solution['dataFormulaEvaluated']);
                 } else {
@@ -194,13 +204,14 @@ class Task extends Model
                 $res = str_replace('"', "", $result);
                 $sol = str_replace('"', "", $solution);
 
-                if(strcasecmp($res, $sol) == 0) {
+                if (strcasecmp($res, $sol) == 0) {
                     return true;
                 }
 
                 return false;
             }
-            default: {
+            default:
+            {
                 return false;
             }
         }

@@ -55,12 +55,12 @@ class TeacherController extends Controller
      */
     public function createCourse(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:3|max:255',
         ]);
 
         if ($validator->fails()) {
-            session()->flash('error', 'Course "' . $request->get('name') . '" has not been created. Invalid name.');
+            session()->flash('error', __('Course :name has not been created. Invalid name.', ['name' => $request->get('name')]));
         } else {
             $user = User::find(Auth::id());
 
@@ -74,9 +74,9 @@ class TeacherController extends Controller
                 $course->owner()->associate($user);
                 $course->save();
 
-                session()->flash('status', 'Course "' . $request->get('name') . '" has been created.');
+                session()->flash('status', __('Course :name has been created.', ['name' => $request->get('name')]));
             } else {
-                session()->flash('error', 'Course "' . $request->get('name') . '" has not been created.');
+                session()->flash('error', __('Course :name has not been created.', ['name' => $request->get('name')]));
             }
         }
 
@@ -91,13 +91,13 @@ class TeacherController extends Controller
      */
     public function editCourse(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'id' => 'required',
             'name' => 'required|string|min:3|max:255',
         ]);
 
         if ($validator->fails()) {
-            session()->flash('error', 'Course "' . $request->get('name') . '" has not been updated. Invalid data send.');
+            session()->flash('error', __('Course :name has not been updated. Invalid data send.', ['name' => $request->get('name')]));
         } else {
             $user = User::find(Auth::id());
 
@@ -113,14 +113,13 @@ class TeacherController extends Controller
                         $course->active = $request->get('active') == "1";
                         $course->save();
 
-                        session()->flash('status', 'Course "' . $request->get('name') . '" has been updated.');
-
+                        session()->flash('status', __('Course :name has been updated.', ['name' => $request->get('name')]));
                     } else {
-                        session()->flash('error', 'Course "' . $request->get('name') . '" has not been updated. Not authorized.');
+                        session()->flash('error', __('Course :name has not been updated. Not authorized.', ['name' => $request->get('name')]));
                     }
                 }
             } else {
-                session()->flash('error', 'Course "' . $request->get('name') . '" has not been updated.');
+                session()->flash('error', __('Course :name has not been updated.', ['name' => $request->get('name')]));
             }
         }
 
@@ -170,7 +169,7 @@ class TeacherController extends Controller
      */
     public function createTopic(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'course_id' => 'required',
             'name' => 'required|string|min:3|max:255',
             'description' => 'string|max:2048',
@@ -178,7 +177,7 @@ class TeacherController extends Controller
         ]);
 
         if ($validator->fails()) {
-            session()->flash('error', 'Topic "' . $request->get('name') . '" has not been created. Invalid data.');
+            session()->flash('error', __('Topic :name has not been created. Invalid data send.', ['name' => $request->get('name')]));
         } else {
             $course = Course::find($request->get('course_id'));
 
@@ -186,7 +185,7 @@ class TeacherController extends Controller
                 if ($course->owner_id == Auth::id()) {
 
                     if ($request->hasFile('image')) {
-                        $image = Storage::disk('public')->putFile('uploads' , request()->file('image'));
+                        $image = Storage::disk('public')->putFile('uploads', request()->file('image'));
                     } else {
                         $image = "";
                     }
@@ -200,13 +199,12 @@ class TeacherController extends Controller
                     $topic->course()->associate($course);
                     $topic->save();
 
-                    session()->flash('status', 'Topic "' . $request->get('name') . '" has been created.');
-
+                    session()->flash('status', __('Topic :name has been created.', ['name' => $request->get('name')]));
                 } else {
-                    session()->flash('error', 'Topic "' . $request->get('name') . '" has not been created. Not authorized.');
+                    session()->flash('error', __('Topic :name has not been created. Not authorized.', ['name' => $request->get('name')]));
                 }
             } else {
-                session()->flash('error', 'Topic "' . $request->get('name') . '" has not been created.');
+                session()->flash('error', __('Topic :name has not been created.', ['name' => $request->get('name')]));
             }
         }
 
@@ -221,7 +219,7 @@ class TeacherController extends Controller
      */
     public function editTopic(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'id' => 'required',
             'name' => 'required|string|min:3|max:255',
             'description' => 'string|max:2048',
@@ -229,7 +227,7 @@ class TeacherController extends Controller
         ]);
 
         if ($validator->fails()) {
-            session()->flash('error', 'Topic "' . $request->get('name') . '" has not been updated. Invalid data send.');
+            session()->flash('error', __('Topic :name has not been updated. Invalid data send.', ['name' => $request->get('name')]));
         } else {
 
             $topic = Topic::find($request->get('id'));
@@ -246,19 +244,19 @@ class TeacherController extends Controller
                             Storage::disk('public')->delete($topic->image);
                         }
 
-                        $image = Storage::disk('public')->putFile('uploads' , request()->file('image'));
+                        $image = Storage::disk('public')->putFile('uploads', request()->file('image'));
                         $topic->image = $image;
                     }
 
                     $topic->active = $request->get('active') == "1";
                     $topic->save();
 
-                    session()->flash('status', 'Topic "' . $request->get('name') . '" has been updated.');
+                    session()->flash('status', __('Topic :name has been updated.', ['name' => $request->get('name')]));
                 } else {
-                    session()->flash('error', 'Topic "' . $request->get('name') . '" has not been updated. Not authorized.');
+                    session()->flash('error', __('Topic :name has not been updated. Not authorized.', ['name' => $request->get('name')]));
                 }
             } else {
-                session()->flash('error', 'Topic "' . $request->get('name') . '" has not been updated.');
+                session()->flash('error', __('Topic :name has not been updated.', ['name' => $request->get('name')]));
             }
         }
 
@@ -308,18 +306,18 @@ class TeacherController extends Controller
      */
     public function createTask(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'topic_id' => 'required',
             'name' => 'required|string|min:3|max:255',
             'description' => 'required|string|max:4096',
-            'module'=> 'required',
-            'difficulty'=> 'numeric',
+            'module' => 'required',
+            'difficulty' => 'numeric',
             'intro' => 'mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,ogg|max:51200',
             'extro' => 'mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,ogg|max:51200',
         ]);
 
         if ($validator->fails()) {
-            session()->flash('error', 'Task "' . $request->get('name') . '" has not been created. Invalid data.');
+            session()->flash('error', __('Task :name has not been created. Invalid data send.', ['name' => $request->get('name')]));
         } else {
             $topic = Topic::find($request->get('topic_id'));
 
@@ -328,13 +326,13 @@ class TeacherController extends Controller
 
 
                     if ($request->hasFile('intro')) {
-                        $intro = Storage::disk('public')->putFile('uploads' , request()->file('intro'));
+                        $intro = Storage::disk('public')->putFile('uploads', request()->file('intro'));
                     } else {
                         $intro = "";
                     }
 
                     if ($request->hasFile('extro')) {
-                        $extro = Storage::disk('public')->putFile('uploads' , request()->file('extro'));
+                        $extro = Storage::disk('public')->putFile('uploads', request()->file('extro'));
                     } else {
                         $extro = "";
                     }
@@ -351,13 +349,12 @@ class TeacherController extends Controller
                     $task->topic()->associate($topic);
                     $task->save();
 
-                    session()->flash('status', 'Task "' . $request->get('name') . '" has been created.');
-
+                    session()->flash('status', __('Task :name has been created.', ['name' => $request->get('name')]));
                 } else {
-                    session()->flash('error', 'Task "' . $request->get('name') . '" has not been created. Not authorized.');
+                    session()->flash('error', __('Task :name has not been created. Not authorized.', ['name' => $request->get('name')]));
                 }
             } else {
-                session()->flash('error', 'Task "' . $request->get('name') . '" has not been created.');
+                session()->flash('error', __('Task :name has not been created.', ['name' => $request->get('name')]));
             }
         }
 
@@ -372,18 +369,18 @@ class TeacherController extends Controller
      */
     public function editTask(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'id' => 'required',
             'name' => 'required|string|min:3|max:255',
             'description' => 'required|string|max:4096',
-            'module'=> 'required',
-            'difficulty'=> 'numeric',
+            'module' => 'required',
+            'difficulty' => 'numeric',
             'intro' => 'mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,ogg|max:51200',
             'extro' => 'mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,ogg|max:51200',
         ]);
 
         if ($validator->fails()) {
-            session()->flash('error', 'Task "' . $request->get('name') . '" has not been updated. Invalid data send.');
+            session()->flash('error', __('Task :name has not been updated. Invalid data send.', ['name' => $request->get('name')]));
         } else {
 
             $task = Task::find($request->get('id'));
@@ -409,7 +406,7 @@ class TeacherController extends Controller
                             Storage::disk('public')->delete($task->intro);
                         }
 
-                        $path = Storage::disk('public')->putFile('uploads' , request()->file('intro'));
+                        $path = Storage::disk('public')->putFile('uploads', request()->file('intro'));
                         $task->intro = $path;
                     }
 
@@ -419,19 +416,19 @@ class TeacherController extends Controller
                             Storage::disk('public')->delete($task->extro);
                         }
 
-                        $path = Storage::disk('public')->putFile('uploads' , request()->file('extro'));
+                        $path = Storage::disk('public')->putFile('uploads', request()->file('extro'));
                         $task->extro = $path;
                     }
 
                     $task->active = $request->get('active') == "1";
                     $task->save();
 
-                    session()->flash('status', 'Task "' . $request->get('name') . '" has been updated.');
+                    session()->flash('status', __('Task :name has been updated.', ['name' => $request->get('name')]));
                 } else {
-                    session()->flash('error', 'Task "' . $request->get('name') . '" has not been updated. Not authorized.');
+                    session()->flash('error', __('Task :name has not been updated. Not authorized.', ['name' => $request->get('name')]));
                 }
             } else {
-                session()->flash('error', 'Task "' . $request->get('name') . '" has not been updated.');
+                session()->flash('error', __('Task :name has not been updated.', ['name' => $request->get('name')]));
             }
         }
 
@@ -448,14 +445,14 @@ class TeacherController extends Controller
     {
         $status = false;
 
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'id' => 'required',
             'module' => 'required|string',
             'data' => 'required|json',
         ]);
 
         if ($validator->fails()) {
-            $message = "Tasks module config has not been updated. Invalid data send.";
+            $message = __("Tasks module config has not been updated. Invalid data send.");
         } else {
 
             $task = Task::find($request->get('id'));
@@ -466,15 +463,15 @@ class TeacherController extends Controller
                     if ($task->storeModuleConfig($request)) {
                         $task->save();
                         $status = true;
-                        $message =  'Task "' . $task->name . '" has been updated.';
+                        $message = __('Task :name has been updated.', ['name' => $task->name]);
                     } else {
-                        $message = 'Task "' . $task->name . '" has not been updated.';
+                        $message = __('Task :name has not been updated.', ['name' => $task->name]);
                     }
                 } else {
-                    $message = 'Task "' . $task->name . '" has not been updated. Not authorized.';
+                    $message = __('Task :name has not been updated. Not authorized.', ['name' => $task->name]);
                 }
             } else {
-                $message = 'Task has not been updated. Task not found.';
+                $message = __('Task has not been updated. Task not found.');
             }
         }
 

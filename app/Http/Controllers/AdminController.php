@@ -53,7 +53,7 @@ class AdminController extends Controller
         $user->active = true;
         $user->save();
 
-        session()->flash('status', 'User "' . $user->name . '" has been activated.');
+        session()->flash('status', __('User :name has been activated.', ['name' => $user->name]));
 
         return back();
     }
@@ -69,7 +69,7 @@ class AdminController extends Controller
         $user->active = false;
         $user->save();
 
-        session()->flash('status', 'User "' . $user->name . '" has been deactivated.');
+        session()->flash('status', __('User :name has been deactivated.', ['name' => $user->name]));
 
         return back();
     }
@@ -85,7 +85,8 @@ class AdminController extends Controller
         $user->role = request()->role;
         $user->save();
 
-        session()->flash('status', 'User "' . $user->name . '" role has been updated to ' . $user->role . '.');
+        session()->flash('status', __('User :name role has been updated to :role.', ['name' => $user->name, 'role' => $user->role]));
+
 
         return back();
     }
@@ -113,7 +114,7 @@ class AdminController extends Controller
         $course->active = true;
         $course->save();
 
-        session()->flash('status', 'Course "' . $course->name . '" has been activated.');
+        session()->flash('status', __('Course :name has been activated.', ['name' => $course->name]));
 
         return back();
     }
@@ -129,7 +130,7 @@ class AdminController extends Controller
         $course->active = false;
         $course->save();
 
-        session()->flash('status', 'Course "' . $course->name . '" has been deactivated.');
+        session()->flash('status', __('Course :name has been deactivated.', ['name' => $course->name]));
 
         return back();
     }
@@ -174,7 +175,7 @@ class AdminController extends Controller
         $topic->active = true;
         $topic->save();
 
-        session()->flash('status', 'Topic "' . $topic->name . '" has been activated.');
+        session()->flash('status', __('Topic :name has been activated.', ['name' => $topic->name]));
 
         return back();
     }
@@ -190,7 +191,7 @@ class AdminController extends Controller
         $topic->active = false;
         $topic->save();
 
-        session()->flash('status', 'Topic "' . $topic->name . '" has been deactivated.');
+        session()->flash('status', __('Topic :name has been deactivated.', ['name' => $topic->name]));
 
         return back();
     }
@@ -218,7 +219,7 @@ class AdminController extends Controller
         $task->active = true;
         $task->save();
 
-        session()->flash('status', 'Task "' . $task->name . '" has been activated.');
+        session()->flash('status', __('Task :name has been activated.', ['name' => $task->name]));
 
         return back();
     }
@@ -234,7 +235,7 @@ class AdminController extends Controller
         $task->active = false;
         $task->save();
 
-        session()->flash('status', 'Task "' . $task->name . '" has been deactivated.');
+        session()->flash('status', __('Task :name has been deactivated.', ['name' => $task->name]));
 
         return back();
     }

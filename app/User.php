@@ -69,7 +69,8 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function isAdmin() {
+    public function isAdmin()
+    {
         return $this->role == self::ROLE_ADMIN;
     }
 
@@ -78,7 +79,8 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function isTeacher() {
+    public function isTeacher()
+    {
         return $this->role == self::ROLE_TEACHER;
     }
 
@@ -87,7 +89,8 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function isStudent() {
+    public function isStudent()
+    {
         return $this->role == self::ROLE_STUDENT;
     }
 }

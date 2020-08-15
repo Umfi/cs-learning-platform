@@ -33,8 +33,8 @@
                                 @foreach ($topics as $topic)
                                 <tr>
                                     <td>{{ $topic->name }}</td>
-                                    <td>{{ $topic->description }}</td>
-                                    <td>{{ $topic->image }}</td>
+                                    <td>{{ \Illuminate\Support\Str::limit($topic->description, 150) }}</td>
+                                    <td>{{ $topic->image ? "Yes": "No" }}</td>
                                     <td>{{ $topic->course->name }}</td>
                                     <td>
                                         @if( $topic->active )
@@ -74,7 +74,11 @@
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
-            $('#topicTable').DataTable();
+            $('#topicTable').DataTable( {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/{{ config('app.locale') == "de" ? "German" : "English" }}.json"
+                }
+            } );
         });
     </script>
 @endsection

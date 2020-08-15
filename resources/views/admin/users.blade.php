@@ -80,7 +80,11 @@
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
-            $('#userTable').DataTable();
+            $('#userTable').DataTable( {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/{{ config('app.locale') == "de" ? "German" : "English" }}.json"
+                }
+            } );
         });
 
     </script>

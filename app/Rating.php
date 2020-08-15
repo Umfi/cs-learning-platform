@@ -55,7 +55,8 @@ class Rating extends Model
      * @param $used_tips
      * @param $tips_max
      */
-    public function calculateScore($required_time, $used_tips, $tips_max) {
+    public function calculateScore($required_time, $used_tips, $tips_max)
+    {
 
         // 1 point initial for solving the task
         $score = 1;
@@ -67,7 +68,7 @@ class Rating extends Model
             if ($used_tips == $tips_max) { // all tips used = 0 points
                 $tips_points = 0;
             } else {
-                $tips_points =  1 - ($used_tips * 0.25);
+                $tips_points = 1 - ($used_tips * 0.25);
 
                 if ($tips_points < 0) {
                     $tips_points = 0;

@@ -31,12 +31,12 @@ class StudentController extends Controller
      */
     public function joinCourse(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'code' => 'required|string|min:3|max:10',
         ]);
 
         if ($validator->fails()) {
-            session()->flash('error', 'Invalid code send.');
+            session()->flash('error', __('Invalid code send.'));
         } else {
 
             $course = Course::where('code', trim($request->get('code')))->first();
@@ -44,15 +44,15 @@ class StudentController extends Controller
             if ($course) {
 
                 if ($course->active == false) {
-                    session()->flash('error', 'Course is currently not active.');
+                    session()->flash('error', __('Course is currently not active.'));
                 } else {
                     $course->participants()->attach(Auth::user());
                     $course->save();
 
-                    session()->flash('status', 'Course "' . $course->name . '" successful joined.');
+                    session()->flash('status', __('Course successful joined.'));
                 }
             } else {
-                session()->flash('error', 'No course found with given code.');
+                session()->flash('error', __('No course found with given code.'));
             }
         }
 
@@ -81,7 +81,7 @@ class StudentController extends Controller
         $topic = Topic::find($id);
 
         // get all tasks of the topic with rating if one exists for the student
-        $tasks = Task::with(array('ratings'=>function($query){
+        $tasks = Task::with(array('ratings' => function ($query) {
             $query->where('student_id', Auth::id());
         }))->where("topic_id", $id)->get();
 
@@ -98,18 +98,17 @@ class StudentController extends Controller
         $task = Task::find($id);
 
         if ($task) {
-                unset($task->solution);
+            unset($task->solution);
 
-                $task->introType = $task->intro_type;
-                $task->intro = \Illuminate\Support\Facades\Storage::url($task->intro);
+            $task->introType = $task->intro_type;
+            $task->intro = \Illuminate\Support\Facades\Storage::url($task->intro);
 
-                $task->extroType = $task->extro_type;
-                $task->extro = \Illuminate\Support\Facades\Storage::url($task->extro);
+            $task->extroType = $task->extro_type;
+            $task->extro = \Illuminate\Support\Facades\Storage::url($task->extro);
 
-
-                return response()->json([
-                    'task' => $task,
-                ], \Illuminate\Http\Response::HTTP_OK);
+            return response()->json([
+                'task' => $task,
+            ], \Illuminate\Http\Response::HTTP_OK);
         }
     }
 
@@ -123,7 +122,7 @@ class StudentController extends Controller
     {
         $status = false;
 
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'id' => 'required',
             'module' => 'required|string',
             'data' => 'required|json',
@@ -140,7 +139,7 @@ class StudentController extends Controller
             if ($task) {
                 if ($task->checkSolution($request)) {
                     $status = true;
-                    $message =  'Task "' . $task->name . '" has been solved.';
+                    $message = __('Task :name has been solved.', ['name' => $task->name]);
 
                     // Create rating
                     $rating = Rating::where('task_id', $task->_id)->where('student_id', Auth::id())->first();
