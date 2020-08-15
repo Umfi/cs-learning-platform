@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="row">
-            <button type="button" class="btn btn-secondary mr-2" @click="resetSpreadsheet"><i class="fas fa-redo"></i> Reset table</button>
+            <button type="button" class="btn btn-secondary mr-2" @click="resetSpreadsheet"><i class="fas fa-redo"></i> {{ $t('Reset table') }}</button>
             <spreadsheet-formula-info></spreadsheet-formula-info>
         </div>
 
@@ -12,8 +12,8 @@
         <div v-if="programming">
 
             <div class="row">
-                <button type="button" class="btn btn-secondary mr-2" @click="resetCode"><i class="fas fa-redo"></i> Reset code</button>
-                <button type="button" class="btn btn-success mr-2" @click="runCode"><i class="fas fa-play"></i> Run code</button>
+                <button type="button" class="btn btn-secondary mr-2" @click="resetCode"><i class="fas fa-redo"></i> {{ $t('Reset code') }}</button>
+                <button type="button" class="btn btn-success mr-2" @click="runCode"><i class="fas fa-play"></i> {{ $t('Run code') }}</button>
                 <spreadsheet-code-info></spreadsheet-code-info>
             </div>
 
@@ -67,7 +67,6 @@
             PrismEditor
         },
         mounted() {
-            console.log('TaskID:' + this.$props.taskid);
 
             this._hotInstanceSpecification = this.$refs.hotTableSpecificationComponent.hotInstance;
 
@@ -136,14 +135,14 @@
 
                             Swal.fire({
                                 icon: 'warning',
-                                title: 'Syntax Error',
+                                title: self.$t('Syntax Error'),
                                 text: e.message,
                             });
 
                         } else {
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Error',
+                                title: self.$t('Error'),
                                 text: e.message,
                             });
                         }

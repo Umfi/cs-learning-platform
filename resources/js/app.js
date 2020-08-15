@@ -8,6 +8,18 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+// Initialize i18n support for vue
+import languageBundle from '@kirschbaum-development/laravel-translations-loader/json!@kirschbaum-development/laravel-translations-loader';
+import VueI18n from 'vue-i18n'
+
+Vue.use(VueI18n)
+
+const i18n = new VueI18n({
+    locale: window.locale,
+    fallbackLocale: 'en',
+    messages: languageBundle,
+})
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -36,4 +48,5 @@ Vue.component('spreadsheet-formula-info', require('./components/student/Spreadsh
 
 const app = new Vue({
     el: '#app',
+    i18n: i18n
 });

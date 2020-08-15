@@ -7,7 +7,7 @@
 
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h4 class="modal-title">Task</h4>
+                        <h4 class="modal-title">{{ $t('Task') }}</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 
@@ -20,21 +20,21 @@
                                 <div class="step" :data-target="'#intro-part-' + taskid">
                                     <button type="button" class="step-trigger" role="tab" :aria-controls="'intro-part-' + taskid" :id="'intro-part-trigger-' + taskid">
                                         <span class="bs-stepper-circle"><i class="fas fa-film"></i></span>
-                                        <span class="bs-stepper-label">Intro</span>
+                                        <span class="bs-stepper-label">{{ $t('Intro') }}</span>
                                     </button>
                                 </div>
                                 <div class="line"></div>
                                 <div class="step" :data-target="'#task-part-' + taskid">
                                     <button type="button" class="step-trigger" role="tab" :aria-controls="'task-part-' + taskid" :id="'task-part-trigger-' + taskid">
                                         <span class="bs-stepper-circle"><i class="fas fa-tasks"></i></span>
-                                        <span class="bs-stepper-label">Task</span>
+                                        <span class="bs-stepper-label">{{ $t('Task') }}</span>
                                     </button>
                                 </div>
                                 <div class="line"></div>
                                 <div class="step" :data-target="'#extro-part-' + taskid">
                                     <button type="button" class="step-trigger" role="tab" :aria-controls="'extro-part-' + taskid" :id="'extro-part-trigger-' + taskid">
                                         <span class="bs-stepper-circle"><i class="fas fa-film"></i></span>
-                                        <span class="bs-stepper-label">Extro</span>
+                                        <span class="bs-stepper-label">{{ $t('Extro') }}</span>
                                     </button>
                                 </div>
                             </div>
@@ -52,23 +52,22 @@
                                     </div>
                                 </div>
                                 <div :id="'task-part-' + taskid" class="content" role="tabpanel" :aria-labelledby="'task-part-trigger-' + taskid">
-
-
                                     <div class="container">
                                         <div class="align-items-center row">
                                             <div class="col-10">
                                                 <div role="alert" class="alert alert-info">
-                                                    <h4 class="alert-heading">Task Description</h4>
+                                                    <h4 class="alert-heading">{{ $t('Task Description') }}</h4>
                                                     <p v-text="task.description"></p>
                                                 </div>
                                             </div>
                                             <div class="col text-center">
                                                 <button type="button" class="btn btn-lg btn-warning mt-md-n3"
                                                         :disabled="task.tips.length == 0"
+                                                        :title="$t('Show tip')"
                                                         v-on:click="showHint">
                                                     <i class="fa-smile-wink fa-2x far"></i>
                                                     <br>
-                                                    Tips
+                                                    {{ $t('Tips') }}
                                                     <small v-text="(usedTips+1) + '/' + task.tips.length"></small>
                                                 </button>
                                             </div>
@@ -77,7 +76,7 @@
                                         <div class="align-items-center row" v-if="usedTips >= 0 && tipsVisible">
                                             <div class="col">
                                                 <div role="alert" class="alert alert-warning alert-dismissible">
-                                                    <h4 class="alert-heading">Tips</h4>
+                                                    <h4 class="alert-heading">{{ $t('Tips') }}</h4>
                                                     <button type="button" class="close" aria-label="Close" v-on:click="tipsVisible = false">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -140,7 +139,7 @@
             return {
                 stepper: null,
                 currentStep: 0,
-                stepperBtnText: 'Next',
+                stepperBtnText: this.$t('Next'),
                 usedTips: -1,
                 tipsVisible: false,
                 task: {
@@ -156,7 +155,6 @@
             }
         },
         async mounted() {
-            console.log('Module:' + this.$props.taskmodule);
 
             var self = this;
 
@@ -203,15 +201,13 @@
                 var self = this;
 
                 if (this.currentStep === 0) {
-                    this.stepperBtnText = "Solve";
+                    this.stepperBtnText = this.$t('Solve');
                     this.stepper.next();
 
                     //Start timer, to measure the time how long the user needs
                     this.timer = 0;
                     this.triggerTimer();
                 } else if (this.currentStep === 1) {
-
-                    // TODO: check if solution is correct, if yes continue, else show message
 
                     var exportData = this.$refs.activeModule.$data;
 
@@ -240,28 +236,27 @@
 
                             Swal.fire({
                                 icon: 'success',
-                                title: 'Task solved',
+                                title: self.$t('Task solved'),
                                 showConfirmButton: false,
                                 timer: 1500
                             })
 
                             setTimeout(() => {
                                 this.$confetti.stop();
-                                self.stepperBtnText = "Close";
+                                self.stepperBtnText = self.$t('Close');
                                 self.stepper.next();
                             }, 2000);
 
                         } else {
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Oops...',
+                                title: self.$t('Oops...'),
                                 text: response.data.message,
                             });
                         }
                     }).catch(function (error) {
                         console.error(error);
                     });
-
 
                 } else if (this.currentStep === 2) {
                     location.reload();

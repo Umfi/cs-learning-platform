@@ -10,6 +10,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@kirschbaum-development/laravel-translations-loader": "^1.0.2",
         "axios": "^0.19",
         "bootstrap": "^4.0.0",
         "cross-env": "^7.0",
@@ -34,6 +35,7 @@
         "prismjs": "^1.20.0",
         "sweetalert2": "^9.17.1",
         "vue-confetti": "^2.0.9",
+        "vue-i18n": "^8.21.0",
         "vue-prism-editor": "^0.6.1"
     }
 }
