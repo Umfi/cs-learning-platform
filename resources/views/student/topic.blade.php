@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    <div class="card-header"><a href="{{ route('home') }}">Dashboard</a> / <a href="{{ route('student-showCourse', $topic->course->_id) }}">{{ $topic->course->name }}</a> / {{ $topic->name }}</div>
+                    <div class="card-header"><a href="{{ route('home') }}">{{ __("Dashboard") }}</a> / <a href="{{ route('student-showCourse', $topic->course->_id) }}">{{ $topic->course->name }}</a> / {{ $topic->name }}</div>
 
                     <div class="card-body">
                         @if (session('status'))
@@ -46,7 +46,7 @@
 
                                                 @if ($task->userRating)
                                                     <div class="float-right">
-                                                        <button type="button" title="Rating" class="btn">
+                                                        <button type="button" title="{{ __("Rating") }}" class="btn">
                                                         <i class="fas fa-trophy fa-2x text-gold"></i> {{ $task->userRating->score . "|" . $task->userRating->score_max }}
                                                         </button>
                                                     </div>
@@ -67,8 +67,3 @@
 
 @endsection
 
-@section('scripts')
-    <script>
-
-    </script>
-@endsection

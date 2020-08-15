@@ -77,7 +77,7 @@
                                         <div>
                                             <i class="fas fa-star fa-3x" aria-hidden="true"></i>
                                         </div>
-                                        <h4>{{ __('Rating') }}</h4>
+                                        <h4>{{ __('Ratings') }}</h4>
                                     </div>
                                 </div>
                             </a>
