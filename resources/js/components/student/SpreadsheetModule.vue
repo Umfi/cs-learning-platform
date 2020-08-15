@@ -156,16 +156,22 @@
                 var tmp = '' + code;
 
                 // REPLACE - getData
-
-                tmp = tmp.replace(/getData\(/gi, 'self._getData(');
+                tmp = tmp.replace(/getData(\s)*\(/gi, 'self._getData(');
 
                 // REPLACE - setData
-
-                tmp = tmp.replace(/setData\(/gi, 'self._setData(');
+                tmp = tmp.replace(/setData(\s)*\(/gi, 'self._setData(');
 
                 // REPLACE - sum
+                tmp = tmp.replace(/sum(\s)*\(/gi, 'self._sum(');
 
-                tmp = tmp.replace(/sum\(/gi, 'self._sum(');
+                // REPLACE - mean
+                tmp = tmp.replace(/mean(\s)*\(/gi, 'self._mean(');
+
+                // REPLACE - max
+                tmp = tmp.replace(/max(\s)*\(/gi, 'self._max(');
+
+                // REPLACE - min
+                tmp = tmp.replace(/min(\s)*\(/gi, 'self._min(');
 
                 return tmp;
             },
@@ -230,10 +236,27 @@
             },
             _sum(...args) {
                 let sum = 0;
-
                 for (let arg of args) sum += this._getData(arg);
-
                 return sum;
+            },
+            _mean(...args) {
+                let sum = 0;
+                for (let arg of args) sum += this._getData(arg);
+                return sum/args.length;
+            },
+            _min(...args) {
+                var data = [];
+                for (let arg of args) {
+                    data.push(this._getData(arg));
+                }
+                return Math.min(...data);
+            },
+            _max(...args) {
+                var data = [];
+                for (let arg of args) {
+                    data.push(this._getData(arg));
+                }
+                return Math.max(...data);
             }
         }
     }
