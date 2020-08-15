@@ -7,7 +7,7 @@
 
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h4 class="modal-title">Task Module Configuration (<span v-text="subTitle"></span>)</h4>
+                        <h4 class="modal-title">{{ $t('Task Module Configuration') }} (<span v-text="subTitle"></span>)</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
 
                     </div>
@@ -26,8 +26,8 @@
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancle</button>
-                        <button type="button" class="btn btn-primary" @click="storeData(taskid)">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ $t('Cancle') }}</button>
+                        <button type="button" class="btn btn-primary" @click="storeData(taskid)">{{ $t('Save') }}</button>
                     </div>
                 </div>
             </div>
@@ -56,6 +56,7 @@
             },
             storeData(id) {
 
+                var self = this;
                 var exportData = this.$refs.activeModule.$data;
                 var tips = this.$refs.activeModule.$refs.tips.$data.tips;
                 exportData.tips = tips;
@@ -82,7 +83,7 @@
 
                         Swal.fire({
                             icon: 'error',
-                            title: 'Oops...',
+                            title: self.$t('Oops...'),
                             text: response.data.message,
                         });
 

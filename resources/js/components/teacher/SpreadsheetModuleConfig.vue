@@ -2,13 +2,13 @@
     <div>
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" v-bind:id="'specification-tab-' + taskid" data-toggle="tab" v-bind:href="'#specification-' + taskid" role="tab" aria-controls="specification" aria-selected="true">Specification</a>
+                <a class="nav-link active" v-bind:id="'specification-tab-' + taskid" data-toggle="tab" v-bind:href="'#specification-' + taskid" role="tab" aria-controls="specification" aria-selected="true">{{ $t('Specification') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" v-bind:id="'solution-tab-' + taskid" data-toggle="tab" v-bind:href="'#solution-' + taskid" role="tab" aria-controls="solution" aria-selected="false">Solution</a>
+                <a class="nav-link" v-bind:id="'solution-tab-' + taskid" data-toggle="tab" v-bind:href="'#solution-' + taskid" role="tab" aria-controls="solution" aria-selected="false">{{ $t('Solution') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" v-bind:id="'tips-tab-' + taskid" data-toggle="tab" v-bind:href="'#tips-' + taskid" role="tab" aria-controls="tips" aria-selected="false">Tips</a>
+                <a class="nav-link" v-bind:id="'tips-tab-' + taskid" data-toggle="tab" v-bind:href="'#tips-' + taskid" role="tab" aria-controls="tips" aria-selected="false">{{ $t('Tips') }}</a>
             </li>
         </ul>
         <div class="tab-content">
@@ -17,28 +17,28 @@
 
                     <div>
                         <div class="form-group">
-                            <label for="col">Columns</label>
+                            <label for="col">{{ $t('Columns') }}</label>
                             <input v-model="col" type="number" min="1" max="20" class="form-control" id="col">
                         </div>
                         <div class="form-group">
-                            <label for="row">Rows</label>
+                            <label for="row">{{ $t('Rows') }}</label>
                             <input v-model="row" type="number" min="1" max="50" class="form-control" id="row">
                         </div>
                         <div class="form-check">
                             <input v-model="programming" type="checkbox" class="form-check-input" id="programming">
-                            <label class="form-check-label" for="programming">Programming Task</label>
-                            <i class="fa-info-circle fas ml-1" data-toggle="tooltip" title="Student can only edit spreadsheet by code."></i>
+                            <label class="form-check-label" for="programming">{{ $t('Programming Task') }}</label>
+                            <i class="fa-info-circle fas ml-1" data-toggle="tooltip" :title="$t('Student can only edit spreadsheet by code.')"></i>
                         </div>
                         <div class="form-check">
                             <input v-model="dataVisualization" type="checkbox" class="form-check-input" id="datavis">
-                            <label class="form-check-label" for="datavis">Data Visualization Task</label>
+                            <label class="form-check-label" for="datavis">{{ $t('Data Visualization Task') }}</label>
                         </div>
                     </div>
 
                     <hr>
 
                     <div class="mb-2">
-                        <button type="button" class="btn btn-secondary mr-2" @click="resetSpreadsheet"><i class="fas fa-redo"></i> Reset table</button>
+                        <button type="button" class="btn btn-secondary mr-2" @click="resetSpreadsheet"><i class="fas fa-redo"></i> {{ $t('Reset table') }}</button>
                         <spreadsheet-formula-info></spreadsheet-formula-info>
                     </div>
 
@@ -51,7 +51,7 @@
                 <div class="mt-1">
 
                     <div>
-                        <button type="button" class="btn btn-sm btn-primary" @click="syncData()"><i class="fas fa-sync"></i> Copy values from specification</button>
+                        <button type="button" class="btn btn-sm btn-primary" @click="syncData()"><i class="fas fa-sync"></i> {{ $t('Copy values from specification') }}</button>
                     </div>
                     <hr>
                     <div>

@@ -32,5 +32,17 @@
     "Reset code": "Reset code",
     "Run code": "Run code",
     "Error": "Error",
-    "Syntax Error": "Syntax Error"
+    "Syntax Error": "Syntax Error",
+    "Add new tip:": "Add new tip:",
+    "Task Module Configuration": "Task Module Configuration",
+    "Cancle": "Cancle",
+    "Save": "Save",
+    "Specification": "Specification",
+    "Solution": "Solution",
+    "Columns": "Columns",
+    "Rows": "Rows",
+    "Programming Task": "Programming Task",
+    "Student can only edit spreadsheet by code.": "Student can only edit spreadsheet by code.",
+    "Data Visualization Task": "Data Visualization Task",
+    "Copy values from specification": "Copy values from specification"
 }

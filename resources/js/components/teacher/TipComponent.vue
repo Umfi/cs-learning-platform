@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="form-group">
-            <label>Add new tip:</label>
+            <label>{{ $t('Add new tip:') }}</label>
             <div class="form-inline">
                 <input type="text" class="col-11 form-control" v-model="newTip" v-on:keypress.enter="addTip()">
                 <button type="button" class="btn btn-primary ml-2" @click="addTip()">

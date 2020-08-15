@@ -31,9 +31,9 @@ const i18n = new VueI18n({
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('taskmoduleconfig', require('./components/TaskModuleConfigComponent.vue').default);
-Vue.component('tip-list', require('./components/TipComponent.vue').default);
-Vue.component('spreadsheetmoduleconfig', require('./components/SpreadsheetModuleConfig.vue').default);
+Vue.component('taskmoduleconfig', require('./components/teacher/TaskModuleConfigComponent.vue').default);
+Vue.component('tip-list', require('./components/teacher/TipComponent.vue').default);
+Vue.component('spreadsheetmoduleconfig', require('./components/teacher/SpreadsheetModuleConfig.vue').default);
 
 Vue.component('task', require('./components/student/TaskComponent.vue').default);
 Vue.component('spreadsheet-module', require('./components/student/SpreadsheetModule.vue').default);
