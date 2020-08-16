@@ -27,7 +27,8 @@ class HomeController extends Controller
     {
         if (auth()->user()->isAdmin() || auth()->user()->isTeacher()) {
             $myCourses = Course::where('owner_id', Auth::id())->get();
-            return view('teacher/home')->with('myCourses', $myCourses);
+            $allCopyableCourses = Course::where('owner_id', Auth::id())->orWhere('shared', true)->get();
+            return view('teacher/home')->with('myCourses', $myCourses)->with('allCourses', $allCopyableCourses);
         } else {
             $user = User::find(Auth::id());
             $studentCourses = $user->courses()->where('active', true)->get();

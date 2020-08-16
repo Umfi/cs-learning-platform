@@ -481,5 +481,79 @@ class TeacherController extends Controller
         ], \Illuminate\Http\Response::HTTP_OK);
     }
 
+    /**
+     * Copy a course
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function copyCourse(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'course' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            session()->flash('error', __('Can not copy course. Invalid data send.'));
+        } else {
+
+            $course = Course::find($request->get('course'));
+
+            if ($course) {
+
+                $user = User::find(Auth::id());
+
+                // Create new course
+                $newCourse = Course::create([
+                    'name' => $course->name . " (Copy)",
+                    'code' => Str::random(6),
+                    'shared' => false,
+                    'active' => true
+                ]);
+                $newCourse->owner()->associate($user);
+                $newCourse->save();
+
+                // Copy all topics from course
+                foreach ($course->topics as $topic) {
+
+                    $newTopic = Topic::create([
+                        'name' => $topic->name,
+                        'description' => $topic->description,
+                        'image' => $topic->image,
+                        'active' => $topic->active
+                    ]);
+                    $newTopic->course()->associate($newCourse);
+                    $newTopic->save();
+
+                    // Copy all tasks from topic
+                    foreach ($topic->tasks as $task) {
+
+                        $newTask = Task::create([
+                            'name' => $task->name,
+                            'description' => $task->description,
+                            'module' => $task->module,
+                            'difficulty' => $task->difficulty,
+                            'intro' => $task->intro,
+                            'extro' => $task->extro,
+                            'active' => $task->active,
+                            'specification' => $task->specification,
+                            'solution' => $task->solution,
+                            'tips' => $task->tips,
+                        ]);
+                        $newTask->topic()->associate($newTopic);
+                        $newTask->save();
+                    }
+                }
+
+                session()->flash('status', __('Course :name has been copied.', ['name' => $course->name]));
+            } else {
+                session()->flash('error', __('Can not copy course. Course not found.'));
+            }
+        }
+
+        return Redirect::back();
+    }
+
 
 }

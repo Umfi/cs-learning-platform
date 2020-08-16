@@ -47,6 +47,7 @@
 
                     <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#createCourseModal">{{__("Create course")}}</button>
 
+                    <button type="button" class="btn btn-secondary float-right mr-2" data-toggle="modal" data-target="#copyCourseModal">{{__("Copy course")}}</button>
                 </div>
             </div>
         </div>
@@ -146,6 +147,48 @@
         </div>
     </div>
 </div>
+
+<!-- Copy Course Modal -->
+<div class="modal" id="copyCourseModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">{{ __("Copy course") }}</h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="document.getElementById('copyForm').reset();">&times;</button>
+            </div>
+
+            <form id="copyForm" method="POST" action="{{ route('teacher-copyCourse') }}">
+            {{csrf_field()}}
+            <!-- Modal body -->
+                <div class="modal-body">
+
+                    <p>{{ __("You can copy any shared course and all courses that belong to you.") }}</p>
+
+                    <div class="form-group">
+                        <label for="course">{{ __("Select a course:") }}</label>
+                        <select class="form-control" name="course" required>
+                            <option selected disabled value=""> {{ __("--- Select ---") }}</option>
+                            @foreach($allCourses as $course)
+                                <option value="{{$course->_id}}">{{ $course->name }} </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                </div>
+
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="document.getElementById('copyForm').reset();">{{ __("Cancle") }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __("Copy") }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('scripts')

@@ -152,5 +152,13 @@
     "Task :name has not been updated. Not authorized.": "Task :name has not been updated. Not authorized.",
     "Task :name has not been updated. Invalid data send.": "Task :name has not been updated. Invalid data send.",
     "Tasks module config has not been updated. Invalid data send.": "Tasks module config has not been updated. Invalid data send.",
-    "Task has not been updated. Task not found.": "Task has not been updated. Task not found."
+    "Task has not been updated. Task not found.": "Task has not been updated. Task not found.",
+    "Copy course": "Copy course",
+    "You can copy any shared course and all courses that belong to you.": "You can copy any shared course and all courses that belong to you.",
+    "Select a course:": "Select a course:",
+    "--- Select ---": "--- Select ---",
+    "Copy": "Copy",
+    "Can not copy course. Invalid data send.": "Can not copy course. Invalid data send.",
+    "Course :name has been copied.": "Course :name has been copied.",
+    "Can not copy course. Course not found.": "Can not copy course. Course not found."
 }

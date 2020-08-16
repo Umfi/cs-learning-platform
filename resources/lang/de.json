@@ -55,7 +55,7 @@
     "Dashboard": "Dashboard",
     "My courses": "Meine Kurse",
     "(Inactive)": "(Inaktiv)",
-    "Active": "Aktive",
+    "Active": "Aktiv",
     "Shared": "Geteilt",
     "Not shared": "Nicht geteilt",
     "View details": "Öffnen",
@@ -153,5 +153,13 @@
     "Task :name has not been updated. Not authorized.": "Aufgabe :name wurde nicht aktualisiert. Nicht autorisiert.",
     "Task :name has not been updated. Invalid data send.": "Aufgabe :name wurde nicht aktualisiert. Ungültige Daten gesendet.",
     "Tasks module config has not been updated. Invalid data send.": "Aufgaben-Modul-Konfiguration wurde nicht aktualisiert. Ungültige Daten wurden gesendet.",
-    "Task has not been updated. Task not found.": "Aufgabe wurde nicht aktualisiert. Aufgabe nicht gefunden."
+    "Task has not been updated. Task not found.": "Aufgabe wurde nicht aktualisiert. Aufgabe nicht gefunden.",
+    "Copy course": "Kurs kopieren",
+    "You can copy any shared course and all courses that belong to you.": "Sie können jeden geteilten Kurs und alle Kurse die Ihnen gehören kopieren.",
+    "Select a course:": "Wähle einen Kurs aus:",
+    "--- Select ---": "--- Auswählen ---",
+    "Copy": "Kopieren",
+    "Can not copy course. Invalid data send.": "Kurs konnte nicht kopiert werden. Ungültige Daten gesendet.",
+    "Course :name has been copied.": "Kurs :name wurde kopiert.",
+    "Can not copy course. Course not found.": "Kurs konnte nicht kopiert werden. Kurs nicht gefunden."
 }

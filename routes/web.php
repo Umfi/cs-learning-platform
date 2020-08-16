@@ -56,6 +56,7 @@ Route::middleware(['hasTeacherRole'])->group(function(){
     Route::get('/teacher/getCourse/{id}', 'TeacherController@getCourseData')->name('teacher-getCourse');
     Route::post('/teacher/createCourse', 'TeacherController@createCourse')->name('teacher-createCourse');
     Route::post('/teacher/editCourse', 'TeacherController@editCourse')->name('teacher-editCourse');
+    Route::post('/teacher/copyCourse', 'TeacherController@copyCourse')->name('teacher-copyCourse');
 
     Route::get('/teacher/course/{id}', 'TeacherController@showCourse')->name('teacher-showCourse');
     Route::get('/teacher/getTopic/{id}', 'TeacherController@getTopicData')->name('teacher-getTopic');
