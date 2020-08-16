@@ -21,18 +21,21 @@
 
                         <h3>{{ __('Course Topics') }}</h3>
 
-                        <div class="row">
+                        <div class="row row-cols-1 row-cols-sm-2">
                             @forelse($course->topics as $topic)
                                 @if($topic->active)
-                                    <div class="card m-2" style="width: 18rem;">
-                                        <img class="card-img-top" width="100" height="150" src="{{ $topic->image ? \Illuminate\Support\Facades\Storage::url($topic->image) : "https://via.placeholder.com/100x150" }}" alt="Topic image">
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ $topic->name }}</h5>
-                                            <p class="card-text">
-                                                {{ \Illuminate\Support\Str::limit($topic->description, 250) }}
-                                            </p>
-                                            <a href="{{ route('student-showTopic', $topic->_id) }}" class="btn btn-primary">{{ __('View tasks') }}</a>
-                                           </div>
+                                    <div class="col">
+                                        <div class="card m-2" style="width: 18rem;">
+                                            <img class="card-img-top" width="100" height="150" src="{{ $topic->image ? \Illuminate\Support\Facades\Storage::url($topic->image) : "https://via.placeholder.com/100x150" }}" alt="Topic image">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ $topic->name }}</h5>
+                                                <p class="card-text">
+                                                    {{ \Illuminate\Support\Str::limit($topic->description, 250) }}
+                                                </p>
+                                                <hr>
+                                                <a href="{{ route('student-showTopic', $topic->_id) }}" class="btn btn-lg btn-primary d-block">{{ __('View tasks') }}</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 @endif
                             @empty

@@ -40,12 +40,12 @@
                         <div class="row">
                             @forelse($myCourses as $course)
 
-                                <div class="card m-2">
+                                <div class="card m-2 bg-course" style="max-width: 18rem;">
+                                    <div class="card-header">{{ $course->name }}</div>
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ $course->name }}</h5>
-                                        <p class="card-text">
+                                        <p class="card-text text-center">
+                                            <a href="{{ route('student-showCourse', $course->_id) }}" class="btn btn-lg btn-primary"><i class="fas fa-play"></i> {{ __('Start course') }}</a>
                                         </p>
-                                        <a href="{{ route('student-showCourse', $course->_id) }}" class="btn btn-primary">{{ __('Start course') }}</a>
                                     </div>
                                 </div>
                             @empty
