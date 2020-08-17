@@ -34,6 +34,11 @@
             axios.get("/teacher/getTask/" + this.$props.taskid)
                 .then(response => {
                     if (response.data.task) {
+
+                        if (typeof response.data.task.tips === "undefined") {
+                            return;
+                        }
+
                         self.tips = response.data.task.tips;
                     }
                 }).catch(function (error) {

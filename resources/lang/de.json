@@ -165,5 +165,6 @@
     "Course Rating": "Kursbewertungen",
     "Unfinished": "Nicht abgeschlossen",
     "Score": "Punkte",
-    "No ratings available.": "Keine Bewertungen vorhanden."
+    "No ratings available.": "Keine Bewertungen vorhanden.",
+    "Task module config has been successfully saved.": "Die Aufgabenmodulkonfiguration wurde erfolgreich gespeichert."
 }

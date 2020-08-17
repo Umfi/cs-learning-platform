@@ -202,9 +202,12 @@ class Task extends Model
                 }
 
                 $res = str_replace('"', "", $result);
-                $sol = str_replace('"', "", $solution);
+                $res_clean = str_replace('null', "", $res);
 
-                if (strcasecmp($res, $sol) == 0) {
+                $sol = str_replace('"', "", $solution);
+                $sol_clean = str_replace('null', "", $sol);
+
+                if (strcasecmp($res_clean, $sol_clean) == 0) {
                     return true;
                 }
 

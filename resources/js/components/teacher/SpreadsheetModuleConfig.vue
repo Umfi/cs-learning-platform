@@ -149,7 +149,12 @@
                                 solution: response.data.task.solution
                             };
 
-                            if (data.specification == "" || data.solution == "") {
+                            if  (
+                                typeof data.specification === "undefined" ||
+                                typeof data.specification === "undefined" ||
+                                data.specification == "" ||
+                                data.solution == ""
+                            ) {
                                 return;
                             }
 

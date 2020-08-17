@@ -78,6 +78,11 @@
                 }).then(response => {
 
                     if (response.data.result) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: self.$t('Task module config has been successfully saved.'),
+                        });
+
                         $('#taskModuleModal-' + id).modal('hide');
                     } else {
 
