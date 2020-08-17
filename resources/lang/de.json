@@ -164,5 +164,6 @@
     "Can not copy course. Course not found.": "Kurs konnte nicht kopiert werden. Kurs nicht gefunden.",
     "Course Rating": "Kursbewertungen",
     "Unfinished": "Nicht abgeschlossen",
-    "Score": "Punkte"
+    "Score": "Punkte",
+    "No ratings available.": "Keine Bewertungen vorhanden."
 }

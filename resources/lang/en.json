@@ -163,5 +163,6 @@
     "Can not copy course. Course not found.": "Can not copy course. Course not found.",
     "Course Rating": "Course Rating",
     "Unfinished": "Unfinished",
-    "Score": "Score"
+    "Score": "Score",
+    "No ratings available.": "No ratings available."
 }

@@ -6,17 +6,30 @@
         <div class="modal" :id="'courseRatingModal-' + course">
             <div class="modal-dialog">
                 <div class="modal-content">
-
                     <!-- Modal Header -->
                     <div class="modal-header">
                         <h4 class="modal-title">{{ $t("Course Rating") }}</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-
                     <div class="modal-body">
-                        <div class="row" style="max-height: 600px; overflow-y: auto;">
-                            <div v-if="loaded" v-for="rating in ratings" class="col-12">
-                                <rating-chart :chartdata="rating" class="border-0 card"></rating-chart>
+                        <div class="row-cols-1">
+                            <div :id="'carouselControls-' + course" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div v-if="loaded" v-for="(rating, key, index) in ratings" v-bind:key="index" :class="['carousel-item', (index === 0 ? 'active' : '')]">
+                                        <rating-chart :chartdata="rating" class="border-0 card col"></rating-chart>
+                                    </div>
+                                    <div v-if="!loaded">
+                                        <p>{{ $t("No ratings available.") }}</p>
+                                    </div>
+                                </div>
+                                <a class="carousel-control-prev" :href="'#carouselControls-' + course" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" :href="'#carouselControls-' + course" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -47,7 +60,17 @@
                 .then(response => {
                     if (response.data.ratings) {
                         self.ratings = response.data.ratings;
-                        self.loaded = true;
+
+                        if (response.data.ratings.length == 0) {
+                            self.loaded = false;
+                        } else {
+                            self.loaded = true;
+                        }
+
+
+                        $('.carousel').carousel({
+                            interval: 2000
+                        });
                     }
                 }).catch(function (error) {
                     console.error(error);
