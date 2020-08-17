@@ -160,5 +160,8 @@
     "Copy": "Copy",
     "Can not copy course. Invalid data send.": "Can not copy course. Invalid data send.",
     "Course :name has been copied.": "Course :name has been copied.",
-    "Can not copy course. Course not found.": "Can not copy course. Course not found."
+    "Can not copy course. Course not found.": "Can not copy course. Course not found.",
+    "Course Rating": "Course Rating",
+    "Unfinished": "Unfinished",
+    "Score": "Score"
 }

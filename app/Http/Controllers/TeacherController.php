@@ -555,5 +555,36 @@ class TeacherController extends Controller
         return Redirect::back();
     }
 
+    /**
+     * Get all ratings of a course, grouped by tasks
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAllRatingsFromCourse($id)
+    {
+        $course = Course::find($id);
+        $ratings = array();
+
+        if ($course) {
+
+            foreach ($course->topics as $topic) {
+                foreach ($topic->tasks as $task) {
+                    foreach ($task->ratings as $rating) {
+                        $rating->topic = $topic->name;
+                        $rating->task = $task->name;
+                        $rating->participantsCount = count($course->participants);
+                        unset($rating->student_id);
+
+                        $ratings[$rating->task_id][$rating->score][] = $rating;
+                    }
+                }
+            }
+        }
+
+        return response()->json([
+            'ratings' => $ratings,
+        ], \Illuminate\Http\Response::HTTP_OK);
+    }
+
 
 }

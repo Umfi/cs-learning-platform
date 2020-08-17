@@ -24,7 +24,7 @@
                     <div class="row">
                     @forelse($myCourses as $course)
 
-                            <div class="card m-2 {{ $course->active ? "" : "inactive" }}" style="width: 18rem;">
+                            <div class="card m-2 {{ $course->active ? "" : "inactive" }}" style="width: 19rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $course->name }} {{ $course->active ? "" : __('(Inactive)') }}</h5>
                                     <p class="card-text">
@@ -35,6 +35,7 @@
                                     </p>
                                     <a href="{{ route('teacher-showCourse', $course->_id) }}" class="btn btn-primary">{{ __('View details') }}</a>
                                     <button type="button" class="btn btn-secondary" onclick="editCourse('{{ $course->_id }}')">{{ __('Edit course') }}</button>
+                                    <rating course="{{ $course->_id }}"></rating>
                                 </div>
                             </div>
                     @empty

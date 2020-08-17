@@ -29,11 +29,13 @@
         "@handsontable/vue": "^4.1.1",
         "@sweetalert2/theme-bootstrap-4": "^3.2.0",
         "bs-stepper": "^1.7.0",
+        "chart.js": "^2.9.3",
         "datatables.net": "^1.10.21",
         "datatables.net-bs4": "^1.10.21",
         "handsontable": "^7.4.2",
         "prismjs": "^1.20.0",
         "sweetalert2": "^9.17.1",
+        "vue-chartjs": "^3.5.0",
         "vue-confetti": "^2.0.9",
         "vue-i18n": "^8.21.0",
         "vue-prism-editor": "^0.6.1"
