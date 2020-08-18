@@ -49,6 +49,7 @@ class ProfileController extends Controller
                 }
             }],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+            'language' => ['required'],
         ]);
 
         if ($validator->fails()) {
@@ -57,6 +58,8 @@ class ProfileController extends Controller
             $user = User::findOrFail(Auth::id());
 
             $user->email = $request->get('email');
+
+            $user->language = $request->get('language');
 
             if (!empty($request->get('password'))) {
                 $user->password = Hash::make($request->get('password'));

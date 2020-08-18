@@ -36,6 +36,20 @@
                             <input type="email" id="email" name="email" class="form-control" value="{{ $user->email }}" required />
                         </div>
 
+
+                        <div class="form-group">
+                            <label for="language">{{ __('Language') }}</label>
+                            <select id="language" name="language" class="form-control" required>
+                                @isset($user->language)
+                                    <option value="de" {{ $user->language == 'de' ? 'selected' : '' }}>{{ __('German') }}</option>
+                                    <option value="en" {{ $user->language == 'en' ? 'selected' : '' }}>{{ __('English') }}</option>
+                                @else
+                                    <option value="de" selected>{{ __('German') }}</option>
+                                    <option value="en">{{ __('English') }}</option>
+                                @endisset
+                            </select>
+                        </div>
+
                         <div class="form-group">
                             <label for="password"><i class="fas fa-lock"></i> {{ __("New Password") }}</label>
                             <input type="password" id="password" name="password" class="form-control" />
@@ -50,7 +64,7 @@
 
                         <div class="form-group">
                             <label for="password_c"><i class="fas fa-lock"></i> {{ __("Current Password") }}</label>
-                            <input type="password" id="password_c" name="current_password" class="form-control" required />
+                            <input type="password" id="password_c" name="current_password" class="form-control" autocomplete="current-password" required />
                         </div>
 
                         <button type="submit" class="btn btn-primary">{{ __("Update") }}</button>

@@ -69,7 +69,8 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role' => User::ROLE_STUDENT,
-            'active' => true
+            'active' => true,
+            'language' => config('app.locale')
         ]);
     }
 }

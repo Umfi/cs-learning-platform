@@ -165,5 +165,8 @@
     "Unfinished": "Unfinished",
     "Score": "Score",
     "No ratings available.": "No ratings available.",
-    "Task module config has been successfully saved.": "Task module config has been successfully saved."
+    "Task module config has been successfully saved.": "Task module config has been successfully saved.",
+    "Language": "Language",
+    "English": "English",
+    "German": "German"
 }

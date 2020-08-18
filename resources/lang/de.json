@@ -166,5 +166,8 @@
     "Unfinished": "Nicht abgeschlossen",
     "Score": "Punkte",
     "No ratings available.": "Keine Bewertungen vorhanden.",
-    "Task module config has been successfully saved.": "Die Aufgabenmodulkonfiguration wurde erfolgreich gespeichert."
+    "Task module config has been successfully saved.": "Die Aufgabenmodulkonfiguration wurde erfolgreich gespeichert.",
+    "Language": "Sprache",
+    "English": "Englisch",
+    "German": "Deutsch"
 }
