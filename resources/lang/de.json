@@ -169,5 +169,10 @@
     "Task module config has been successfully saved.": "Die Aufgabenmodulkonfiguration wurde erfolgreich gespeichert.",
     "Language": "Sprache",
     "English": "Englisch",
-    "German": "Deutsch"
+    "German": "Deutsch",
+    "Local file": "Lokale Datei",
+    "External file": "Externe Datei",
+    "Text": "Text",
+    "Link to video or picture": "URL zu Video oder Bild einfügen",
+    "Can only be a local file or a external file or a text.": "Kann nur eine lokale Datei oder eine externe Datei oder ein Text sein."
 }

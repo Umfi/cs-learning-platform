@@ -168,5 +168,10 @@
     "Task module config has been successfully saved.": "Task module config has been successfully saved.",
     "Language": "Language",
     "English": "English",
-    "German": "German"
+    "German": "German",
+    "Local file": "Local file",
+    "External file": "External file",
+    "Text": "Text",
+    "Link to video or picture": "Link to video or picture",
+    "Can only be a local file or a external file or a text.": "Can only be a local file or a external file or a text."
 }

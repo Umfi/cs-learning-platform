@@ -27,9 +27,15 @@ class Task extends Model
     /**
      * INTRO/EXTRO TYPES
      */
+    CONST LOCAL = "LOCAL";
+    const EXTERNAL = "EXTERNAL";
+    const TEXT = "TEXT";
+    const NONE = "NONE";
+
     const TYPE_NONE = "NONE";
     const TYPE_VIDEO = "VIDEO";
     const TYPE_IMAGE = "IMAGE";
+    const TYPE_TEXT = "TEXT";
 
     /**
      * The attributes that are mass assignable.
@@ -37,7 +43,7 @@ class Task extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'module', 'description', 'intro', 'extro', 'difficulty', 'active',
+        'name', 'module', 'description', 'intro', 'intro_type', 'extro', 'extro_type', 'difficulty', 'active',
         'specification', 'solution', 'tips'
     ];
 
@@ -76,9 +82,9 @@ class Task extends Model
      *
      * @return string
      */
-    public function getIntroTypeAttribute()
+    public function getIntroFiletypeAttribute()
     {
-        return self::getUploadType($this->intro);
+        return self::getUploadType($this->intro, $this->intro_type);
     }
 
     /**
@@ -86,9 +92,9 @@ class Task extends Model
      *
      * @return string
      */
-    public function getExtroTypeAttribute()
+    public function getExtroFiletypeAttribute()
     {
-        return self::getUploadType($this->extro);
+        return self::getUploadType($this->extro, $this->extro_type);
     }
 
     /**
@@ -105,22 +111,43 @@ class Task extends Model
      * Get the Type of a file
      *
      * @param $file
+     * @param $type
      * @return string
      */
-    private function getUploadType($file)
+    private function getUploadType($file, $type)
     {
         if (empty($file)) {
             return self::TYPE_NONE;
         }
 
-        if (Storage::disk('public')->exists($file)) {
-            $mime = mime_content_type(Storage::disk('public')->path($file));
+        if ($type == self::LOCAL) {
+            if (Storage::disk('public')->exists($file)) {
+                $mime = mime_content_type(Storage::disk('public')->path($file));
+                if (strstr($mime, "video/")) {
+                    return self::TYPE_VIDEO;
+                } else if (strstr($mime, "image/")) {
+                    return self::TYPE_IMAGE;
+                }
+            }
+        } else if ($type == self::EXTERNAL) {
+
+            $ch = curl_init($file);
+            curl_setopt($ch, CURLOPT_NOBODY, 1);
+            curl_setopt($ch, CURLOPT_HEADER, 1);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_exec($ch);
+            $mime = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+
             if (strstr($mime, "video/")) {
                 return self::TYPE_VIDEO;
             } else if (strstr($mime, "image/")) {
                 return self::TYPE_IMAGE;
             }
+        } else if ($type == self::TEXT) {
+            return self::TYPE_TEXT;
         }
+
 
         return self::TYPE_NONE;
     }

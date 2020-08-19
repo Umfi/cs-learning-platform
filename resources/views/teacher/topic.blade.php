@@ -100,13 +100,59 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="intro">{{ __("Intro") }}</label>
-                            <input type="file" class="form-control-file" name="intro" accept="image/*,video/*">
+                            <label for="introTab">{{ __("Intro") }}</label>
+                            <i class="fa-info-circle fas ml-1" data-toggle="tooltip" title="{{ __('Can only be a local file or a external file or a text.') }}"></i>
+
+                            <ul class="nav nav-tabs" id="introTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="localeintro-tab" data-toggle="tab" href="#localeintro" role="tab" aria-controls="localeintro" aria-selected="true"> {{ __("Local file") }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="externalintro-tab" data-toggle="tab" href="#externalintro" role="tab" aria-controls="externalintro" aria-selected="false">{{ __("External file") }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="textintro-tab" data-toggle="tab" href="#textintro" role="tab" aria-controls="textintro" aria-selected="false">{{ __("Text") }}</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="introTabContent">
+                                <div class="tab-pane fade show active" id="localeintro" role="tabpanel" aria-labelledby="localeintro-tab">
+                                    <input type="file" class="form-control-file" name="intro_local" accept="image/*,video/*">
+                                </div>
+                                <div class="tab-pane fade" id="externalintro" role="tabpanel" aria-labelledby="externalintro-tab">
+                                    <input type="text" class="form-control" name="intro_external" placeholder="{{ __('Link to video or picture') }}">
+                                </div>
+                                <div class="tab-pane fade" id="textintro" role="tabpanel" aria-labelledby="textintro-tab">
+                                    <textarea class="form-control" rows="5" name="intro_text"></textarea>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="extro">{{ __("Extro") }}</label>
-                            <input type="file" class="form-control-file" name="extro" accept="image/*,video/*">
+                            <label for="extroTab">{{ __("Extro") }}</label>
+                            <i class="fa-info-circle fas ml-1" data-toggle="tooltip" title="{{ __('Can only be a local file or a external file or a text.') }}"></i>
+
+                            <ul class="nav nav-tabs" id="extroTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="locale-tab" data-toggle="tab" href="#locale" role="tab" aria-controls="locale" aria-selected="true"> {{ __("Local file") }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="external-tab" data-toggle="tab" href="#external" role="tab" aria-controls="external" aria-selected="false">{{ __("External file") }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="text-tab" data-toggle="tab" href="#text" role="tab" aria-controls="text" aria-selected="false">{{ __("Text") }}</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="extroTabContent">
+                                <div class="tab-pane fade show active" id="locale" role="tabpanel" aria-labelledby="locale-tab">
+                                    <input type="file" class="form-control-file" name="extro_local" accept="image/*,video/*">
+                                </div>
+                                <div class="tab-pane fade" id="external" role="tabpanel" aria-labelledby="external-tab">
+                                    <input type="text" class="form-control" name="extro_external" placeholder="{{ __('URL zu Video oder Bild einfügen') }}">
+                                </div>
+                                <div class="tab-pane fade" id="text" role="tabpanel" aria-labelledby="text-tab">
+                                    <textarea class="form-control" rows="5" name="extro_text"></textarea>
+                                </div>
+                            </div>
                         </div>
 
 
@@ -179,13 +225,59 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="intro">{{ __("Intro") }}</label>
-                            <input type="file" class="form-control-file" name="intro" accept="image/*,video/*">
+                            <label for="introTabEdit">{{ __("Intro") }}</label>
+                            <i class="fa-info-circle fas ml-1" data-toggle="tooltip" title="{{ __('Can only be a local file or a external file or a text.') }}"></i>
+
+                            <ul class="nav nav-tabs" id="introTabEdit" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="localeintro-tabedit" data-toggle="tab" href="#localeintroedit" role="tab" aria-controls="localeintroedit" aria-selected="true"> {{ __("Local file") }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="externalintro-tabedit" data-toggle="tab" href="#externalintroedit" role="tab" aria-controls="externalintroedit" aria-selected="false">{{ __("External file") }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="textintro-tabedit" data-toggle="tab" href="#textintroedit" role="tab" aria-controls="textintroedit" aria-selected="false">{{ __("Text") }}</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="introTabContentEdit">
+                                <div class="tab-pane fade show active" id="localeintroedit" role="tabpanel" aria-labelledby="localeintro-tabedit">
+                                    <input type="file" class="form-control-file" name="intro_local" accept="image/*,video/*">
+                                </div>
+                                <div class="tab-pane fade" id="externalintroedit" role="tabpanel" aria-labelledby="externalintro-tabedit">
+                                    <input type="text" class="form-control" name="intro_external" placeholder="{{ __('Link to video or picture') }}">
+                                </div>
+                                <div class="tab-pane fade" id="textintroedit" role="tabpanel" aria-labelledby="textintro-tabedit">
+                                    <textarea class="form-control" rows="5" name="intro_text"></textarea>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="extro">{{ __("Extro") }}</label>
-                            <input type="file" class="form-control-file" name="extro" accept="image/*,video/*">
+                            <label for="extroTabEdit">{{ __("Extro") }}</label>
+                            <i class="fa-info-circle fas ml-1" data-toggle="tooltip" title="{{ __('Can only be a local file or a external file or a text.') }}"></i>
+
+                            <ul class="nav nav-tabs" id="extroTabEdit" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="locale-tabedit" data-toggle="tab" href="#localeedit" role="tab" aria-controls="localeedit" aria-selected="true"> {{ __("Local file") }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="external-tabedit" data-toggle="tab" href="#externaledit" role="tab" aria-controls="externaledit" aria-selected="false">{{ __("External file") }}</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="text-tabedit" data-toggle="tab" href="#textedit" role="tab" aria-controls="textedit" aria-selected="false">{{ __("Text") }}</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="extroTabContentEdit">
+                                <div class="tab-pane fade show active" id="localeedit" role="tabpanel" aria-labelledby="locale-tabedit">
+                                    <input type="file" class="form-control-file" name="extro_local" accept="image/*,video/*">
+                                </div>
+                                <div class="tab-pane fade" id="externaledit" role="tabpanel" aria-labelledby="external-tabedit">
+                                    <input type="text" class="form-control" name="extro_external" placeholder="{{ __('URL zu Video oder Bild einfügen') }}">
+                                </div>
+                                <div class="tab-pane fade" id="textedit" role="tabpanel" aria-labelledby="text-tabedit">
+                                    <textarea class="form-control" rows="5" name="extro_text"></textarea>
+                                </div>
+                            </div>
                         </div>
 
 
@@ -211,6 +303,11 @@
 
 @section('scripts')
     <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
         function editTask(id) {
 
             $.ajax({
@@ -226,6 +323,24 @@
                         $("#editForm textarea[name='description']").val(data.task.description);
                         $("#editForm select[name='difficulty']").val(data.task.difficulty);
                         $("#editForm input[name='active']").prop('checked', data.task.active);
+
+
+                        $("#editForm input[name='intro_external']").val("");
+                        $("#editForm textarea[name='intro_text']").val("");
+                        if (data.task.intro_type === "EXTERNAL") {
+                            $("#editForm input[name='intro_external']").val(data.task.intro);
+                        } else if (data.task.intro_type === "TEXT") {
+                            $("#editForm textarea[name='intro_text']").val(data.task.intro);
+                        }
+
+                        $("#editForm input[name='extro_external']").val("");
+                        $("#editForm textarea[name='extro_text']").val("");
+                        if (data.task.extro_type === "EXTERNAL") {
+                            $("#editForm input[name='extro_external']").val(data.task.extro);
+                        } else if (data.task.extro_type === "TEXT") {
+                            $("#editForm textarea[name='extro_text']").val(data.task.extro);
+                        }
+
                         $('#editTaskModal').modal('show');
                     }
 

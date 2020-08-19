@@ -41,14 +41,19 @@
                             <div class="bs-stepper-content">
                                 <!-- your steps content here -->
                                 <div :id="'intro-part-' + taskid" class="content" role="tabpanel" :aria-labelledby="'intro-part-trigger-' + taskid">
-                                    <div v-if="task.introType === 'IMAGE'" class="embed-responsive">
+                                    <div v-if="task.introFileType === 'IMAGE'" class="embed-responsive">
                                         <img :src="task.intro" class="img-fluid"/>
                                     </div>
-                                    <div v-if="task.introType === 'VIDEO'" class="embed-responsive embed-responsive-16by9">
+                                    <div v-if="task.introFileType === 'VIDEO'" class="embed-responsive embed-responsive-16by9">
                                         <video controls disablePictureInPicture controlsList="nofullscreen nodownload noremoteplayback">
                                             <source :src="task.intro">
                                             Your browser does not support the video tag.
                                         </video>
+                                    </div>
+                                    <div v-if="task.introFileType === 'TEXT'">
+                                        <div class="alert alert-info" role="alert">
+                                            <p v-text="task.intro"></p>
+                                        </div>
                                     </div>
                                 </div>
                                 <div :id="'task-part-' + taskid" class="content" role="tabpanel" :aria-labelledby="'task-part-trigger-' + taskid">
@@ -98,14 +103,19 @@
 
                                 </div>
                                 <div :id="'extro-part-' + taskid" class="content" role="tabpanel" :aria-labelledby="'extro-part-trigger-' + taskid">
-                                    <div v-if="task.extroType === 'IMAGE'" class="embed-responsive">
+                                    <div v-if="task.extroFileType === 'IMAGE'" class="embed-responsive">
                                         <img :src="task.extro" class="img-fluid"/>
                                     </div>
-                                    <div v-if="task.extroType === 'VIDEO'" class="embed-responsive embed-responsive-16by9">
+                                    <div v-if="task.extroFileType === 'VIDEO'" class="embed-responsive embed-responsive-16by9">
                                         <video controls disablePictureInPicture controlsList="nofullscreen nodownload noremoteplayback">
                                             <source :src="task.extro">
                                             Your browser does not support the video tag.
                                         </video>
+                                    </div>
+                                    <div v-if="task.extroFileType === 'TEXT'">
+                                        <div class="alert alert-info" role="alert">
+                                            <p v-text="task.extro"></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -145,9 +155,9 @@
                 task: {
                     description: "",
                     tips: [],
-                    introType: "",
+                    introFileType: "",
                     intro: "",
-                    extroType: "",
+                    extroFileType: "",
                     extro: "",
                 },
                 moduleData: null,

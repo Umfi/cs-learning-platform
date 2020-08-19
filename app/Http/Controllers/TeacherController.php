@@ -312,8 +312,10 @@ class TeacherController extends Controller
             'description' => 'required|string|max:4096',
             'module' => 'required',
             'difficulty' => 'numeric',
-            'intro' => 'mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,ogg|max:51200',
-            'extro' => 'mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,ogg|max:51200',
+            'intro_local' => 'mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,ogg|max:51200',
+            'intro_external' => 'url|nullable',
+            'extro_local' => 'mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,ogg|max:51200',
+            'extro_external' => 'url|nullable',
         ]);
 
         if ($validator->fails()) {
@@ -324,18 +326,36 @@ class TeacherController extends Controller
             if ($topic) {
                 if ($topic->course->owner_id == Auth::id()) {
 
-
-                    if ($request->hasFile('intro')) {
-                        $intro = Storage::disk('public')->putFile('uploads', request()->file('intro'));
+                    // Process intro
+                    if ($request->hasFile('intro_local')) {
+                        $intro = Storage::disk('public')->putFile('uploads', request()->file('intro_local'));
+                        $intro_type = Task::LOCAL;
+                    } else if (!empty($request->get('intro_external'))) {
+                        $intro = $request->get('intro_external');
+                        $intro_type = Task::EXTERNAL;
+                    } else if (!empty($request->get('intro_text'))) {
+                        $intro = $request->get('intro_text');
+                        $intro_type = Task::TEXT;
                     } else {
                         $intro = "";
+                        $intro_type = Task::NONE;
                     }
 
-                    if ($request->hasFile('extro')) {
-                        $extro = Storage::disk('public')->putFile('uploads', request()->file('extro'));
+                    // Process extro
+                    if ($request->hasFile('extro_local')) {
+                        $extro = Storage::disk('public')->putFile('uploads', request()->file('extro_local'));
+                        $extro_type = Task::LOCAL;
+                    } else if (!empty($request->get('extro_external'))) {
+                        $extro = $request->get('extro_external');
+                        $extro_type = Task::EXTERNAL;
+                    } else if (!empty($request->get('extro_text'))) {
+                        $extro = $request->get('extro_text');
+                        $extro_type = Task::TEXT;
                     } else {
                         $extro = "";
+                        $extro_type = Task::NONE;
                     }
+
 
                     $task = Task::create([
                         'name' => $request->get('name'),
@@ -343,7 +363,9 @@ class TeacherController extends Controller
                         'module' => $request->get('module'),
                         'difficulty' => $request->get('difficulty'),
                         'intro' => $intro,
+                        'intro_type' => $intro_type,
                         'extro' => $extro,
+                        'extro_type' => $extro_type,
                         'active' => $request->get('active') == "1"
                     ]);
                     $task->topic()->associate($topic);
@@ -376,7 +398,9 @@ class TeacherController extends Controller
             'module' => 'required',
             'difficulty' => 'numeric',
             'intro' => 'mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,ogg|max:51200',
+            'intro_external' => 'url|nullable',
             'extro' => 'mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,ogg|max:51200',
+            'extro_external' => 'url|nullable',
         ]);
 
         if ($validator->fails()) {
@@ -400,24 +424,38 @@ class TeacherController extends Controller
 
                     $task->difficulty = $request->get('difficulty');
 
-                    if ($request->hasFile('intro')) {
+                    if ($request->hasFile('intro_local')) {
                         //delete old file
                         if (!empty($task->intro)) {
                             Storage::disk('public')->delete($task->intro);
                         }
 
-                        $path = Storage::disk('public')->putFile('uploads', request()->file('intro'));
+                        $path = Storage::disk('public')->putFile('uploads', request()->file('intro_local'));
                         $task->intro = $path;
+                        $task->intro_type = Task::LOCAL;
+                    }  else if (!empty($request->get('intro_external'))) {
+                        $task->intro = $request->get('intro_external');
+                        $task->intro_type = Task::EXTERNAL;
+                    } else if (!empty($request->get('intro_text'))) {
+                        $task->intro = $request->get('intro_text');
+                        $task->intro_type = Task::TEXT;
                     }
 
-                    if ($request->hasFile('extro')) {
+                    if ($request->hasFile('extro_local')) {
                         //delete old file
                         if (!empty($task->extro)) {
                             Storage::disk('public')->delete($task->extro);
                         }
 
-                        $path = Storage::disk('public')->putFile('uploads', request()->file('extro'));
+                        $path = Storage::disk('public')->putFile('uploads', request()->file('extro_local'));
                         $task->extro = $path;
+                        $task->extro_type = Task::LOCAL;
+                    } else if (!empty($request->get('extro_external'))) {
+                        $task->extro = $request->get('extro_external');
+                        $task->extro_type = Task::EXTERNAL;
+                    } else if (!empty($request->get('extro_text'))) {
+                        $task->extro = $request->get('extro_text');
+                        $task->extro_type = Task::TEXT;
                     }
 
                     $task->active = $request->get('active') == "1";

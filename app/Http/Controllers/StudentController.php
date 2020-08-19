@@ -100,11 +100,15 @@ class StudentController extends Controller
         if ($task) {
             unset($task->solution);
 
-            $task->introType = $task->intro_type;
-            $task->intro = \Illuminate\Support\Facades\Storage::url($task->intro);
+            $task->introFileType = $task->intro_filetype;
+            if ($task->intro_type == Task::LOCAL) {
+                $task->intro = \Illuminate\Support\Facades\Storage::url($task->intro);
+            }
 
-            $task->extroType = $task->extro_type;
-            $task->extro = \Illuminate\Support\Facades\Storage::url($task->extro);
+            $task->extroFileType = $task->extro_filetype;
+            if ($task->extro_type == Task::LOCAL) {
+                $task->extro = \Illuminate\Support\Facades\Storage::url($task->extro);
+            }
 
             return response()->json([
                 'task' => $task,
