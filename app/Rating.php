@@ -24,7 +24,7 @@ class Rating extends Model
      * @var array
      */
     protected $fillable = [
-        'score', 'score_max', 'used_tips', 'required_time'
+        'score', 'score_max', 'used_tips', 'required_time', 'solution_data'
     ];
 
     /**

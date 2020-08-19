@@ -155,6 +155,10 @@ class StudentController extends Controller
                     }
 
                     $rating->calculateScore($request->get('required_time'), $request->get('used_tips'), count($task->tips));
+
+                    // Store optional additional info (example code for programming task, ...)
+                    $rating->solution_data = $request->get('data');
+
                     $rating->save();
 
                 } else {
