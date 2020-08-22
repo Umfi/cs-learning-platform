@@ -174,5 +174,15 @@
     "External file": "Externe Datei",
     "Text": "Text",
     "Link to video or picture": "URL zu Video oder Bild einfügen",
-    "Can only be a local file or a external file or a text.": "Kann nur eine lokale Datei oder eine externe Datei oder ein Text sein."
+    "Can only be a local file or a external file or a text.": "Kann nur eine lokale Datei oder eine externe Datei oder ein Text sein.",
+    "Reset": "Zurücksetzen",
+    "Line Chart": "Liniendiagramm",
+    "Bar Chart": "Balkendiagramm",
+    "Pie Chart": "Kreisdiagramm",
+    "Add Data": "Daten hinzufügen",
+    "Add Dataset": "Datenset hinzufügen",
+    "Select a field like A1. Or create multiple A1, B1, ...": "Wählen Sie ein Feld wie A1 aus. Oder wählen Sie mehrere aus wie A1, B1, ...",
+    "You need to write something!": "Sie müssen etwas schreiben!",
+    "Label": "Beschriftung",
+    "Data": "Daten"
 }

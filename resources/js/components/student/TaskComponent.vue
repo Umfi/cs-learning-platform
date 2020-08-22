@@ -138,7 +138,7 @@
     import Stepper from 'bs-stepper'
     import Swal from 'sweetalert2/src/sweetalert2.js'
     import VueConfetti from 'vue-confetti'
-    import SpreadsheetModule from "./SpreadsheetModule";
+    import SpreadsheetModule from "./modules/SpreadsheetModule";
 
     Vue.use(VueConfetti)
 

@@ -30,17 +30,16 @@ const i18n = new VueI18n({
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-Vue.component('rating', require('./components/teacher/RatingComponent.vue').default);
-Vue.component('rating-chart', require('./components/teacher/RatingChart.vue').default);
-
-Vue.component('taskmoduleconfig', require('./components/teacher/TaskModuleConfigComponent.vue').default);
-Vue.component('tip-list', require('./components/teacher/TipComponent.vue').default);
-Vue.component('spreadsheetmoduleconfig', require('./components/teacher/SpreadsheetModuleConfig.vue').default);
-
+Vue.component('rating', require('./components/teacher/frontend/RatingComponent.vue').default);
+Vue.component('rating-chart', require('./components/teacher/frontend/RatingChart.vue').default);
+Vue.component('taskmoduleconfig', require('./components/teacher/backend/TaskModuleConfigComponent.vue').default);
+Vue.component('tip-list', require('./components/teacher/backend/TipComponent.vue').default);
+Vue.component('spreadsheetmoduleconfig', require('./components/teacher/backend/modules/SpreadsheetModuleConfig.vue').default);
 Vue.component('task', require('./components/student/TaskComponent.vue').default);
-Vue.component('spreadsheet-module', require('./components/student/SpreadsheetModule.vue').default);
-Vue.component('spreadsheet-code-info', require('./components/student/SpreadsheetCodeInfo.vue').default);
-Vue.component('spreadsheet-formula-info', require('./components/student/SpreadsheetFormulaInfo.vue').default);
+Vue.component('spreadsheet-module', require('./components/student/modules/SpreadsheetModule.vue').default);
+Vue.component('spreadsheet-code-info', require('./components/shared/SpreadsheetCodeInfo.vue').default);
+Vue.component('spreadsheet-formula-info', require('./components/shared/SpreadsheetFormulaInfo.vue').default);
+Vue.component('spreadsheet-datavisualization', require('./components/shared/SpreadsheetDataVisualization.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

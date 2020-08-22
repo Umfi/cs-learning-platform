@@ -173,5 +173,17 @@
     "External file": "External file",
     "Text": "Text",
     "Link to video or picture": "Link to video or picture",
-    "Can only be a local file or a external file or a text.": "Can only be a local file or a external file or a text."
+    "Can only be a local file or a external file or a text.": "Can only be a local file or a external file or a text.",
+    "Reset": "Reset",
+    "Line Chart": "Line Chart",
+    "Bar Chart": "Bar Chart",
+    "Pie Chart": "Pie Chart",
+    "Add Data": "Add Data",
+    "Add Dataset": "Add Dataset",
+    "Select a field like A1. Or create multiple A1, B1, ...": "Select a field like A1. Or create multiple A1, B1, ...",
+    "You need to write something!": "You need to write something!",
+    "Label": "Label",
+    "Data": "Data"
+
+
 }
