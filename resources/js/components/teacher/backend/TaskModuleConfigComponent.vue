@@ -55,6 +55,8 @@
                 $('#taskModuleModal-' + id).modal('show');
             },
             storeData(id) {
+                // Call pre Store function of module
+                this.$refs.activeModule._preStore();
 
                 var self = this;
                 var exportData = this.$refs.activeModule.$data;

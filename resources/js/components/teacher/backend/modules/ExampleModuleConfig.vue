@@ -64,6 +64,14 @@
                     });
 
             });
+        },
+        methods: {
+            /**
+             * Called before global store method
+             */
+            _preStore() {
+
+            }
         }
     }
 </script>

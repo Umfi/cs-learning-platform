@@ -185,7 +185,11 @@
                                     self.$refs.dataviscomponent.updateChart();
                                 }
 
-                             }, 500);
+                                self.dataVisualizationData = self.$refs.dataviscomponent.data;
+                                self.dataVisualizationType = self.$refs.dataviscomponent.type;
+
+
+                            }, 500);
 
 
                         }
@@ -217,6 +221,13 @@
             },
             syncData() {
                 this.solutionData = JSON.parse(JSON.stringify(this.specificationData));
+            },
+            /**
+             * Called before global store method
+             */
+            _preStore() {
+                this.dataVisualizationData = this.$refs.dataviscomponent.data;
+                this.dataVisualizationType = this.$refs.dataviscomponent.type;
             }
         }
     }

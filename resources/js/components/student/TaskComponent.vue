@@ -219,15 +219,15 @@
                     this.triggerTimer();
                 } else if (this.currentStep === 1) {
 
+                    // Call pre Store function of module
+                    this.$refs.activeModule._preStore();
+
                     var exportData = this.$refs.activeModule.$data;
 
                     /**
                      * Remove all internal values starting with _
                      */
-                    for (var key in exportData) {
-                        if (key.startsWith("_"))
-                            delete exportData[key];
-                    }
+                    this._removeInternalData(exportData);
 
                     this.moduleData = exportData;
 
@@ -270,6 +270,14 @@
 
                 } else if (this.currentStep === 2) {
                     location.reload();
+                }
+            },
+            _removeInternalData(obj) {
+                for(var prop in obj) {
+                    if (prop.startsWith("_"))
+                        delete obj[prop];
+                    else if (typeof obj[prop] === 'object')
+                        this._removeInternalData(obj[prop]);
                 }
             }
         }

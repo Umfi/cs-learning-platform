@@ -221,6 +221,40 @@ class Task extends Model
         switch ($request->get('module')) {
             case "MODULE_SPREADSHEET":
             {
+                
+                if ($data->dataVisualization) {
+
+                    // check if correct chart type
+                    if ($data->dataVisualizationType === $this->solution['dataVisualizationType']) {
+
+                        $visData = $this->solution['dataVisualizationData'];
+
+                        //check if labels of chart are correct
+                        if ($data->dataVisualizationData->labels === $visData['labels']) {
+
+                            // check if datasets are correct
+                            if (count($visData['datasets']) != count($data->dataVisualizationData->datasets)) {
+                                return false;
+                            }
+
+                            for ($i = 0; $i < count($visData['datasets']); $i++) {
+                                // check labels of dataset
+                                if ($data->dataVisualizationData->datasets[$i]->label !== $visData['datasets'][$i]['label']) {
+                                    return false;
+                                }
+
+                                //check data of dataset
+                                if ($data->dataVisualizationData->datasets[$i]->data !== $visData['datasets'][$i]['data']) {
+                                    return false;
+                                }
+                            }
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                }
 
                 if ($data->programming) {
                     $result = json_encode($data->resultDataFormulaEvaluated);

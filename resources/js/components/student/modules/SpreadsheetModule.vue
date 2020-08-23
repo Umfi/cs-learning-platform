@@ -22,6 +22,10 @@
             </div>
         </div>
 
+        <div v-show="dataVisualization">
+            <spreadsheet-datavisualization ref="dataviscomponent" :taskid="taskid" :griddata="resultDataFormulaEvaluated"></spreadsheet-datavisualization>
+        </div>
+
     </div>
 </template>
 
@@ -46,6 +50,8 @@
                 resultData: Handsontable.helper.createEmptySpreadsheetData(5, 4),
                 resultCode: '',
                 resultDataFormulaEvaluated: null,
+                dataVisualizationData: null,
+                dataVisualizationType: null,
                 /*
                 * INTERNAL IS GOING TO BE EXCLUDED FROM EXPORT
                 * starts with _
@@ -69,8 +75,10 @@
         mounted() {
 
             this._hotInstanceSpecification = this.$refs.hotTableSpecificationComponent.hotInstance;
-
             var instSpecification = this._hotInstanceSpecification;
+
+            this.dataVisualizationData = this.$refs.dataviscomponent.data;
+            this.dataVisualizationType = this.$refs.dataviscomponent.type;
 
             var self = this;
 
@@ -150,6 +158,13 @@
                 }, 500);
 
 
+            },
+            /**
+             * Called before global store method
+             */
+            _preStore() {
+                this.dataVisualizationData = this.$refs.dataviscomponent.data;
+                this.dataVisualizationType = this.$refs.dataviscomponent.type;
             },
             _preparseCode(code) {
                 var tmp = '' + code;
