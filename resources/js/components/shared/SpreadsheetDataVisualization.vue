@@ -46,7 +46,7 @@
                 }
             }
         },
-        async mounted() {
+        mounted() {
             this._ctx = document.getElementById("chart-" + this.$props.taskid);
             this._chart = new Chart(this._ctx, {
                 type: this.type,

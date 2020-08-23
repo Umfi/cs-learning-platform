@@ -56,8 +56,8 @@
                     <div>
                         <hot-table ref="hotTableSolutionComponent" :data="solutionData" :settings="$data._settings"></hot-table>
                     </div>
-                    <div v-if="dataVisualization">
-                        <spreadsheet-datavisualization ref="datavis" :taskid="taskid" :griddata="solutionDataFormulaEvaluated"></spreadsheet-datavisualization>
+                    <div v-show="dataVisualization">
+                        <spreadsheet-datavisualization ref="dataviscomponent" :taskid="taskid" :griddata="solutionDataFormulaEvaluated"></spreadsheet-datavisualization>
                     </div>
                 </div>
             </div>
@@ -88,6 +88,8 @@
                 solutionData: Handsontable.helper.createEmptySpreadsheetData(5, 4),
                 solutionCode: '',
                 solutionDataFormulaEvaluated: null,
+                dataVisualizationData: null,
+                dataVisualizationType: null,
                 /*
                 * INTERNAL IS GOING TO BE EXCLUDED FROM EXPORT
                 * starts with _
@@ -116,6 +118,9 @@
 
             var instSpecification = this._hotInstanceSpecification;
             var instSolution = this._hotInstanceSolution;
+
+            this.dataVisualizationData = this.$refs.dataviscomponent.data;
+            this.dataVisualizationType = this.$refs.dataviscomponent.type;
 
             var self = this;
 
@@ -172,7 +177,15 @@
 
                                 self.solutionData = data.solution.data;
                                 self.solutionCode = data.solution.code;
-                            }, 500);
+
+                                if (self.dataVisualization) {
+
+                                    self.$refs.dataviscomponent.data = data.solution.dataVisualizationData;
+                                    self.$refs.dataviscomponent.type = data.solution.dataVisualizationType;
+                                    self.$refs.dataviscomponent.updateChart();
+                                }
+
+                             }, 500);
 
 
                         }

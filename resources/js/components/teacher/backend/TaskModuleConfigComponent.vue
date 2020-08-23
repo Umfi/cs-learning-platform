@@ -64,10 +64,7 @@
                 /**
                  * Remove all internal values starting with _
                  */
-                for (var key in exportData) {
-                    if (key.startsWith("_"))
-                        delete exportData[key];
-                }
+                this._removeInternalData(exportData);
 
                 this.moduleData = exportData;
 
@@ -98,6 +95,14 @@
                 });
 
             },
+            _removeInternalData(obj) {
+                for(var prop in obj) {
+                    if (prop.startsWith("_"))
+                        delete obj[prop];
+                    else if (typeof obj[prop] === 'object')
+                        this._removeInternalData(obj[prop]);
+                }
+            }
         }
     }
 </script>

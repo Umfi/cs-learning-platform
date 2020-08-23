@@ -192,6 +192,8 @@ class Task extends Model
                 $solution->data = $data->solutionData;
                 $solution->dataFormulaEvaluated = $data->solutionDataFormulaEvaluated;
                 $solution->code = $data->solutionCode;
+                $solution->dataVisualizationData = $data->dataVisualizationData;
+                $solution->dataVisualizationType = $data->dataVisualizationType;
 
                 $this->solution = $solution;
 
