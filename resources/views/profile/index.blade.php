@@ -38,7 +38,7 @@
 
 
                         <div class="form-group">
-                            <label for="language">{{ __('Language') }}</label>
+                            <label for="language"><i class="fas fa-globe-europe"></i> {{ __('Language') }}</label>
                             <select id="language" name="language" class="form-control" required>
                                 @isset($user->language)
                                     <option value="de" {{ $user->language == 'de' ? 'selected' : '' }}>{{ __('German') }}</option>

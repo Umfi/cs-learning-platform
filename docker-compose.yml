@@ -1,0 +1,40 @@
+version: "3"
+services:
+
+  webserver:
+    image: nginx:latest
+    container_name: teaching-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - "./docker/nginx:/etc/nginx/conf.d"
+      - ".:/var/www/html"
+    networks:
+      - app-network
+    depends_on:
+      - mongodb
+
+  php:
+    build: ./docker/php
+    container_name: teaching-php
+    volumes:
+      - "./docker/php/fpm/php-fpm.conf:/usr/local/etc/php-fpm.conf"
+      - "./docker/php/php.ini:/usr/local/etc/php/php.ini"
+      - ".:/var/www/html"
+    networks:
+      - app-network
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    container_name: teaching-mongodb
+    ports:
+      - "27017:27017"
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

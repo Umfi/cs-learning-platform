@@ -27,7 +27,7 @@ class Task extends Model
     /**
      * INTRO/EXTRO TYPES
      */
-    CONST LOCAL = "LOCAL";
+    const LOCAL = "LOCAL";
     const EXTERNAL = "EXTERNAL";
     const TEXT = "TEXT";
     const NONE = "NONE";
@@ -221,7 +221,7 @@ class Task extends Model
         switch ($request->get('module')) {
             case "MODULE_SPREADSHEET":
             {
-                
+
                 if ($data->dataVisualization) {
 
                     // check if correct chart type

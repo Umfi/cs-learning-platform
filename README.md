@@ -13,3 +13,36 @@ environment. The learning platform should
 support both students and teachers in an
 educational context via learning, assessment
 and scoring. 
+
+
+##Setup
+
+Use the docker container!
+
+Start: `docker-compose up`
+
+Webapp is running on: http://localhost/
+
+Login:
+
+E-Mail: `admin@mail.com`
+Password: `password`
+
+---
+
+**Initial setup**
+
+* Create .env file : `mv .env.example .env`
+
+* Generate key: `docker-compose exec php php artisan key:generate`
+
+* Install PHP libraries using composer: `docker-compose exec php composer install` 
+
+* Fix folder permission: `docker-compose exec php chmod 777 -R storage/` 
+
+* Initial database setup: `docker-compose exec php php artisan migrate:fresh --seed`
+
+* Create symlink for user-uploaded files: `docker-compose exec php php artisan storage:link`
+
+
+
