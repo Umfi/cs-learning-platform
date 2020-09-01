@@ -100,14 +100,20 @@ class StudentController extends Controller
         if ($task) {
             unset($task->solution);
 
-            $task->introFileType = $task->intro_filetype;
+            // Export property to json
+            $task->intro_filetype = $task->intro_filetype;
             if ($task->intro_type == Task::LOCAL) {
                 $task->intro = \Illuminate\Support\Facades\Storage::url($task->intro);
+            } else if ($task->intro_type == Task::EXTERNAL) {
+                preprocessExternalFile($task, "INTRO");
             }
 
-            $task->extroFileType = $task->extro_filetype;
+            // Export property to json
+            $task->extro_filetype = $task->extro_filetype;
             if ($task->extro_type == Task::LOCAL) {
                 $task->extro = \Illuminate\Support\Facades\Storage::url($task->extro);
+            } else if ($task->extro_type == Task::EXTERNAL) {
+                preprocessExternalFile($task, "EXTRO");
             }
 
             return response()->json([

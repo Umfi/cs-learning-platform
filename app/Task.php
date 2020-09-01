@@ -34,6 +34,7 @@ class Task extends Model
 
     const TYPE_NONE = "NONE";
     const TYPE_VIDEO = "VIDEO";
+    const TYPE_YOUTUBEVIDEO = "YOUTUBEVIDEO";
     const TYPE_IMAGE = "IMAGE";
     const TYPE_TEXT = "TEXT";
 
@@ -143,6 +144,8 @@ class Task extends Model
                 return self::TYPE_VIDEO;
             } else if (strstr($mime, "image/")) {
                 return self::TYPE_IMAGE;
+            } else if (strstr($file, "youtube.com")) {
+                return self::TYPE_YOUTUBEVIDEO;
             }
         } else if ($type == self::TEXT) {
             return self::TYPE_TEXT;
