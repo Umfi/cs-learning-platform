@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Rating;
 use App\Task;
 use App\Topic;
 use App\User;
@@ -433,7 +434,7 @@ class TeacherController extends Controller
                         $path = Storage::disk('public')->putFile('uploads', request()->file('intro_local'));
                         $task->intro = $path;
                         $task->intro_type = Task::LOCAL;
-                    }  else if (!empty($request->get('intro_external'))) {
+                    } else if (!empty($request->get('intro_external'))) {
                         $task->intro = $request->get('intro_external');
                         $task->intro_type = Task::EXTERNAL;
                     } else if (!empty($request->get('intro_text'))) {
@@ -624,5 +625,77 @@ class TeacherController extends Controller
         ], \Illuminate\Http\Response::HTTP_OK);
     }
 
+
+    /**
+     * Delete course
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteCourse($id)
+    {
+        $course = Course::find($id);
+
+        if ($course) {
+            foreach ($course->topics as $topic) {
+                foreach ($topic->tasks as $task) {
+                    foreach ($task->ratings as $rating) {
+                        $rating->delete();
+                    }
+                    $task->delete();
+                }
+                $topic->delete();
+            }
+            $course->delete();
+        }
+
+        return response()->json([
+            'status' => true,
+        ], \Illuminate\Http\Response::HTTP_OK);
+    }
+
+    /**
+     * Delete topic
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteTopic($id)
+    {
+        $topic = Topic::find($id);
+
+        if ($topic) {
+            foreach ($topic->tasks as $task) {
+                foreach ($task->ratings as $rating) {
+                    $rating->delete();
+                }
+                $task->delete();
+            }
+            $topic->delete();
+        }
+
+        return response()->json([
+            'status' => true,
+        ], \Illuminate\Http\Response::HTTP_OK);
+    }
+
+    /**
+     * Delete task
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteTask($id)
+    {
+        $task = Task::find($id);
+
+        if ($task) {
+            foreach ($task->ratings as $rating) {
+                $rating->delete();
+            }
+            $task->delete();
+        }
+
+        return response()->json([
+            'status' => true,
+        ], \Illuminate\Http\Response::HTTP_OK);
+    }
 
 }

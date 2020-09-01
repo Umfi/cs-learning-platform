@@ -57,17 +57,22 @@ Route::middleware(['hasTeacherRole'])->group(function(){
     Route::post('/teacher/createCourse', 'TeacherController@createCourse')->name('teacher-createCourse');
     Route::post('/teacher/editCourse', 'TeacherController@editCourse')->name('teacher-editCourse');
     Route::post('/teacher/copyCourse', 'TeacherController@copyCourse')->name('teacher-copyCourse');
+    Route::delete('/teacher/deleteCourse/{id}', 'TeacherController@deleteCourse')->name('teacher-deleteCourse');
+
 
     Route::get('/teacher/course/{id}', 'TeacherController@showCourse')->name('teacher-showCourse');
     Route::get('/teacher/getTopic/{id}', 'TeacherController@getTopicData')->name('teacher-getTopic');
     Route::post('/teacher/createTopic', 'TeacherController@createTopic')->name('teacher-createTopic');
     Route::post('/teacher/editTopic', 'TeacherController@editTopic')->name('teacher-editTopic');
+    Route::delete('/teacher/deleteTopic/{id}', 'TeacherController@deleteTopic')->name('teacher-deleteTopic');
+
 
     Route::get('/teacher/topic/{id}', 'TeacherController@showTopic')->name('teacher-showTopic');
     Route::get('/teacher/getTask/{id}', 'TeacherController@getTaskData')->name('teacher-getTask');
     Route::post('/teacher/createTask', 'TeacherController@createTask')->name('teacher-createTask');
     Route::post('/teacher/editTask', 'TeacherController@editTask')->name('teacher-editTask');
     Route::post('/teacher/setTaskModuleConfig/{id}', 'TeacherController@setTaskModuleConfig')->name('teacher-setTaskModuleConfig');
+    Route::delete('/teacher/deleteTask/{id}', 'TeacherController@deleteTask')->name('teacher-deleteTask');
 
     Route::get('/teacher/getAllRatingsFromCourse/{id}', 'TeacherController@getAllRatingsFromCourse')->name('teacher-getAllRatingsFromCourse');
 

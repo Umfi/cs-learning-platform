@@ -145,6 +145,8 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-danger mr-auto" data-dismiss="modal" onclick="deleteCourse()"><i class="fas fa-trash"></i></button>
+
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="document.getElementById('editForm').reset();">{{ __("Cancle") }}</button>
                     <button type="submit" class="btn btn-primary">{{ __("Update") }}</button>
                 </div>
@@ -218,7 +220,53 @@
                     console.log( errorThrown );
                 }
             });
+        }
 
+
+        function deleteCourse() {
+            var courseID = $("#editForm input[name='id']").val();
+
+            if (courseID) {
+                Swal.fire({
+                    title: '{{ __("Delete course?") }}',
+                    html: "{{ __("You won't be able to revert this!") }}",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '{{ __("Yes, delete it!") }}',
+                }).then((result) => {
+                    if (result.value) {
+
+                        $.ajax({
+                            url: '{{ route('teacher-deleteCourse', '') }}/' + courseID,
+                            type: 'delete',
+                            data: {"_token": "{{ csrf_token() }}"},
+                            success: function (data, textStatus, jQxhr) {
+
+                                if (data.status) {
+
+                                    Swal.fire({
+                                        title: '{{ __("Deleted!") }}',
+                                        html: "{{ __("The course has been deleted.") }}",
+                                        icon: 'success',
+                                        showCancelButton: false,
+                                        confirmButtonText: '{{ __("Close") }}',
+                                    }).then((result) => {
+                                        location.reload();
+                                    });
+
+                                }
+                            },
+                            error: function (jqXhr, textStatus, errorThrown) {
+                                console.log(errorThrown);
+                            }
+                        });
+
+
+                    }
+                });
+            }
         }
     </script>
 @endsection
