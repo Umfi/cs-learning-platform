@@ -79,12 +79,14 @@
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" name="shared" value="1">{{ __("Shared") }}
+                        <i class="fa-info-circle fas ml-1" data-toggle="tooltip" title="{{ __("Other teachers can copy the course.") }}"></i>
                     </label>
                 </div>
 
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" name="active" value="1">{{ __("Active") }}
+                        <i class="fa-info-circle fas ml-1" data-toggle="tooltip" title="{{ __("Students can view and join the course.") }}"></i>
                     </label>
                 </div>
 
@@ -127,12 +129,14 @@
                     <div class="form-check">
                         <label class="form-check-label">
                             <input type="checkbox" class="form-check-input" name="shared" value="1">{{ __("Shared") }}
+                            <i class="fa-info-circle fas ml-1" data-toggle="tooltip" title="{{ __("Other teachers can copy the course.") }}"></i>
                         </label>
                     </div>
 
                     <div class="form-check">
                         <label class="form-check-label">
                             <input type="checkbox" class="form-check-input" name="active" value="1">{{ __("Active") }}
+                            <i class="fa-info-circle fas ml-1" data-toggle="tooltip" title="{{ __("Students can view and join the course.") }}"></i>
                         </label>
                     </div>
 

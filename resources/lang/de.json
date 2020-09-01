@@ -184,5 +184,7 @@
     "Select a field like A1. Or create multiple A1, B1, ...": "Wählen Sie ein Feld wie A1 aus. Oder wählen Sie mehrere aus wie A1, B1, ...",
     "You need to write something!": "Sie müssen etwas schreiben!",
     "Label": "Beschriftung",
-    "Data": "Daten"
+    "Data": "Daten",
+    "Students can view and join the course.": "Schüler können den Kurs sehen und ihm beitreten.",
+    "Other teachers can copy the course.": "Andere Lehrer können den Kurs kopieren."
 }

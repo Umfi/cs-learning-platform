@@ -183,7 +183,9 @@
     "Select a field like A1. Or create multiple A1, B1, ...": "Select a field like A1. Or create multiple A1, B1, ...",
     "You need to write something!": "You need to write something!",
     "Label": "Label",
-    "Data": "Data"
+    "Data": "Data",
+    "Students can view and join the course.": "Students can view and join the course.",
+    "Other teachers can copy the course.": "Other teachers can copy the course."
 
 
 }
