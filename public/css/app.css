@@ -19509,3 +19509,19 @@ body.swal2-toast-column .swal2-toast .swal2-validation-message {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5L3.75 4l-2.5 2.5L2.75 8l4-4-4-4z'/%3e%3c/svg%3e") !important;
 }
 
+.spreadsheetmodule-cell-bold {
+  font-weight: bold;
+}
+
+.spreadsheetmodule-cell-italic {
+  font-style: italic;
+}
+
+.spreadsheetmodule-cell-underline {
+  text-decoration: underline;
+}
+
+.spreadsheetmodule-cell-center {
+  text-align: center;
+}
+

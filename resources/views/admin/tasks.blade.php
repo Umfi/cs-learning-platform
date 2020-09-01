@@ -6,7 +6,7 @@
 
     <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header"><a href="{{ route('admin') }}">Dashboard</a> / {{ __('Tasks') }}</div>
 
@@ -34,7 +34,13 @@
                                 @foreach ($tasks as $task)
                                 <tr>
                                     <td>{{ $task->name }}</td>
-                                    <td>{{ $task->module }}</td>
+                                    <td>
+                                        @if( $task->module == "MODULE_SPREADSHEET")
+                                            <i class="fas fa-file-excel" title="{{ $task->module }}"></i>
+                                        @else
+                                            <i class="fas fa-info" title="{{ $task->module }}"></i>
+                                        @endif
+                                    </td>
                                     <td>{{ $task->topic->name }}</td>
                                     <td>{{ $task->description }}</td>
                                     <td>{{ $task->difficulty }}</td>

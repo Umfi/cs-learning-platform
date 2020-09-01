@@ -3,9 +3,16 @@
         <div class="row">
             <button type="button" class="btn btn-secondary mr-2" @click="resetSpreadsheet"><i class="fas fa-redo"></i> {{ $t('Reset table') }}</button>
             <spreadsheet-formula-info></spreadsheet-formula-info>
+
+            <div class="align-self-lg-center ml-auto">
+                <button type="button" class="btn btn-outline-dark btn-sm mr-2" @click="formatCell('bold')"><i class="fas fa-bold"></i></button>
+                <button type="button" class="btn btn-outline-dark btn-sm mr-2" @click="formatCell('italic')"><i class="fas fa-italic"></i></button>
+                <button type="button" class="btn btn-outline-dark btn-sm mr-2" @click="formatCell('underline')"><i class="fas fa-underline"></i></button>
+                <button type="button" class="btn btn-outline-dark btn-sm mr-2" @click="formatCell('center')"><i class="fas fa-align-center"></i></button>
+            </div>
         </div>
 
-        <div class="row mt-3">
+        <div class="row mt-2">
             <hot-table ref="hotTableSpecificationComponent" :data="resultData" :settings="$data._settings"></hot-table>
         </div>
 
@@ -61,6 +68,8 @@
                     rowHeaders: true,
                     colHeaders: true,
                     formulas: true,
+                    outsideClickDeselects: false,
+                    selectionMode: 'multiple',
                     width: '100%',
                     stretchH: 'all',
                     height: 200,
@@ -158,6 +167,67 @@
                 }, 500);
 
 
+            },
+            formatCell(style) {
+                var self = this;
+
+                self.hasProp = function(element, prop, value) {
+                    return element[prop] && !!element[prop].match(new RegExp('(\\s|^)' + value + '(\\s|$)'));
+                }
+
+                self.addCellMeta = function(row, column, property, newProperty) {
+                    var cellMeta = this._hotInstanceSpecification.getCellMeta(row, column);
+
+                    if (!self.hasProp(cellMeta, property, newProperty)) {
+                        this._hotInstanceSpecification.setCellMeta(row, column, property, (cellMeta[property] || '') + ' ' + newProperty);
+                    }
+                };
+
+                self.removeCellMeta = function(row, column, property, propertyToRemove) {
+                    var cellMeta = this._hotInstanceSpecification.getCellMeta(row, column);
+                    var newClass = self.removeFromString(cellMeta[property], propertyToRemove);
+
+                    this._hotInstanceSpecification.setCellMeta(row, column, property, newClass);
+                };
+
+                self.toggleCellMeta = function(row, column, property, newProperty) {
+                    var cellMeta = this._hotInstanceSpecification.getCellMeta(row, column);
+
+                    if (!self.hasProp(cellMeta, property, newProperty)) {
+                        this._hotInstanceSpecification.setCellMeta(row, column, property, (cellMeta[property] || '') + ' ' + newProperty);
+                    } else {
+                        self.removeCellMeta(row, column, property, newProperty);
+                    }
+                };
+
+                self.removeFromString = function(currentString, toRemove) {
+                    if (currentString) {
+                        var reg = new RegExp('(\\s|^)' + toRemove + '(\\s|$)');
+                        currentString = currentString.replace(reg, '');
+                    }
+                    return currentString || '';
+                };
+
+
+                var selection = this._hotInstanceSpecification.getSelected();
+
+                for (var i = 0; i < selection.length; i += 1) {
+
+                    var item = selection[i];
+                    var startRow = Math.min(item[0], item[2]);
+                    var endRow = Math.max(item[0], item[2]);
+                    var startCol = Math.min(item[1], item[3]);
+                    var endCol = Math.max(item[1], item[3]);
+
+                    for (var rowIndex = startRow; rowIndex <= endRow; rowIndex += 1) {
+                        for (var columnIndex = startCol; columnIndex <= endCol; columnIndex += 1) {
+                            self.toggleCellMeta(rowIndex, columnIndex, 'className', 'spreadsheetmodule-cell-' + style);
+                        }
+                    }
+
+                }
+
+                this._hotInstanceSpecification.render();
             },
             /**
              * Called before global store method
@@ -271,7 +341,7 @@
                     data.push(this._getData(arg));
                 }
                 return Math.max(...data);
-            }
+            },
         }
     }
 </script>
