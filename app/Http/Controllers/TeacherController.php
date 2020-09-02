@@ -765,6 +765,12 @@ class TeacherController extends Controller
             foreach ($task->ratings as $rating) {
                 $rating->delete();
             }
+
+            // set topic changes -> update learning path
+            $topic = Topic::find($task->topic->_id);
+            $topic->changed = true;
+            $topic->save();
+
             $task->delete();
         }
 

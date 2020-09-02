@@ -80,8 +80,13 @@ class StudentController extends Controller
     {
         $topic = Topic::find($id);
 
-        $lp = $topic->learningpath['drawflow']['Home']['data'];
+        if (!isset($topic->learningpath)) {
+            $currentTask = null;
+            $remainingTasks = null;
+            return view('student/topic', compact('topic', 'currentTask', 'remainingTasks'));
+        }
 
+        $lp = $topic->learningpath['drawflow']['Home']['data'];
         foreach ($lp as $node) {
             // find start node
             if (count($node['inputs']['input_1']['connections']) == 0) {

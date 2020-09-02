@@ -24,9 +24,9 @@
                         <div class="row">
                             @forelse($topic->tasks as $task)
 
-                                <div class="card m-2 {{ $topic->active ? "" : "inactive" }}" style="width: 18rem;">
+                                <div class="card m-2 {{ $task->active ? "" : "inactive" }}" style="width: 18rem;">
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ $task->name }} {{ $topic->active ? "" : __('(Inactive)') }}</h5>
+                                        <h5 class="card-title">{{ $task->name }} {{ $task->active ? "" : __('(Inactive)') }}</h5>
                                         <p class="card-text">
 
                                         </p>
@@ -48,7 +48,7 @@
 
                         <a href="{{ route('teacher-learningPath', $topic->_id) }}" class="btn btn-outline-primary float-right mr-2">
                             <i class="fas fa-route"></i> {{__("Define learning path")}}
-                            @if($topic->changed || empty($topic->learningpath))<i class="text-danger blink fas fa-exclamation-triangle"></i>@endif
+                            @if($topic->changed || (empty($topic->learningpath) && count($topic->tasks) > 0))<i class="text-danger blink fas fa-exclamation-triangle"></i>@endif
                         </a>
 
 
