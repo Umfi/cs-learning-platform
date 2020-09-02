@@ -80,12 +80,41 @@ class StudentController extends Controller
     {
         $topic = Topic::find($id);
 
-        // get all tasks of the topic with rating if one exists for the student
-        $tasks = Task::with(array('ratings' => function ($query) {
-            $query->where('student_id', Auth::id());
-        }))->where("topic_id", $id)->get();
+        $lp = $topic->learningpath['drawflow']['Home']['data'];
 
-        return view('student/topic', compact('topic', 'tasks'));
+        foreach ($lp as $node) {
+            // find start node
+            if (count($node['inputs']['input_1']['connections']) == 0) {
+
+                //check if start node has rating (is done) and follow path to get current task
+                $startNodeID = $node['id'];
+                $startNodeTaskID = $node['data']['task'];
+
+                $startTask = Task::with(array('ratings' => function ($query) {
+                    $query->where('student_id', Auth::id());
+                }))->where("topic_id", $id)->where("_id", $startNodeTaskID)->first();
+
+                if ($startTask->userRating) {
+                    $currentTask = Task::getFollowUpTask($startTask, $startNodeID);
+                } else {
+                    $currentTask = $startTask;
+                }
+                break;
+            }
+        }
+
+        if (is_null($currentTask)) { // all tasks done
+            $remainingTasks = Task::with(array('ratings' => function ($query) {
+                $query->where('student_id', Auth::id());
+            }))->where("topic_id", $id)->get();
+        } else {
+            $remainingTasks = Task::with(array('ratings' => function ($query) {
+                $query->where('student_id', Auth::id());
+            }))->where("topic_id", $id)->where("_id", "!=", $currentTask->_id)->get();
+        }
+
+
+        return view('student/topic', compact('topic', 'currentTask', 'remainingTasks'));
     }
 
     /**
@@ -137,7 +166,8 @@ class StudentController extends Controller
             'module' => 'required|string',
             'data' => 'required|json',
             'required_time' => 'required|numeric',
-            'used_tips' => 'required|numeric'
+            'used_tips' => 'required|numeric',
+            'solve_attempts' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -160,7 +190,7 @@ class StudentController extends Controller
                         $rating->task()->associate($task);
                     }
 
-                    $rating->calculateScore($request->get('required_time'), $request->get('used_tips'), count($task->tips));
+                    $rating->calculateScore($request->get('required_time'), $request->get('used_tips'), count($task->tips), $request->get('solve_attempts'));
 
                     // Store optional additional info (example code for programming task, ...)
                     $rating->solution_data = $request->get('data');

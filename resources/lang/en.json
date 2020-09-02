@@ -201,5 +201,8 @@
     "Learning path has not been saved. Invalid data send.": "Learning path has not been saved. Invalid data send.",
     "Learning path has not been saved. Not authorized.": "Learning path has not been saved. Not authorized.",
     "Learning path has not been saved. Topic not found.": "Learning path has not been saved. Topic not found.",
-    "Info": "Info"
+    "Info": "Info",
+    "Learning path is not setup yet. Contact your teacher.": "Learning path is not setup yet. Contact your teacher.",
+    "Current task": "Current task",
+    "Finished tasks": "Finished tasks"
 }

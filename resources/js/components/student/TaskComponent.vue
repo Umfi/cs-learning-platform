@@ -171,7 +171,8 @@
                     extro: "",
                 },
                 moduleData: null,
-                timer: 0
+                timer: 0,
+                solveAttempts: 0,
             }
         },
         async mounted() {
@@ -229,6 +230,8 @@
                     this.triggerTimer();
                 } else if (this.currentStep === 1) {
 
+                    this.solveAttempts += 1;
+
                     // Call pre Store function of module
                     this.$refs.activeModule._preStore();
 
@@ -248,6 +251,7 @@
                         data: JSON.stringify(this.moduleData),
                         required_time: this.timer,
                         used_tips: this.usedTips + 1,
+                        solve_attempts: this.solveAttempts
                     }).then(response => {
 
                         if (response.data.result) {

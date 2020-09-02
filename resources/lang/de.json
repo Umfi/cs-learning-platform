@@ -202,5 +202,8 @@
     "Learning path has not been saved. Invalid data send.": "Der Lernpfad wurde nicht gespeichert. Ungültige Daten gesendet.",
     "Learning path has not been saved. Not authorized.": "Lernpfad wurde nicht gespeichert. Nicht autorisiert.",
     "Learning path has not been saved. Topic not found.": "Lernpfad wurde nicht gespeichert. Thema nicht gefunden.",
-    "Info": "Info"
+    "Info": "Info",
+    "Learning path is not setup yet. Contact your teacher.": "Der Lernpfad ist noch nicht eingerichtet. Kontaktieren Sie Ihren Lehrer.",
+    "Current task": "Aktuelle Aufgabe",
+    "Finished tasks": "Erledigte Aufgaben"
 }
