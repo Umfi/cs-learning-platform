@@ -43,7 +43,14 @@
 
                         <br><br>
 
+
                         <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#createTaskModal">{{__("Create task")}}</button>
+
+                        <a href="{{ route('teacher-learningPath', $topic->_id) }}" class="btn btn-outline-primary float-right mr-2">
+                            <i class="fas fa-route"></i> {{__("Define learning path")}}
+                            @if($topic->changed || empty($topic->learningpath))<i class="text-danger blink fas fa-exclamation-triangle"></i>@endif
+                        </a>
+
 
                     </div>
                 </div>

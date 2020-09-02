@@ -147,7 +147,7 @@ class TeacherController extends Controller
      */
     public function getTopicData($id)
     {
-        $topic = Topic::find($id);
+        $topic = Topic::with('tasks')->get()->find($id);
 
         if ($topic) {
             if ($topic->course->owner_id == Auth::id()) {
@@ -195,6 +195,8 @@ class TeacherController extends Controller
                         'name' => $request->get('name'),
                         'description' => $request->get('description'),
                         'image' => $image,
+                        'learningpath' => '',
+                        'changed' => false,
                         'active' => $request->get('active') == "1"
                     ]);
                     $topic->course()->associate($course);
@@ -275,6 +277,61 @@ class TeacherController extends Controller
         $modules = Task::MODULES;
 
         return view('teacher/topic', compact('topic', 'modules'));
+    }
+
+    /**
+     * Show the learning path of a topic.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function showLearningPath($id)
+    {
+        $topic = Topic::find($id);
+
+        return view('teacher/learningpath', compact('topic'));
+    }
+
+    /**
+     * Store the learning path of a topic
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storeLearningPath(Request $request)
+    {
+        $status = false;
+
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'data' => 'required|json',
+        ]);
+
+        if ($validator->fails()) {
+            $message = __("Learning path has not been saved. Invalid data send.");
+        } else {
+
+            $topic = Topic::find($request->get('id'));
+
+            if ($topic) {
+                if ($topic->course->owner_id == Auth::id()) {
+
+                    $topic->learningpath = json_decode($request->get('data'));
+                    $topic->changed = false;
+                    $topic->save();
+                    $status = true;
+                    $message = __('Learning path has been successfully saved.');
+                } else {
+                    $message = __('Learning path has not been saved. Not authorized.');
+                }
+            } else {
+                $message = __('Learning path has not been saved. Topic not found.');
+            }
+        }
+
+        return response()->json([
+            'result' => $status,
+            'message' => $message
+        ], \Illuminate\Http\Response::HTTP_OK);
     }
 
     /**
@@ -372,6 +429,12 @@ class TeacherController extends Controller
                     $task->topic()->associate($topic);
                     $task->save();
 
+                    //Indicate that the learning path has to be adopted
+                    if ($request->get('active') == "1") {
+                        $topic->changed = true;
+                        $topic->save();
+                    }
+
                     session()->flash('status', __('Task :name has been created.', ['name' => $request->get('name')]));
                 } else {
                     session()->flash('error', __('Task :name has not been created. Not authorized.', ['name' => $request->get('name')]));
@@ -459,8 +522,18 @@ class TeacherController extends Controller
                         $task->extro_type = Task::TEXT;
                     }
 
-                    $task->active = $request->get('active') == "1";
+                    //Indicate that the learning path has to be adopted
+                    $newActiveState = $request->get('active') == "1";
+                    if ($task->active !== $newActiveState) {
+                        $topic = Topic::find($task->topic->_id);
+                        $topic->changed = true;
+                        $topic->save();
+                    }
+
+                    $task->active = $newActiveState;
                     $task->save();
+
+
 
                     session()->flash('status', __('Task :name has been updated.', ['name' => $request->get('name')]));
                 } else {
@@ -560,7 +633,9 @@ class TeacherController extends Controller
                         'name' => $topic->name,
                         'description' => $topic->description,
                         'image' => $topic->image,
-                        'active' => $topic->active
+                        'active' => $topic->active,
+                        'learningpath' => '',
+                        'changed' => true,
                     ]);
                     $newTopic->course()->associate($newCourse);
                     $newTopic->save();

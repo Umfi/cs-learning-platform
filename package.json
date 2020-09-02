@@ -32,6 +32,7 @@
         "chart.js": "^2.9.3",
         "datatables.net": "^1.10.21",
         "datatables.net-bs4": "^1.10.21",
+        "drawflow": "0.0.23",
         "handsontable": "^7.4.2",
         "prismjs": "^1.20.0",
         "sweetalert2": "^9.17.1",

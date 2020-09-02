@@ -20,6 +20,7 @@ const i18n = new VueI18n({
     messages: languageBundle,
 })
 
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -34,6 +35,7 @@ Vue.component('rating', require('./components/teacher/frontend/RatingComponent.v
 Vue.component('rating-chart', require('./components/teacher/frontend/RatingChart.vue').default);
 Vue.component('taskmoduleconfig', require('./components/teacher/backend/TaskModuleConfigComponent.vue').default);
 Vue.component('tip-list', require('./components/teacher/backend/TipComponent.vue').default);
+Vue.component('learning-path', require('./components/teacher/backend/LearningPathComponent.vue').default);
 Vue.component('spreadsheetmoduleconfig', require('./components/teacher/backend/modules/SpreadsheetModuleConfig.vue').default);
 Vue.component('task', require('./components/student/TaskComponent.vue').default);
 Vue.component('spreadsheet-module', require('./components/student/modules/SpreadsheetModule.vue').default);

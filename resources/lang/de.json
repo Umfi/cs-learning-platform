@@ -186,5 +186,21 @@
     "Label": "Beschriftung",
     "Data": "Daten",
     "Students can view and join the course.": "Schüler können den Kurs sehen und ihm beitreten.",
-    "Other teachers can copy the course.": "Andere Lehrer können den Kurs kopieren."
+    "Other teachers can copy the course.": "Andere Lehrer können den Kurs kopieren.",
+    "Define learning path": "Lernpfad definieren",
+    "Learning Path": "Lernpfad",
+    "Each node represents a task. You can connect the nodes by clicking on an output connector (green/red circles) and draw a line to the input connector (yellow circle) of an other node.": "Jeder Knoten repräsentiert eine Aufgabe. Sie können die Knoten verbinden, indem Sie auf einen Ausgangsanschluss (grün/rote Kreise) klicken und eine Linie zum Eingangsanschluss (gelber Kreis) eines anderen Knotens ziehen.",
+    "The green connector should be used if the student solves the task well, the red one otherwise.": "Der grüne Verbindungspunkt sollte verwendet werden, wenn der Schüler die Aufgabe gut löst, andernfalls sollte der rote Verbindungspunkt verwendet werden.",
+    "The start node should only have outgoing connections (no connections to yellow circle). Only one start node is allowed. It is possible to have multiple end nodes.": "Der Startknoten sollte nur ausgehende Verbindungen haben (keine Verbindungen zum gelben Kreis). Es ist nur ein Startknoten erlaubt. Es ist möglich, mehrere Endknoten zu haben.",
+    "To remove a line, use right click on it and click the x.": "Um eine Linie zu entfernen, klicken Sie mit der rechten Maustaste darauf und klicken Sie dann auf das x.",
+    "Learning path has been successfully saved.": "Lernpfad wurde erfolgreich gespeichert.",
+    "Invalid Learning Path": "Ungültiger Lernpfad",
+    "Only one start node allowed. There exists multiple nodes with no ingoing connections.": "Nur ein Startknoten erlaubt. Es existieren mehrere Knoten ohne eingehende Verbindungen.",
+    "No end node found. Possible graph cycle detected.": "Kein Endknoten gefunden. Möglicher Graphenzyklus entdeckt.",
+    "What should happen if the student solves the task well?": "Was sollte passieren, wenn der Schüler die Aufgabe gut löst?",
+    "What should happen if the student does not solve the task so well?": "Was sollte passieren, wenn der Schüler die Aufgabe nicht so gut löst?",
+    "Learning path has not been saved. Invalid data send.": "Der Lernpfad wurde nicht gespeichert. Ungültige Daten gesendet.",
+    "Learning path has not been saved. Not authorized.": "Lernpfad wurde nicht gespeichert. Nicht autorisiert.",
+    "Learning path has not been saved. Topic not found.": "Lernpfad wurde nicht gespeichert. Thema nicht gefunden.",
+    "Info": "Info"
 }

@@ -19,7 +19,7 @@ class Topic extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'image', 'active',
+        'name', 'description', 'image', 'active', 'learningpath', 'changed'
     ];
 
     /**

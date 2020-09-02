@@ -73,6 +73,8 @@ Route::middleware(['hasTeacherRole'])->group(function(){
     Route::post('/teacher/editTask', 'TeacherController@editTask')->name('teacher-editTask');
     Route::post('/teacher/setTaskModuleConfig/{id}', 'TeacherController@setTaskModuleConfig')->name('teacher-setTaskModuleConfig');
     Route::delete('/teacher/deleteTask/{id}', 'TeacherController@deleteTask')->name('teacher-deleteTask');
+    Route::get('/teacher/topic/{id}/learningpath', 'TeacherController@showLearningPath')->name('teacher-learningPath');
+    Route::post('/teacher/topic/{id}/storeLearningPath', 'TeacherController@storeLearningPath')->name('teacher-storeLearningPath');
 
     Route::get('/teacher/getAllRatingsFromCourse/{id}', 'TeacherController@getAllRatingsFromCourse')->name('teacher-getAllRatingsFromCourse');
 
