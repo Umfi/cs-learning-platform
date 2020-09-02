@@ -21,18 +21,19 @@
 
                         <h3>{{ __('Topic Tasks') }}</h3>
 
-                        <div class="row">
+                        <div class="row row-cols-1 row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
                             @forelse($topic->tasks as $task)
+                                <div class="col">
+                                    <div class="card m-2 {{ $task->active ? "" : "inactive" }}" style="width: 15rem;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ $task->name }} {{ $task->active ? "" : __('(Inactive)') }}</h5>
+                                            <p class="card-text">
 
-                                <div class="card m-2 {{ $task->active ? "" : "inactive" }}" style="width: 18rem;">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ $task->name }} {{ $task->active ? "" : __('(Inactive)') }}</h5>
-                                        <p class="card-text">
-
-                                        </p>
-                                        <button type="button" class="btn btn-primary" onclick="editTask('{{ $task->_id }}')">{{ __('Edit task') }}</button>
-                                        <!-- Task Module Config -->
-                                        <taskmoduleconfig taskid="{{ $task->_id }}" taskmodule="{{ $task->module }}"></taskmoduleconfig>
+                                            </p>
+                                            <button type="button" class="btn btn-primary" onclick="editTask('{{ $task->_id }}')">{{ __('Edit task') }}</button>
+                                            <!-- Task Module Config -->
+                                            <taskmoduleconfig taskid="{{ $task->_id }}" taskmodule="{{ $task->module }}"></taskmoduleconfig>
+                                        </div>
                                     </div>
                                 </div>
                             @empty

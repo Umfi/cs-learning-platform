@@ -21,11 +21,11 @@
 
                         <h3>{{ __('Course Topics') }}</h3>
 
-                        <div class="row row-cols-1 row-cols-sm-2">
+                        <div class="row row-cols-1 row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
                             @forelse($course->topics as $topic)
                                 @if($topic->active)
                                     <div class="col">
-                                        <div class="card m-2" style="width: 18rem;">
+                                        <div class="card m-2">
                                             <img class="card-img-top" width="100" height="150" src="{{ $topic->image ? \Illuminate\Support\Facades\Storage::url($topic->image) : "https://via.placeholder.com/100x150" }}" alt="Topic image">
                                             <div class="card-body">
                                                 <h5 class="card-title">{{ $topic->name }}</h5>

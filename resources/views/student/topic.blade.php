@@ -26,7 +26,7 @@
                                 </div>
                             @else
                                 <h4>{{ __('Current task') }}</h4>
-                                <div class="row row row-cols-1 row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+                                <div class="row row-cols-1 row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
                                     @if(!is_null($currentTask))
                                         @if($currentTask->active)
                                             <div class="col">

@@ -21,18 +21,19 @@
 
                         <h3>{{ __('Course Topics') }}</h3>
 
-                        <div class="row">
+                        <div class="row row-cols-1 row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
                             @forelse($course->topics as $topic)
-
-                                <div class="card m-2 {{ $topic->active ? "" : "inactive" }}" style="width: 18rem;">
-                                    <img class="card-img-top" src="{{ $topic->image ? \Illuminate\Support\Facades\Storage::url($topic->image) : "https://via.placeholder.com/150" }}" alt="Topic image">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ $topic->name }} {{ $topic->active ? "" : __('(Inactive)') }}</h5>
-                                        <p class="card-text">
-                                            {{ $topic->description }}
-                                        </p>
-                                        <a href="{{ route('teacher-showTopic', $topic->_id) }}" class="btn btn-primary">{{ __('View details') }}</a>
-                                        <button type="button" class="btn btn-secondary" onclick="editTopic('{{ $topic->_id }}')">{{ __('Edit topic') }}</button>
+                                <div class="col">
+                                    <div class="card m-2 {{ $topic->active ? "" : "inactive" }}">
+                                        <img class="card-img-top" src="{{ $topic->image ? \Illuminate\Support\Facades\Storage::url($topic->image) : "https://via.placeholder.com/150" }}" alt="Topic image">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ $topic->name }} {{ $topic->active ? "" : __('(Inactive)') }}</h5>
+                                            <p class="card-text">
+                                                {{ $topic->description }}
+                                            </p>
+                                            <a href="{{ route('teacher-showTopic', $topic->_id) }}" class="btn btn-primary w-100">{{ __('View details') }}</a>
+                                            <button type="button" class="btn btn-secondary w-100 mt-1" onclick="editTopic('{{ $topic->_id }}')">{{ __('Edit topic') }}</button>
+                                        </div>
                                     </div>
                                 </div>
                             @empty
