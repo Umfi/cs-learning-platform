@@ -142,8 +142,12 @@
 
                 for (var i = 0; i < mydata.length; i++){
                     for(var j = 0; j < mydata[i].length; j++){
-                        if(mydata[i][j].toString().indexOf('=') > -1){
-                            mydata[i][j] = self._hotInstanceSolution.getDataAtCell (j, i);
+                        if (mydata[i][j] !== null) {
+                            if (mydata[i][j].toString().indexOf('=') > -1) {
+                                mydata[i][j] = self._hotInstanceSolution.getDataAtCell(j, i);
+                            }
+                        } else {
+                            mydata[i][j] = "";
                         }
                     }
                 }
@@ -188,10 +192,14 @@
                             }
 
                             setTimeout(function(){
-                                self.specificationData = data.specification.data;
+                                self._hotInstanceSpecification.loadData(data.specification.data);
+                                self.specificationData = self._hotInstanceSpecification.getData();
+
                                 self.specificationCode = data.specification.code;
 
-                                self.solutionData = data.solution.data;
+                                self._hotInstanceSolution.loadData(data.solution.data);
+                                self.solutionData = self._hotInstanceSolution.getData();
+
                                 self.solutionCode = data.solution.code;
 
                                 if (self.dataVisualization) {
@@ -223,25 +231,46 @@
         },
         watch: {
             row: function(newVal, oldVal) {
-                this.specificationData = Handsontable.helper.createEmptySpreadsheetData(newVal, this.col);
-                this.solutionData = Handsontable.helper.createEmptySpreadsheetData(newVal, this.col);
+                var curRows = this._hotInstanceSpecification.countRows();
+
+                if(newVal > curRows){
+                    this._hotInstanceSpecification.alter('insert_row',curRows ,newVal - curRows, 's',true);
+                    this._hotInstanceSolution.alter('insert_row',curRows ,newVal - curRows, 's', true);
+                }
+                else if (newVal < curRows){
+                    this._hotInstanceSpecification.alter('remove_row', curRows-1,curRows - newVal, '');
+                    this._hotInstanceSolution.alter('remove_row', curRows-1,curRows - newVal, '');
+                }
+
             },
             col: function(newVal, oldVal) {
-                this.specificationData = Handsontable.helper.createEmptySpreadsheetData(this.row, newVal);
-                this.solutionData = Handsontable.helper.createEmptySpreadsheetData(this.row, newVal);
+                var curCols = this._hotInstanceSpecification.countCols();
+
+                if(newVal > curCols){
+                    this._hotInstanceSpecification.alter('insert_col',curCols ,newVal - curCols);
+                    this._hotInstanceSolution.alter('insert_col',curCols ,newVal - curCols);
+                }
+                else if (newVal < curCols){
+                    this._hotInstanceSpecification.alter('remove_col', curCols-1,curCols - newVal );
+                    this._hotInstanceSolution.alter('remove_col', curCols-1,curCols - newVal );
+                }
+
             }
         },
         methods: {
             resetSpreadsheet: function() {
-                this.specificationData = Handsontable.helper.createEmptySpreadsheetData(this.row, this.col);
+                this._hotInstanceSpecification.clear();
             },
             syncData() {
-                this.solutionData = JSON.parse(JSON.stringify(this.specificationData));
+                var spec = this._hotInstanceSpecification.getData();
+                this._hotInstanceSolution.loadData(spec);
             },
             /**
              * Called before global store method
              */
             _preStore() {
+                this.specificationData = this._hotInstanceSpecification.getData();
+                this.solutionData = this._hotInstanceSolution.getData();
                 this.dataVisualizationData = this.$refs.dataviscomponent.data;
                 this.dataVisualizationType = this.$refs.dataviscomponent.type;
             }

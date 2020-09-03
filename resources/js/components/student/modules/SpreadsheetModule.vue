@@ -97,8 +97,12 @@
 
                 for (var i = 0; i < mydata.length; i++){
                     for(var j = 0; j < mydata[i].length; j++){
-                        if(mydata[i][j].toString().indexOf('=') > -1){
-                            mydata[i][j] = self._hotInstanceSpecification.getDataAtCell (j, i);
+                        if (mydata[i][j] !== null) {
+                            if (mydata[i][j].toString().indexOf('=') > -1) {
+                                mydata[i][j] = self._hotInstanceSpecification.getDataAtCell(j, i);
+                            }
+                        } else {
+                            mydata[i][j] = "";
                         }
                     }
                 }
@@ -111,9 +115,12 @@
                 var data = self.$props.taskdata;
                 self.programming = data.specification.programming;
                 self.dataVisualization = data.specification.dataVisualization;
-                self.specificationData = JSON.parse(JSON.stringify(data.specification.data));
+
+                self._hotInstanceSpecification.loadData(data.specification.data);
+                self.specificationData = self._hotInstanceSpecification.getData();
                 self.specificationCode = '' + data.specification.code;
-                self.resultData = JSON.parse(JSON.stringify(data.specification.data));
+
+                self.resultData = self._hotInstanceSpecification.getData();
                 self.resultCode = '' + data.specification.code;
 
                 window.table = instSpecification;
@@ -132,6 +139,7 @@
         methods: {
             resetSpreadsheet: function() {
                 this.resultData = JSON.parse(JSON.stringify(this.specificationData));
+                this._hotInstanceSpecification.loadData(this.resultData);
             },
             resetCode() {
                 this.resultCode = '' + this.specificationCode;
@@ -235,6 +243,7 @@
             _preStore() {
                 this.dataVisualizationData = this.$refs.dataviscomponent.data;
                 this.dataVisualizationType = this.$refs.dataviscomponent.type;
+                this.resultData = this._hotInstanceSpecification.getData();
             },
             _preparseCode(code) {
                 var tmp = '' + code;
