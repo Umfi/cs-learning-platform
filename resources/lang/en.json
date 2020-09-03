@@ -208,5 +208,8 @@
     "General": "General",
     "Participants": "Participants",
     "The user should have received a email to reset its password.": "The user should have received a email to reset its password.",
-    "Could not send password reset email to user.": "Could not send password reset email to user."
+    "Could not send password reset email to user.": "Could not send password reset email to user.",
+    "Check solution for content or formula used:": "Check solution for content or formula used:",
+    "Content": "Content",
+    "Formula": "Formula"
 }

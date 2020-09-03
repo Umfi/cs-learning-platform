@@ -192,6 +192,7 @@ class Task extends Model
                 $solution->col = $data->col;
                 $solution->programming = $data->programming;
                 $solution->dataVisualization = $data->dataVisualization;
+                $solution->solutionCmpType = $data->solutionCmpType;
                 $solution->data = $data->solutionData;
                 $solution->dataFormulaEvaluated = $data->solutionDataFormulaEvaluated;
                 $solution->code = $data->solutionCode;
@@ -259,10 +260,10 @@ class Task extends Model
                     }
                 }
 
-                if ($data->programming) {
+                if ($data->programming || $this->solution['solutionCmpType'] == "content") {
                     $result = json_encode($data->resultDataFormulaEvaluated);
                     $solution = json_encode($this->solution['dataFormulaEvaluated']);
-                } else {
+                } else { // check if correct formula is used
                     $result = json_encode($data->resultData);
                     $solution = json_encode($this->solution['data']);
                 }

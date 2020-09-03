@@ -209,5 +209,8 @@
     "General": "Allgemeines",
     "Participants": "Teilnehmer",
     "The user should have received a email to reset its password.": "Der Benutzer sollte eine E-Mail erhalten haben, um sein Passwort zurückzusetzen.",
-    "Could not send password reset email to user.": "Es konnte dem Benutzer keine E-Mail zum Zurücksetzen des Passworts gesendet werdern."
+    "Could not send password reset email to user.": "Es konnte dem Benutzer keine E-Mail zum Zurücksetzen des Passworts gesendet werdern.",
+    "Check solution for content or formula used:": "Prüfe Lösung auf Inhalt oder verwendete Formel:",
+    "Content": "Inhalt",
+    "Formula": "Formel"
 }

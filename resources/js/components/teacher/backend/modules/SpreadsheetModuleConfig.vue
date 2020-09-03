@@ -50,6 +50,17 @@
             <div class="tab-pane fade" v-bind:id="'solution-' + taskid" role="tabpanel" aria-labelledby="solution-tab">
                 <div class="mt-1">
                     <div class="mt-2">
+                        <span>{{ $t('Check solution for content or formula used:') }}</span><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" v-model="solutionCmpType" value="content" >
+                            {{ $t('Content') }}
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" v-model="solutionCmpType" value="formula">
+                            {{ $t('Formula') }}
+                        </div>
+                    </div>
+                    <div class="mt-2">
                         <button type="button" class="btn btn-sm btn-primary mr-2" @click="syncData()"><i class="fas fa-sync"></i> {{ $t('Copy values from specification') }}</button>
                     </div>
                     <hr>
@@ -90,6 +101,7 @@
                 solutionDataFormulaEvaluated: null,
                 dataVisualizationData: null,
                 dataVisualizationType: null,
+                solutionCmpType: "content",
                 /*
                 * INTERNAL IS GOING TO BE EXCLUDED FROM EXPORT
                 * starts with _
@@ -111,7 +123,7 @@
             HotTable,
         },
         mounted() {
-            console.log('TaskID:' + this.$props.taskid);
+            //console.log('TaskID:' + this.$props.taskid);
 
             this._hotInstanceSpecification = this.$refs.hotTableSpecificationComponent.hotInstance;
             this._hotInstanceSolution = this.$refs.hotTableSolutionComponent.hotInstance;
@@ -170,6 +182,10 @@
                             self.programming = data.specification.programming;
                             self.dataVisualization = data.specification.dataVisualization;
 
+                            if ((data.solution.solutionCmpType === "content")
+                                || (data.solution.solutionCmpType === "formula")) {
+                                self.solutionCmpType = data.solution.solutionCmpType;
+                            }
 
                             setTimeout(function(){
                                 self.specificationData = data.specification.data;

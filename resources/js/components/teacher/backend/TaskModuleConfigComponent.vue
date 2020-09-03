@@ -48,7 +48,7 @@
             }
         },
         mounted() {
-            console.log('Module:' + this.$props.taskmodule);
+            //console.log('Module:' + this.$props.taskmodule);
         },
         methods: {
             openTaskModuleSettingsModal(id) {
