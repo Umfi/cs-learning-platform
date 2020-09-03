@@ -205,5 +205,9 @@
     "Info": "Info",
     "Learning path is not setup yet. Contact your teacher.": "Der Lernpfad ist noch nicht eingerichtet. Kontaktieren Sie Ihren Lehrer.",
     "Current task": "Aktuelle Aufgabe",
-    "Finished tasks": "Erledigte Aufgaben"
+    "Finished tasks": "Erledigte Aufgaben",
+    "General": "Allgemeines",
+    "Participants": "Teilnehmer",
+    "The user should have received a email to reset its password.": "Der Benutzer sollte eine E-Mail erhalten haben, um sein Passwort zurückzusetzen.",
+    "Could not send password reset email to user.": "Es konnte dem Benutzer keine E-Mail zum Zurücksetzen des Passworts gesendet werdern."
 }

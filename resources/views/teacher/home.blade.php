@@ -118,27 +118,48 @@
             {{csrf_field()}}
             <!-- Modal body -->
                 <div class="modal-body">
-                    <!-- Course ID -->
-                    <input type="hidden" name="id" value="">
 
-                    <div class="form-group">
-                        <label for="name">{{ __("Name") }}</label>
-                        <input type="text" class="form-control" placeholder="{{ __("Enter the course name") }}" name="name" required>
-                    </div>
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{ __("General") }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="users-tab" data-toggle="tab" href="#users" role="tab" aria-controls="users" aria-selected="false">{{ __("Participants") }}</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <!-- Course ID -->
+                            <input type="hidden" name="id" value="">
 
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="shared" value="1">{{ __("Shared") }}
-                            <i class="fa-info-circle fas ml-1" data-toggle="tooltip" title="{{ __("Other teachers can copy the course.") }}"></i>
-                        </label>
-                    </div>
+                            <div class="form-group">
+                                <label for="name">{{ __("Name") }}</label>
+                                <input type="text" class="form-control" placeholder="{{ __("Enter the course name") }}" name="name" required>
+                            </div>
 
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input" name="active" value="1">{{ __("Active") }}
-                            <i class="fa-info-circle fas ml-1" data-toggle="tooltip" title="{{ __("Students can view and join the course.") }}"></i>
-                        </label>
-                    </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="shared" value="1">{{ __("Shared") }}
+                                    <i class="fa-info-circle fas ml-1" data-toggle="tooltip" title="{{ __("Other teachers can copy the course.") }}"></i>
+                                </label>
+                            </div>
+
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="active" value="1">{{ __("Active") }}
+                                    <i class="fa-info-circle fas ml-1" data-toggle="tooltip" title="{{ __("Students can view and join the course.") }}"></i>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
+                            <br>
+                            <ul id="usersList">
+
+                            </ul>
+                        </div>
+                   </div>
+
+
 
                 </div>
 
@@ -212,6 +233,13 @@
                         $("#editForm input[name='name']").val(data.course.name);
                         $("#editForm input[name='shared']").prop('checked', data.course.shared);
                         $("#editForm input[name='active']").prop('checked', data.course.active);
+
+                        $("#usersList").empty();
+                        for (var i = 0; i < data.course.participants.length; i++) {
+                            $("#usersList").append('<li>' + data.course.participants[i].name + ' - <a href="#" onclick="resetUserPassword(\'' + data.course.participants[i]._id + '\')"><i class="fas fa-user-cog"></i> {{ __("Reset Password") }}</a></li>');
+                        }
+
+
                         $('#editCourseModal').modal('show');
                     }
 
@@ -267,6 +295,37 @@
                     }
                 });
             }
+        }
+
+        function resetUserPassword(id) {
+            $.ajax({
+                url: '{{ route('teacher-resetUserPassword', '') }}/' + id,
+                type: 'get',
+                success: function (data, textStatus, jQxhr) {
+
+                    if (data.status) {
+                        Swal.fire({
+                            title: '{{ __("Done!") }}',
+                            html: "{{ __("The user should have received a email to reset its password.") }}",
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonText: '{{ __("Close") }}',
+                        });
+                    } else {
+                        Swal.fire({
+                            title: '{{ __("Oops...") }}',
+                            html: "{{ __("Could not send password reset email to user.") }}",
+                            icon: 'error',
+                            showCancelButton: false,
+                            confirmButtonText: '{{ __("Close") }}',
+                        });
+                    }
+                },
+                error: function (jqXhr, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                }
+            });
+
         }
     </script>
 @endsection

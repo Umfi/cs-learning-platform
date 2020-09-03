@@ -77,6 +77,7 @@ Route::middleware(['hasTeacherRole'])->group(function(){
     Route::post('/teacher/topic/{id}/storeLearningPath', 'TeacherController@storeLearningPath')->name('teacher-storeLearningPath');
 
     Route::get('/teacher/getAllRatingsFromCourse/{id}', 'TeacherController@getAllRatingsFromCourse')->name('teacher-getAllRatingsFromCourse');
+    Route::get('/teacher/resetUserPassword/{id}', 'TeacherController@resetUserPassword')->name('teacher-resetUserPassword');
 
 });
 

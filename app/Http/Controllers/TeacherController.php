@@ -9,6 +9,7 @@ use App\Topic;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -33,7 +34,7 @@ class TeacherController extends Controller
      */
     public function getCourseData($id)
     {
-        $course = Course::find($id);
+        $course = Course::with('participants')->get()->find($id);
 
         if ($course) {
             if ($course->owner_id == Auth::id()) {
@@ -672,6 +673,7 @@ class TeacherController extends Controller
     /**
      * Get all ratings of a course, grouped by tasks
      *
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function getAllRatingsFromCourse($id)
@@ -704,6 +706,7 @@ class TeacherController extends Controller
     /**
      * Delete course
      *
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteCourse($id)
@@ -731,6 +734,7 @@ class TeacherController extends Controller
     /**
      * Delete topic
      *
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteTopic($id)
@@ -755,6 +759,7 @@ class TeacherController extends Controller
     /**
      * Delete task
      *
+     * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteTask($id)
@@ -776,6 +781,32 @@ class TeacherController extends Controller
 
         return response()->json([
             'status' => true,
+        ], \Illuminate\Http\Response::HTTP_OK);
+    }
+
+    /**
+     * Reset the password of a user
+     *
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function resetUserPassword($id)
+    {
+        $user = User::find($id);
+        $status = false;
+
+        if ($user) {
+            try {
+                Password::broker()->sendResetLink(['email' => $user->email]);
+                $status = true;
+            } catch (\Throwable $e) {
+                report($e);
+                $status = false;
+            }
+        }
+
+        return response()->json([
+            'status' => $status,
         ], \Illuminate\Http\Response::HTTP_OK);
     }
 
