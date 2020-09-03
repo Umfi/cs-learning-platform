@@ -55,7 +55,11 @@ class Rating extends Model
     public function calculateScore($required_time, $used_tips, $tips_max, $solve_attempts)
     {
         // 1/3 of total score, because we rate in 3 sections
-        $fullPointsPerSection = env('RATING_SCORE_MAX', 3) / 3;
+        if ($tips_max > 0) {
+            $fullPointsPerSection = env('RATING_SCORE_MAX', 3) / 3;
+        } else { // if no tips available, remove it from calculation
+            $fullPointsPerSection = env('RATING_SCORE_MAX', 3) / 2;
+        }
 
 
         // initial point for solving the task
@@ -63,16 +67,18 @@ class Rating extends Model
 
 
         // Calculate points for used tips
-        if ($used_tips == 0) { // no tip used = full point
-            $tips_points = $fullPointsPerSection;
-        } else {
-            $tips_points = $fullPointsPerSection - ($used_tips * 0.25);
+        if ($tips_max > 0) {
+            if ($used_tips == 0) { // no tip used = full point
+                $tips_points = $fullPointsPerSection;
+            } else {
+                $tips_points = $fullPointsPerSection - ($used_tips * 0.25);
 
-            if (($tips_points < 0) || ($used_tips == $tips_max)) {
-                $tips_points = 0;
+                if (($tips_points < 0) || ($used_tips == $tips_max)) {
+                    $tips_points = 0;
+                }
             }
+            $score += $tips_points;
         }
-        $score += $tips_points;
 
 
         // Calculate points for solve attempts

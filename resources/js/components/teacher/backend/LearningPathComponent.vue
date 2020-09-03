@@ -22,9 +22,9 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>{{ $t('Each node represents a task. You can connect the nodes by clicking on an output connector (green/red circles) and draw a line to the input connector (yellow circle) of an other node.') }}</p>
-                        <p>{{ $t('The green connector should be used if the student solves the task well, the red one otherwise.') }}</p>
-                        <p>{{ $t('The start node should only have outgoing connections (no connections to yellow circle). Only one start node is allowed. It is possible to have multiple end nodes.') }}</p>
+                        <p>{{ $t('Each node represents a task. You can connect the nodes by clicking on an output connector (green/yellow/red circles) and draw a line to the input connector (blue circle) of an other node.') }}</p>
+                        <p>{{ $t('The green connector should be used if the student solves the task well. The yellow one if the task was solved averagely. The red one otherwise.') }}</p>
+                        <p>{{ $t('The start node should only have outgoing connections (no connections to blue circle). Only one start node is allowed. It is possible to have multiple end nodes.') }}</p>
                         <hr>
                         <p>{{ $t('To remove a line, use right click on it and click the x.') }}</p>
                     </div>
@@ -106,7 +106,7 @@
                 var offset = 0;
                 for (let task of this.topicdata.tasks) {
                     if (task.active) {
-                        this.editor.addNode('Home', 1, 2, 50, 50 + offset, '', {"task": task._id}, task.name);
+                        this.editor.addNode('Home', 1, 3, 50, 50 + offset, '', {"task": task._id}, task.name);
                         offset += 80;
                     }
                 }
@@ -158,7 +158,8 @@
                         startNodes++;
                     }
                     if (lpNode[node].outputs.output_1.connections.length == 0
-                        && lpNode[node].outputs.output_2.connections.length == 0) {
+                        && lpNode[node].outputs.output_2.connections.length == 0
+                        && lpNode[node].outputs.output_3.connections.length == 0) {
                         endNodes++;
                     }
                 }
@@ -191,7 +192,8 @@
             },
             updateNodeTitles() {
                 $('.output.output_1').prop('title', this.$t('What should happen if the student solves the task well?'));
-                $('.output.output_2').prop('title', this.$t('What should happen if the student does not solve the task so well?'));
+                $('.output.output_2').prop('title', this.$t('What should happen if the student solves the task averagely well?'));
+                $('.output.output_3').prop('title', this.$t('What should happen if the student does not solve the task so well?'));
             },
             importMissingTasks() {
 
@@ -211,7 +213,7 @@
                         }
 
                         if (!found) {
-                            this.editor.addNode('Home', 1, 2, 50, 50 + offset, '', {"task": task._id}, task.name);
+                            this.editor.addNode('Home', 1, 3, 50, 50 + offset, '', {"task": task._id}, task.name);
                             offset += 80;
                         }
                     }

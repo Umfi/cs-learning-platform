@@ -19617,11 +19617,19 @@ body.swal2-toast-column .swal2-toast .swal2-validation-message {
   background: #f0f0f1 !important;
 }
 
+.input.input_1 {
+  background: deepskyblue !important;
+}
+
 .output.output_1 {
   background: green !important;
 }
 
 .output.output_2 {
+  background: yellow !important;
+}
+
+.output.output_3 {
   background: red !important;
 }
 

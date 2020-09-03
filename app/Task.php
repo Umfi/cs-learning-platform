@@ -287,6 +287,50 @@ class Task extends Model
         }
     }
 
+
+    /**
+     * Get the current task from user
+     *
+     * @param $topic
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     */
+    public static function getCurrentTask($topic)
+    {
+        $currentTask = null;
+
+        if (isset($topic->learningpath)) {
+
+            $lp = $topic->learningpath['drawflow']['Home']['data'];
+
+            foreach ($lp as $node) {
+                // find start node
+                if (count($node['inputs']['input_1']['connections']) == 0) {
+
+                    $startNodeID = $node['id'];
+                    $startNodeTaskID = $node['data']['task'];
+
+                    $startTask = Task::with(array('ratings' => function ($query) {
+                        $query->where('student_id', Auth::id());
+                    }))->where("topic_id", $topic->_id)
+                        ->where("_id", $startNodeTaskID)
+                        ->first();
+
+                    // if start task has rating, it's done. look for follow up
+                    if ($startTask->userRating) {
+                        $currentTask = self::getFollowUpTask($startTask, $startNodeID);
+                    } else {
+                        $currentTask = $startTask;
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        return $currentTask;
+    }
+
+
     /**
      * Calculate the follow-up task based on learning path
      *
@@ -301,43 +345,69 @@ class Task extends Model
 
         // this node has no follow up nodes = end node
         if ((count($startNode['outputs']['output_1']['connections']) == 0) &&
-            (count($startNode['outputs']['output_2']['connections']) == 0)){
+            (count($startNode['outputs']['output_2']['connections']) == 0) &&
+            (count($startNode['outputs']['output_3']['connections']) == 0)) {
             return null;
         }
 
         // student solved the previous task good, therefor follow the harder way on the learning path
-        if ($startTask->userRating->score > env('LEARNINGPATH_SCORE_SPLIT', 1.5)) {
+        if ($startTask->userRating->score > env('LEARNINGPATH_SCORE_SPLIT_GOOD', 2.5)) {
 
-            // check if follow task exists on the harder way, otherwise cheak if a follow task exists on the easy way
+            // check if follow task exists on the harder way, otherwise check if a follow task exists on the medium or easy way
             if (count($startNode['outputs']['output_1']['connections']) != 0) {
                 $targetNodeID = $startNode['outputs']['output_1']['connections'][0]['node'];
-                $targetNodeTaskID = $startTask->topic->learningpath['drawflow']['Home']['data'][$targetNodeID]['data']['task'];
             } else {
                 if (count($startNode['outputs']['output_2']['connections']) != 0) {
                     $targetNodeID = $startNode['outputs']['output_2']['connections'][0]['node'];
-                    $targetNodeTaskID = $startTask->topic->learningpath['drawflow']['Home']['data'][$targetNodeID]['data']['task'];
                 } else {
-                    return null;
+                    if (count($startNode['outputs']['output_3']['connections']) != 0) {
+                        $targetNodeID = $startNode['outputs']['output_3']['connections'][0]['node'];
+                   } else {
+                        return null;
+                    }
                 }
             }
-        } else {
-            // check if follow task exists on the easy way, otherwise check if a follow task exists on the harder way
+        } // student solved the previous task averagely well, therefor follow the medium way on the learning path
+        else if ($startTask->userRating->score > env('LEARNINGPATH_SCORE_SPLIT_MEDIUM', 1.5)) {
+
+            // check if follow task exists on the medium way, otherwise check if a follow task exists on the easy / hard way
             if (count($startNode['outputs']['output_2']['connections']) != 0) {
                 $targetNodeID = $startNode['outputs']['output_2']['connections'][0]['node'];
-                $targetNodeTaskID = $startTask->topic->learningpath['drawflow']['Home']['data'][$targetNodeID]['data']['task'];
             } else {
-                if (count($startNode['outputs']['output_1']['connections']) != 0) {
-                    $targetNodeID = $startNode['outputs']['output_1']['connections'][0]['node'];
-                    $targetNodeTaskID = $startTask->topic->learningpath['drawflow']['Home']['data'][$targetNodeID]['data']['task'];
+                if (count($startNode['outputs']['output_3']['connections']) != 0) {
+                    $targetNodeID = $startNode['outputs']['output_3']['connections'][0]['node'];
                 } else {
-                    return null;
+                    if (count($startNode['outputs']['output_1']['connections']) != 0) {
+                        $targetNodeID = $startNode['outputs']['output_1']['connections'][0]['node'];
+                    } else {
+                        return null;
+                    }
+                }
+            }
+        } // student solved the previous task not so good, therefor follow the weak way on the learning path
+        else {
+            // check if follow task exists on the easy way, otherwise check if a follow task exists on the medium/hard way
+            if (count($startNode['outputs']['output_3']['connections']) != 0) {
+                $targetNodeID = $startNode['outputs']['output_3']['connections'][0]['node'];
+             } else {
+                if (count($startNode['outputs']['output_2']['connections']) != 0) {
+                    $targetNodeID = $startNode['outputs']['output_2']['connections'][0]['node'];
+                } else {
+                    if (count($startNode['outputs']['output_1']['connections']) != 0) {
+                        $targetNodeID = $startNode['outputs']['output_1']['connections'][0]['node'];
+                    } else {
+                        return null;
+                    }
                 }
             }
         }
 
+        $targetNodeTaskID = $startTask->topic->learningpath['drawflow']['Home']['data'][$targetNodeID]['data']['task'];
+
         $targetTask = Task::with(array('ratings' => function ($query) {
             $query->where('student_id', Auth::id());
-        }))->where("topic_id", $startTask->topic->_id)->where("_id", $targetNodeTaskID)->first();
+        }))->where("topic_id", $startTask->topic->_id)
+            ->where("_id", $targetNodeTaskID)->first();
 
         // is this the current task (no rating exists) or continue search
         if ($targetTask->userRating) {

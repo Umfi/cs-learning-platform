@@ -84,40 +84,21 @@ class StudentController extends Controller
             $currentTask = null;
             $remainingTasks = null;
             return view('student/topic', compact('topic', 'currentTask', 'remainingTasks'));
-        }
+        } else {
+            $currentTask = Task::getCurrentTask($topic);
 
-        $lp = $topic->learningpath['drawflow']['Home']['data'];
-        foreach ($lp as $node) {
-            // find start node
-            if (count($node['inputs']['input_1']['connections']) == 0) {
-
-                //check if start node has rating (is done) and follow path to get current task
-                $startNodeID = $node['id'];
-                $startNodeTaskID = $node['data']['task'];
-
-                $startTask = Task::with(array('ratings' => function ($query) {
+            if (is_null($currentTask)) { // all tasks done
+                $remainingTasks = Task::with(array('ratings' => function ($query) {
                     $query->where('student_id', Auth::id());
-                }))->where("topic_id", $id)->where("_id", $startNodeTaskID)->first();
-
-                if ($startTask->userRating) {
-                    $currentTask = Task::getFollowUpTask($startTask, $startNodeID);
-                } else {
-                    $currentTask = $startTask;
-                }
-                break;
+                }))->where("topic_id", $id)->get();
+            } else {
+                $remainingTasks = Task::with(array('ratings' => function ($query) {
+                    $query->where('student_id', Auth::id());
+                }))->where("topic_id", $id)
+                    ->where("_id", "!=", $currentTask->_id)
+                    ->get();
             }
         }
-
-        if (is_null($currentTask)) { // all tasks done
-            $remainingTasks = Task::with(array('ratings' => function ($query) {
-                $query->where('student_id', Auth::id());
-            }))->where("topic_id", $id)->get();
-        } else {
-            $remainingTasks = Task::with(array('ratings' => function ($query) {
-                $query->where('student_id', Auth::id());
-            }))->where("topic_id", $id)->where("_id", "!=", $currentTask->_id)->get();
-        }
-
 
         return view('student/topic', compact('topic', 'currentTask', 'remainingTasks'));
     }
