@@ -104,7 +104,7 @@
 
                                     <!-- List all available modules here with same ref -->
                                     <!-- <examplemodule ref="activeModule" v-if="taskmodule === 'MODULE_EXAMPLE'" :taskid="taskid" :taskdata="task"></examplemodule> -->
-                                    <spreadsheet-module ref="activeModule" v-if="taskmodule === 'MODULE_SPREADSHEET'" :taskid="taskid" :taskdata="task"></spreadsheet-module>
+                                    <spreadsheet-module ref="activeModule" v-if="taskmodule === 'MODULE_SPREADSHEET' && loaded" :taskid="taskid" :taskdata="task"></spreadsheet-module>
 
                                 </div>
                                 <div :id="'extro-part-' + taskid" class="content" role="tabpanel" :aria-labelledby="'extro-part-trigger-' + taskid">
@@ -170,6 +170,7 @@
                     extro_filetype: "",
                     extro: "",
                 },
+                loaded: false,
                 moduleData: null,
                 timer: 0,
                 solveAttempts: 0,
@@ -191,6 +192,7 @@
                     .then(response => {
                         if (response.data.task) {
                             self.task = response.data.task;
+                            self.loaded = true;
                         }
                     }).catch(function (error) {
                     console.error(error);

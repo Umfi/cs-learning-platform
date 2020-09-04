@@ -425,7 +425,8 @@ class TeacherController extends Controller
                         'intro_type' => $intro_type,
                         'extro' => $extro,
                         'extro_type' => $extro_type,
-                        'active' => $request->get('active') == "1"
+                        'active' => $request->get('active') == "1",
+                        'tips' => array(),
                     ]);
                     $task->topic()->associate($topic);
                     $task->save();
