@@ -13,7 +13,7 @@
         </div>
 
         <div class="row mt-2">
-            <hot-table ref="hotTableSpecificationComponent" :data="resultData" :settings="$data._settings"></hot-table>
+            <hot-table ref="hotTableSolutionComponent" :data="resultData" :settings="$data._settings"></hot-table>
         </div>
 
         <div v-if="programming">
@@ -30,7 +30,7 @@
         </div>
 
         <div v-show="dataVisualization">
-            <spreadsheet-datavisualization ref="dataviscomponent" :taskid="taskid" :griddata="resultDataFormulaEvaluated"></spreadsheet-datavisualization>
+            <spreadsheet-datavisualization ref="dataviscomponent" :taskid="taskid"></spreadsheet-datavisualization>
         </div>
 
     </div>
@@ -147,7 +147,7 @@
         },
         mounted() {
 
-            this._hotInstanceSpecification = this.$refs.hotTableSpecificationComponent.hotInstance;
+            this._hotInstanceSpecification = this.$refs.hotTableSolutionComponent.hotInstance;
             var instSpecification = this._hotInstanceSpecification;
 
             var self = this;
@@ -182,7 +182,7 @@
                 self.resultDataFormulaEvaluated = mydata;
             });
 
-            this.dataVisualizationData = this.$refs.dataviscomponent.culturedata;
+            this.dataVisualizationData = this.$refs.dataviscomponent.data;
             this.dataVisualizationType = this.$refs.dataviscomponent.type;
 
             $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {

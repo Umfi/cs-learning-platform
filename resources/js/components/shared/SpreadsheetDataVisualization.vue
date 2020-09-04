@@ -7,9 +7,9 @@
                 <option value="bar">{{ $t('Bar Chart') }}</option>
                 <option value="pie">{{ $t('Pie Chart') }}</option>
             </select>
-            <button type="button" class="btn btn-sm form-control btn-success mr-2" @click="addData()">{{ $t('Add Data') }}</button>
             <button type="button" class="btn btn-sm form-control btn-success mr-2" @click="addDataset()">{{ $t('Add Dataset') }}</button>
             <button type="button" class="btn btn-sm form-control btn-danger mr-2" @click="resetChart()"><i class="fa-trash fas"></i> {{ $t('Reset') }}</button>
+            <button type="button" :title="$t('Help')" class="btn btn-warning mr-2" @click="showHelp()"><i class="fas fa-info"></i></button>
         </div>
          <hr>
         <canvas v-bind:id="'chart-' + taskid"></canvas>
@@ -22,7 +22,7 @@
     import Swal from 'sweetalert2/src/sweetalert2.js'
 
     export default {
-        props: ["taskid", "griddata"],
+        props: ["taskid"],
         data() {
             return {
                 _ctx: null,
@@ -32,6 +32,8 @@
                     labels: [],
                     datasets: []
                 },
+                _hot: null,
+                _lab: 1,
                 _options: {
                     responsive: true,
                     lineTension: 1,
@@ -39,65 +41,34 @@
                         yAxes: [{
                             ticks: {
                                 beginAtZero: true,
-                                padding: 25,
+                                min: 0
                             }
                         }]
                     }
                 }
             }
         },
-        mounted() {
-            this._ctx = document.getElementById("chart-" + this.$props.taskid);
-            this._chart = new Chart(this._ctx, {
+        async mounted() {
+
+            this.$data._hot = this.$parent.$refs.hotTableSolutionComponent.hotInstance;
+
+            this.$data._ctx = document.getElementById("chart-" + this.$props.taskid);
+            this.$data._chart = new Chart(this.$data._ctx, {
                 type: this.type,
                 data: this.data,
-                options: this._options
+                options: this.$data._options
             });
         },
         methods: {
             updateChart() {
-                this._chart.destroy();
-                this._chart = new Chart(this._ctx, {
+                this.$data._chart.destroy();
+                this.$data._chart = new Chart(this.$data._ctx, {
                     type: this.type,
                     data: this.data,
-                    options: this._options
+                    options: this.$data._options
                 });
             },
-            async addData() {
-                var self = this;
-
-                const { value: newLabel } = await Swal.fire({
-                    title: self.$t('Add Data'),
-                    text: self.$t('Select a field like A1. Or create multiple A1, B1, ...'),
-                    input: 'text',
-                    inputPlaceholder: 'A1',
-                    showCancelButton: true,
-                    inputValidator: (value) => {
-                        if (!value) {
-                            return self.$t('You need to write something!');
-                        }
-                    }
-                })
-
-                if (newLabel) {
-
-                    var parts = newLabel.split(",").map(function(item) {
-                        return item.trim();
-                    });
-
-                    for (var index = 0; index < parts.length; ++index) {
-
-                        var label = this._extractDataFromGrid(parts[index]);
-
-                        if (label) {
-                            this.data.labels.push(label);
-                        }
-                    }
-
-                    this._chart.update();
-                }
-            },
-            async addDataset() {
+            addDataset() {
                 var self = this;
 
                 var dynamicColors = function() {
@@ -107,48 +78,62 @@
                     return "rgb(" + r + "," + g + "," + b + ")";
                 };
 
-                const { value: formValues } = await Swal.fire({
-                    title: self.$t('Add Dataset'),
-                    html:
-                        self.$t('Label') + ': <input id="swal-input1" class="swal2-input" placeholder="A1">' +
-                        self.$t('Data') + ': <input id="swal-input2" class="swal2-input" placeholder="A2,A3,A4,A5,...">',
-                    focusConfirm: false,
-                    showCancelButton: true,
-                    preConfirm: () => {
-                        return [
-                            document.getElementById('swal-input1').value,
-                            document.getElementById('swal-input2').value
-                        ]
+                var selection = this.$data._hot.getSelected();
+
+                if  (typeof selection === "undefined") {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: self.$t('Error'),
+                        text: self.$t('No data in table selected.')
+                    });
+
+                    return;
+                }
+
+                for (var i = 0; i < selection.length; i += 1) {
+
+                    var item = selection[i];
+                    var startRow = Math.min(item[0], item[2]);
+                    var endRow = Math.max(item[0], item[2]);
+                    var startCol = Math.min(item[1], item[3]);
+                    var endCol = Math.max(item[1], item[3]);
+
+                    if (startRow < 0) {
+                        startRow = 0;
                     }
-                })
+                    if (startCol < 0) {
+                        startCol = 0;
+                    }
 
-                if (formValues) {
-                    let label = this._extractDataFromGrid(formValues[0]);
-
-                    if (label) {
-                        var newDataset = {
-                            label: label,
-                            backgroundColor: dynamicColors(),
-                            data: [],
-                            borderWidth: 3
-                        };
-
-                        var parts = formValues[1].split(",").map(function(item) {
-                            return item.trim();
+                    if ((startCol == endCol) && (startRow == endRow)) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: self.$t('Error'),
+                            text: self.$t('Not enough data selected.')
                         });
-
-                        for (var index = 0; index < parts.length; ++index) {
-
-                            var data = this._extractDataFromGrid(parts[index]);
-
-                            if (data) {
-                                newDataset.data.push(data);
-                            }
-                        }
-
-                        this.data.datasets.push(newDataset);
-                        this._chart.update();
+                        return;
                     }
+
+                    var label = this.$data._hot.getDataAtCell(startRow, startCol);
+                    var newDataset = {
+                        label: label,
+                        backgroundColor: dynamicColors(),
+                        data: [],
+                        borderWidth: 3
+                    };
+
+                    for (var rowIndex = startRow+1; rowIndex <= endRow; rowIndex += 1) {
+                        for (var columnIndex = startCol; columnIndex <= endCol; columnIndex += 1) {
+                            var val = this.$data._hot.getDataAtCell(rowIndex, columnIndex);
+                            newDataset.data.push(val);
+                        }
+                    }
+
+                    this.data.labels.push(this.$data._lab);
+                    this.data.datasets.push(newDataset);
+                    this.$data._chart.update();
+                    this.$data._lab += 1;
                 }
             },
             resetChart() {
@@ -156,29 +141,16 @@
                     labels: [],
                     datasets: []
                 };
+                this.$data._lab = 1;
                 this.updateChart();
             },
-            _extractDataFromGrid(text) {
-                if (text === "") {
-                    return false;
-                }
-
-                // is first char a letter
-                if  (!text.charAt(0).match(/[a-z]/i)) {
-                    return false;
-                }
-
-                var col = text.toLowerCase().charCodeAt(0) - 97;
-                var _row = text.substring(1) - 1;
-
-                // is rest of text a number
-                if (Number.isInteger(_row)) {
-                    var row = parseInt(_row);
-                } else {
-                    return false;
-                }
-
-                return this.$props.griddata[row][col];
+            showHelp() {
+                Swal.fire({
+                    icon: 'question',
+                    title: this.$t('Help'),
+                    html:
+                        "<p>" + this.$t('To add a record, you must select the data in the table. The value in the cell that was selected first will be used as the label.') + "</p>"
+                });
             }
         }
     }

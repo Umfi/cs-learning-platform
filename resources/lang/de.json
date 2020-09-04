@@ -218,5 +218,8 @@
     "Currency": "Währung",
     "Numeric": "Numerisch",
     "Percent": "Prozent",
-    "Date": "Datum"
+    "Date": "Datum",
+    "No data in table selected.": "Keine Daten in Tabelle ausgewählt.",
+    "Not enough data selected.": "Nicht genügend Daten ausgewählt.",
+    "To add a record, you must select the data in the table. The value in the cell that was selected first will be used as the label.": "Um einen Datensatz hinzuzufügen, musst du die Daten in der Tabelle selektieren. Dabei wird der Wert der in der Zelle der als erstes selektiert wurde als Beschriftung verwendet."
 }

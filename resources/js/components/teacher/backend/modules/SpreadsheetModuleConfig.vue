@@ -68,7 +68,7 @@
                         <hot-table ref="hotTableSolutionComponent" :data="solutionData" :settings="$data._settings_solution"></hot-table>
                     </div>
                     <div v-show="dataVisualization">
-                        <spreadsheet-datavisualization ref="dataviscomponent" :taskid="taskid" :griddata="solutionDataFormulaEvaluated"></spreadsheet-datavisualization>
+                        <spreadsheet-datavisualization ref="dataviscomponent" :taskid="taskid"></spreadsheet-datavisualization>
                     </div>
                 </div>
             </div>
@@ -115,6 +115,8 @@
                     rowHeaders: true,
                     colHeaders: true,
                     formulas: true,
+                    outsideClickDeselects: false,
+                    selectionMode: 'multiple',
                     stretchH: 'all',
                     width: '100%',
                     height: 200,
@@ -185,6 +187,8 @@
                     rowHeaders: true,
                     colHeaders: true,
                     formulas: true,
+                    outsideClickDeselects: false,
+                    selectionMode: 'multiple',
                     stretchH: 'all',
                     width: '100%',
                     height: 200,
