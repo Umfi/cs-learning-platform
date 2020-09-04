@@ -212,5 +212,10 @@
     "Could not send password reset email to user.": "Could not send password reset email to user.",
     "Check solution for content or formula used:": "Check solution for content or formula used:",
     "Content": "Content",
-    "Formula": "Formula"
+    "Formula": "Formula",
+    "Change cell format type": "Change cell format type",
+    "Currency": "Currency",
+    "Numeric": "Numeric",
+    "Percent": "Percent",
+    "Date": "Date"
 }

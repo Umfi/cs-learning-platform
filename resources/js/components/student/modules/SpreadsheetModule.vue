@@ -49,6 +49,8 @@
     export default {
         props: ["taskid", "taskdata"],
         data() {
+            var self = this;
+
             return {
                 programming: false,
                 dataVisualization: false,
@@ -73,6 +75,67 @@
                     width: '100%',
                     stretchH: 'all',
                     height: 200,
+                    contextMenu: {
+                        items: {
+                            "set_column_type": {
+                                name: self.$t('Change cell format type'),
+                                submenu: {
+                                    items: [
+                                        {
+                                            // Key must be in the form "parent_key:child_key"
+                                            key: 'set_column_type:text',
+                                            name: self.$t('Text'),
+                                            callback: function(key, selection, clickEvent) {
+                                                setTimeout(function() {
+                                                    self._setCellType('text');
+                                                }, 0);
+                                            }
+                                        },
+                                        {
+                                            // Key must be in the form "parent_key:child_key"
+                                            key: 'set_column_type:numeric',
+                                            name: self.$t('Numeric'),
+                                            callback: function(key, selection, clickEvent) {
+                                                setTimeout(function() {
+                                                    self._setCellType('numeric');
+                                                }, 0);
+                                            }
+                                        },
+                                        {
+                                            // Key must be in the form "parent_key:child_key"
+                                            key: 'set_column_type:currency',
+                                            name: self.$t('Currency'),
+                                            callback: function(key, selection, clickEvent) {
+                                                setTimeout(function() {
+                                                    self._setCellType('currency');
+                                                }, 0);
+                                            }
+                                        },
+                                        {
+                                            // Key must be in the form "parent_key:child_key"
+                                            key: 'set_column_type:percent',
+                                            name: self.$t('Percent'),
+                                            callback: function(key, selection, clickEvent) {
+                                                setTimeout(function() {
+                                                    self._setCellType('percent');
+                                                }, 0);
+                                            }
+                                        },
+                                        {
+                                            // Key must be in the form "parent_key:child_key"
+                                            key: 'set_column_type:date',
+                                            name: self.$t('Date'),
+                                            callback: function(key, selection, clickEvent) {
+                                                setTimeout(function() {
+                                                    self._setCellType('date');
+                                                }, 0);
+                                            }
+                                        },
+                                    ]
+                                }
+                            },
+                        }
+                    },
                     licenseKey: process.env.MIX_HANDSONTABLE_KEY
                 },
             };
@@ -82,11 +145,10 @@
             PrismEditor
         },
         mounted() {
-
             this._hotInstanceSpecification = this.$refs.hotTableSpecificationComponent.hotInstance;
             var instSpecification = this._hotInstanceSpecification;
 
-            this.dataVisualizationData = this.$refs.dataviscomponent.data;
+            this.dataVisualizationData = this.$refs.dataviscomponent.culturedata;
             this.dataVisualizationType = this.$refs.dataviscomponent.type;
 
             var self = this;
@@ -108,7 +170,7 @@
                 }
 
                 self.resultDataFormulaEvaluated = mydata;
-            })
+            });
 
 
             $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {
@@ -226,6 +288,13 @@
                     var endRow = Math.max(item[0], item[2]);
                     var startCol = Math.min(item[1], item[3]);
                     var endCol = Math.max(item[1], item[3]);
+
+                    if (startRow < 0 ) {
+                        startRow = 0;
+                    }
+                    if (startCol < 0 ) {
+                        startCol = 0;
+                    }
 
                     for (var rowIndex = startRow; rowIndex <= endRow; rowIndex += 1) {
                         for (var columnIndex = startCol; columnIndex <= endCol; columnIndex += 1) {
@@ -350,6 +419,71 @@
                     data.push(this._getData(arg));
                 }
                 return Math.max(...data);
+            },
+            _setCellType(type) {
+                var selection = this._hotInstanceSpecification.getSelected();
+
+                for (var i = 0; i < selection.length; i += 1) {
+
+                    var item = selection[i];
+                    var startRow = Math.min(item[0], item[2]);
+                    var endRow = Math.max(item[0], item[2]);
+                    var startCol = Math.min(item[1], item[3]);
+                    var endCol = Math.max(item[1], item[3]);
+
+                    if (startRow < 0 ) {
+                        startRow = 0;
+                    }
+                    if (startCol < 0 ) {
+                        startCol = 0;
+                    }
+
+                    for (var rowIndex = startRow; rowIndex <= endRow; rowIndex += 1) {
+                        for (var columnIndex = startCol; columnIndex <= endCol; columnIndex += 1) {
+
+                            if (type === "date") {
+                                this._hotInstanceSpecification.setCellMetaObject(rowIndex, columnIndex, {
+                                    type: "date",
+                                    dateFormat: 'DD.MM.YYYY'
+                                });
+                            } else if (type === "currency") {
+                                this._hotInstanceSpecification.setCellMetaObject(rowIndex, columnIndex, {
+                                    type: "numeric",
+                                    numericFormat: {
+                                        pattern: '0,0.00 $',
+                                        culture: 'de-DE',
+                                    },
+                                });
+                            } else if (type === "percent") {
+                                this._hotInstanceSpecification.setCellMetaObject(rowIndex, columnIndex, {
+                                    type: "numeric",
+                                    numericFormat: {
+                                        pattern: {
+                                            output: "percent",
+                                            mantissa: 2
+                                        },
+                                    },
+                                });
+                            } else if (type === "numeric") {
+                                this._hotInstanceSpecification.setCellMetaObject(rowIndex, columnIndex, {
+                                    type: "numeric",
+                                    numericFormat: {
+                                        pattern: {
+                                            thousandSeparated: true
+                                        },
+                                    },
+                                });
+                            } else {
+                                this._hotInstanceSpecification.setCellMetaObject(rowIndex, columnIndex, {
+                                    type: type
+                                });
+                            }
+                        }
+                    }
+
+                    this._hotInstanceSpecification.render();
+
+                }
             },
         }
     }
