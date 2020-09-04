@@ -85,6 +85,7 @@
 
     import { HotTable } from '@handsontable/vue';
     import Handsontable from 'handsontable';
+    import formulaMapping from "../../../../configs/formulaMapping";
 
     export default {
         props: ["taskid"],
@@ -256,19 +257,33 @@
             HotTable,
         },
         mounted() {
-            //console.log('TaskID:' + this.$props.taskid);
-
             this._hotInstanceSpecification = this.$refs.hotTableSpecificationComponent.hotInstance;
             this._hotInstanceSolution = this.$refs.hotTableSolutionComponent.hotInstance;
 
             var instSpecification = this._hotInstanceSpecification;
             var instSolution = this._hotInstanceSolution;
 
-            this.dataVisualizationData = this.$refs.dataviscomponent.data;
-            this.dataVisualizationType = this.$refs.dataviscomponent.type;
-
             var self = this;
 
+            // Add custom functions - mapping german, english function name
+            var formulaInstSpecification = instSpecification.getPlugin('formulas');
+            for (let [englishFunctionName, germanFunctionName] of formulaMapping.entries()) {
+                formulaInstSpecification.sheet.parser.setFunction(germanFunctionName, function(params) {
+                    let newFormular = englishFunctionName + "(" + params.join(',') + ")";
+                    let res = formulaInstSpecification.sheet.parser.parse(newFormular);
+                    return res.result;
+                });
+            }
+            var formulaInstSolution = instSolution.getPlugin('formulas');
+            for (let [englishFunctionName, germanFunctionName] of formulaMapping.entries()) {
+                formulaInstSolution.sheet.parser.setFunction(germanFunctionName, function(params) {
+                    let newFormular = englishFunctionName + "(" + params.join(',') + ")";
+                    let res = formulaInstSolution.sheet.parser.parse(newFormular);
+                    return res.result;
+                });
+            }
+
+            // store data of evaluated grid (formula -> value)
             instSolution.addHook('afterChange', function(){
 
                 var mydata = self._hotInstanceSolution.getData();
@@ -287,6 +302,10 @@
 
                 self.solutionDataFormulaEvaluated = mydata;
             });
+
+
+            this.dataVisualizationData = this.$refs.dataviscomponent.data;
+            this.dataVisualizationType = this.$refs.dataviscomponent.type;
 
 
             $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {

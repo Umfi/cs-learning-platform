@@ -45,6 +45,7 @@
     import PrismEditor from 'vue-prism-editor'
     import "vue-prism-editor/dist/VuePrismEditor.css";
     import Swal from 'sweetalert2/src/sweetalert2.js'
+    import formulaMapping from "../../../configs/formulaMapping";
 
     export default {
         props: ["taskid", "taskdata"],
@@ -145,14 +146,23 @@
             PrismEditor
         },
         mounted() {
+
             this._hotInstanceSpecification = this.$refs.hotTableSpecificationComponent.hotInstance;
             var instSpecification = this._hotInstanceSpecification;
 
-            this.dataVisualizationData = this.$refs.dataviscomponent.culturedata;
-            this.dataVisualizationType = this.$refs.dataviscomponent.type;
-
             var self = this;
 
+            // Add custom functions - mapping german, english function name
+            var formulaInst = instSpecification.getPlugin('formulas');
+            for (let [englishFunctionName, germanFunctionName] of formulaMapping.entries()) {
+                formulaInst.sheet.parser.setFunction(germanFunctionName, function(params) {
+                    let newFormular = englishFunctionName + "(" + params.join(',') + ")";
+                    let res = formulaInst.sheet.parser.parse(newFormular);
+                    return res.result;
+                });
+            }
+
+            // store data of evaluated grid (formula -> value)
             instSpecification.addHook('afterChange', function(){
 
                 var mydata = self._hotInstanceSpecification.getData();
@@ -172,6 +182,8 @@
                 self.resultDataFormulaEvaluated = mydata;
             });
 
+            this.dataVisualizationData = this.$refs.dataviscomponent.culturedata;
+            this.dataVisualizationType = this.$refs.dataviscomponent.type;
 
             $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {
                 var data = self.$props.taskdata;
@@ -195,7 +207,6 @@
                     instSpecification.render();
                 }, 500);
             });
-
 
         },
         methods: {
