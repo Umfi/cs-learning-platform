@@ -5,7 +5,7 @@
 <script>
 
     export default {
-        props: ["taskid", "taskdata"],
+        props: ["taskid", "taskdata", "type"],
         data() {
             return {
                 example: null,
@@ -19,10 +19,17 @@
         mounted() {
             var self = this;
 
-            $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {
-                var data = self.$props.taskdata;
-                self.example = data.specification.example;
-            });
+            if (this.$props.type === "assignment") { // Open the task
+                $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {
+                    var data = self.$props.taskdata;
+                    self.example = data.specification.example;
+                });
+            } else if (this.$props.type === "solution") { // Or open the task solution
+                $('#taskSolutionModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {
+                    var data = self.$props.taskdata;
+                    self.example = data.specification.example;
+                });
+            }
         },
         methods: {
             exampleFunc() {

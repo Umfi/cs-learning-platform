@@ -287,26 +287,6 @@
                 });
             }
 
-            // store data of evaluated grid (formula -> value)
-            instSolution.addHook('afterChange', function(){
-
-                var mydata = self._hotInstanceSolution.getData();
-
-                for (var i = 0; i < mydata.length; i++){
-                    for(var j = 0; j < mydata[i].length; j++){
-                        if (mydata[i][j] !== null) {
-                            if (mydata[i][j].toString().indexOf('=') > -1) {
-                                mydata[i][j] = self._hotInstanceSolution.getDataAtCell(j, i);
-                            }
-                        } else {
-                            mydata[i][j] = "";
-                        }
-                    }
-                }
-
-                self.solutionDataFormulaEvaluated = mydata;
-            });
-
 
             this.dataVisualizationData = this.$refs.dataviscomponent.data;
             this.dataVisualizationType = this.$refs.dataviscomponent.type;
@@ -349,17 +329,16 @@
 
                             setTimeout(function(){
                                 self._hotInstanceSpecification.loadData(data.specification.data);
-                                self.specificationData = self._hotInstanceSpecification.getData();
+                                self.specificationData = self._hotInstanceSpecification.getSourceData();
 
                                 self.specificationCode = data.specification.code;
 
                                 self._hotInstanceSolution.loadData(data.solution.data);
-                                self.solutionData = self._hotInstanceSolution.getData();
+                                self.solutionData = self._hotInstanceSolution.getSourceData();
 
                                 self.solutionCode = data.solution.code;
 
                                 if (self.dataVisualization) {
-
                                     self.$refs.dataviscomponent.data = data.solution.dataVisualizationData;
                                     self.$refs.dataviscomponent.type = data.solution.dataVisualizationType;
                                     self.$refs.dataviscomponent.updateChart();
@@ -418,15 +397,17 @@
                 this._hotInstanceSpecification.clear();
             },
             syncData() {
-                var spec = this._hotInstanceSpecification.getData();
+                var spec = this._hotInstanceSpecification.getSourceData();
                 this._hotInstanceSolution.loadData(spec);
             },
             /**
              * Called before global store method
              */
             _preStore() {
-                this.specificationData = this._hotInstanceSpecification.getData();
-                this.solutionData = this._hotInstanceSolution.getData();
+                this.specificationData = this._hotInstanceSpecification.getSourceData();
+                this.solutionDataFormulaEvaluated = this._hotInstanceSolution.getData();
+                this.solutionData = this._hotInstanceSolution.getSourceData();
+
                 this.dataVisualizationData = this.$refs.dataviscomponent.data;
                 this.dataVisualizationType = this.$refs.dataviscomponent.type;
             },

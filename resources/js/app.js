@@ -38,6 +38,7 @@ Vue.component('tip-list', require('./components/teacher/backend/TipComponent.vue
 Vue.component('learning-path', require('./components/teacher/backend/LearningPathComponent.vue').default);
 Vue.component('spreadsheetmoduleconfig', require('./components/teacher/backend/modules/SpreadsheetModuleConfig.vue').default);
 Vue.component('task', require('./components/student/TaskComponent.vue').default);
+Vue.component('task-solution', require('./components/student/TaskSolutionViewerComponent.vue').default);
 Vue.component('spreadsheet-module', require('./components/student/modules/SpreadsheetModule.vue').default);
 Vue.component('spreadsheet-code-info', require('./components/shared/SpreadsheetCodeInfo.vue').default);
 Vue.component('spreadsheet-formula-info', require('./components/shared/SpreadsheetFormulaInfo.vue').default);

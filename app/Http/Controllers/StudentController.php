@@ -138,6 +138,31 @@ class StudentController extends Controller
     }
 
     /**
+     * Get Task Details
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getTaskDataWithUserSolution($id)
+    {
+        $task = Task::find($id);
+
+        if ($task) {
+            unset($task->solution);
+
+            // Export property to json
+            $task->intro_filetype = $task->intro_filetype;
+            $task->extro_filetype = $task->extro_filetype;
+
+            $rating = Rating::where('task_id', $task->_id)->where('student_id', Auth::id())->first();
+            $task->solution = json_decode($rating->solution_data);
+
+            return response()->json([
+                'task' => $task,
+            ], \Illuminate\Http\Response::HTTP_OK);
+        }
+    }
+
+    /**
      * Send a solution and check if it's correct
      *
      * @param Request $request

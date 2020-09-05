@@ -103,8 +103,8 @@
                                     <hr>
 
                                     <!-- List all available modules here with same ref -->
-                                    <!-- <examplemodule ref="activeModule" v-if="taskmodule === 'MODULE_EXAMPLE'" :taskid="taskid" :taskdata="task"></examplemodule> -->
-                                    <spreadsheet-module ref="activeModule" v-if="taskmodule === 'MODULE_SPREADSHEET' && loaded" :taskid="taskid" :taskdata="task"></spreadsheet-module>
+                                    <!-- <examplemodule ref="activeModule" v-if="taskmodule === 'MODULE_EXAMPLE'" :taskid="taskid" :taskdata="task" :type="'assignment'"></examplemodule> -->
+                                    <spreadsheet-module ref="activeModule" v-if="taskmodule === 'MODULE_SPREADSHEET' && loaded" :taskid="taskid" :taskdata="task" :type="'assignment'"></spreadsheet-module>
 
                                 </div>
                                 <div :id="'extro-part-' + taskid" class="content" role="tabpanel" :aria-labelledby="'extro-part-trigger-' + taskid">

@@ -30,7 +30,7 @@
         </div>
 
         <div v-show="dataVisualization">
-            <spreadsheet-datavisualization ref="dataviscomponent" :taskid="taskid"></spreadsheet-datavisualization>
+            <spreadsheet-datavisualization ref="dataviscomponent" :taskid="taskid" :modalType="type"></spreadsheet-datavisualization>
         </div>
 
     </div>
@@ -48,7 +48,7 @@
     import formulaMapping from "../../../configs/formulaMapping";
 
     export default {
-        props: ["taskid", "taskdata"],
+        props: ["taskid", "taskdata", "type"],
         data() {
             var self = this;
 
@@ -162,51 +162,62 @@
                 });
             }
 
-            // store data of evaluated grid (formula -> value)
-            instSpecification.addHook('afterChange', function(){
-
-                var mydata = self._hotInstanceSpecification.getData();
-
-                for (var i = 0; i < mydata.length; i++){
-                    for(var j = 0; j < mydata[i].length; j++){
-                        if (mydata[i][j] !== null) {
-                            if (mydata[i][j].toString().indexOf('=') > -1) {
-                                mydata[i][j] = self._hotInstanceSpecification.getDataAtCell(j, i);
-                            }
-                        } else {
-                            mydata[i][j] = "";
-                        }
-                    }
-                }
-
-                self.resultDataFormulaEvaluated = mydata;
-            });
-
             this.dataVisualizationData = this.$refs.dataviscomponent.data;
             this.dataVisualizationType = this.$refs.dataviscomponent.type;
 
-            $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {
-                var data = self.$props.taskdata;
-                self.programming = data.specification.programming;
-                self.dataVisualization = data.specification.dataVisualization;
+            if (this.$props.type === "assignment") {
+                $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {
+                    var data = self.$props.taskdata;
+                    self.programming = data.specification.programming;
+                    self.dataVisualization = data.specification.dataVisualization;
 
-                self._hotInstanceSpecification.loadData(data.specification.data);
-                self.specificationData = self._hotInstanceSpecification.getData();
-                self.specificationCode = '' + data.specification.code;
+                    self._hotInstanceSpecification.loadData(data.specification.data);
+                    self.specificationData = self._hotInstanceSpecification.getSourceData();
+                    self.specificationCode = '' + data.specification.code;
 
-                self.resultData = self._hotInstanceSpecification.getData();
-                self.resultCode = '' + data.specification.code;
+                    self.resultData = self._hotInstanceSpecification.getSourceData();
+                    self.resultCode = '' + data.specification.code;
 
-                window.table = instSpecification;
-                window.table.updateSettings({ readOnly: self.programming});
-            });
+                    window.table = instSpecification;
+                    window.table.updateSettings({readOnly: self.programming});
+                });
 
-            var stepperEl = document.querySelector('#bs-stepper-' + self.$props.taskid);
-            stepperEl.addEventListener('shown.bs-stepper', function (event) {
-                setTimeout(function(){
-                    instSpecification.render();
-                }, 500);
-            });
+                var stepperEl = document.querySelector('#bs-stepper-' + self.$props.taskid);
+                stepperEl.addEventListener('shown.bs-stepper', function (event) {
+                    setTimeout(function(){
+                        instSpecification.render();
+                    }, 500);
+                });
+            } else if (this.$props.type === "solution") {
+
+                $('#taskSolutionModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {
+                    var data = self.$props.taskdata;
+
+                    setTimeout(function(){
+
+                        self.programming = data.specification.programming;
+                        self.dataVisualization = data.specification.dataVisualization;
+
+                        self._hotInstanceSpecification.loadData(data.solution.resultData);
+                        self.specificationData = self._hotInstanceSpecification.getSourceData();
+                        self.specificationCode = '' + data.specification.code;
+
+                        self.resultData = self._hotInstanceSpecification.getSourceData();
+                        self.resultCode = '' + data.solution.resultCode;
+
+                        if (self.dataVisualization) {
+                            self.$refs.dataviscomponent.data = data.solution.dataVisualizationData;
+                            self.$refs.dataviscomponent.type = data.solution.dataVisualizationType;
+                            self.$refs.dataviscomponent.updateChart();
+                        }
+
+                        window.table = instSpecification;
+                        window.table.updateSettings({ readOnly: self.programming});
+                        instSpecification.render();
+                    }, 500);
+                });
+            }
+
 
         },
         methods: {
@@ -323,7 +334,8 @@
             _preStore() {
                 this.dataVisualizationData = this.$refs.dataviscomponent.data;
                 this.dataVisualizationType = this.$refs.dataviscomponent.type;
-                this.resultData = this._hotInstanceSpecification.getData();
+                this.resultData = this._hotInstanceSpecification.getSourceData();
+                this.resultDataFormulaEvaluated = this._hotInstanceSpecification.getData();
             },
             _preparseCode(code) {
                 var tmp = '' + code;

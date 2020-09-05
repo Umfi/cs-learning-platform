@@ -220,5 +220,7 @@
     "Date": "Date",
     "No data in table selected.": "No data in table selected.",
     "Not enough data selected.": "Not enough data selected.",
-    "To add a record, you must select the data in the table. The value in the cell that was selected first will be used as the label.": "To add a record, you must select the data in the table. The value in the cell that was selected first will be used as the label."
+    "To add a record, you must select the data in the table. The value in the cell that was selected first will be used as the label.": "To add a record, you must select the data in the table. The value in the cell that was selected first will be used as the label.",
+    "Show my solution": "Show my solution",
+    "Edit module specific task config": "Edit module specific task config"
 }

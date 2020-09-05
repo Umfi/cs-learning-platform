@@ -1,6 +1,6 @@
 <template>
     <div class="d-inline-block">
-        <button type="button" class="btn btn-secondary" title="Edit module specific task config" @click="openTaskModuleSettingsModal(taskid)"><i class="fas fa-cog"></i></button>
+        <button type="button" class="btn btn-secondary" :title="$t('Edit module specific task config')" @click="openTaskModuleSettingsModal(taskid)"><i class="fas fa-cog"></i></button>
         <div class="modal" :id="'taskModuleModal-' + taskid">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">

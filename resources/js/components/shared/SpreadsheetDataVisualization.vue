@@ -12,7 +12,7 @@
             <button type="button" :title="$t('Help')" class="btn btn-warning mr-2" @click="showHelp()"><i class="fas fa-info"></i></button>
         </div>
          <hr>
-        <canvas v-bind:id="'chart-' + taskid"></canvas>
+        <canvas v-bind:id="'chart-' + modalType + '-' + taskid"></canvas>
     </div>
 </template>
 
@@ -22,7 +22,7 @@
     import Swal from 'sweetalert2/src/sweetalert2.js'
 
     export default {
-        props: ["taskid"],
+        props: ["taskid", "modalType"],
         data() {
             return {
                 _ctx: null,
@@ -52,7 +52,7 @@
 
             this.$data._hot = this.$parent.$refs.hotTableSolutionComponent.hotInstance;
 
-            this.$data._ctx = document.getElementById("chart-" + this.$props.taskid);
+            this.$data._ctx = document.getElementById('chart-' + this.$props.modalType + '-' + this.$props.taskid);
             this.$data._chart = new Chart(this.$data._ctx, {
                 type: this.type,
                 data: this.data,

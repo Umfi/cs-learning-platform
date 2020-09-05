@@ -47,7 +47,7 @@
                                                         <br>
                                                         <!-- Task -->
                                                         <task taskid="{{ $currentTask->_id }}" taskmodule="{{ $currentTask->module }}"></task>
-                                                    </div>
+                                                     </div>
                                                 </div>
                                             </div>
                                         @endif
@@ -82,6 +82,9 @@
                                                         <task taskid="{{ $task->_id }}" taskmodule="{{ $task->module }}"></task>
 
                                                         @if ($task->userRating)
+
+                                                            <task-solution taskid="{{ $task->_id }}" taskmodule="{{ $task->module }}"></task-solution>
+
                                                             <div class="float-right">
                                                                 <button type="button" title="{{ __("Rating") }}" class="btn">
                                                                     <i class="fas fa-trophy fa-2x text-gold"></i> {{ $task->userRating->score . "|" . $task->userRating->score_max }}
