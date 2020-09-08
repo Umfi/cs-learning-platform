@@ -9,6 +9,13 @@
                 <button type="button" class="btn btn-outline-dark btn-sm mr-2" @click="formatCell('italic')"><i class="fas fa-italic"></i></button>
                 <button type="button" class="btn btn-outline-dark btn-sm mr-2" @click="formatCell('underline')"><i class="fas fa-underline"></i></button>
                 <button type="button" class="btn btn-outline-dark btn-sm mr-2" @click="formatCell('center')"><i class="fas fa-align-center"></i></button>
+                <select :class="'form-control-sm ' + $data._selectedColor" v-model="$data._selectedColor" @click="formatCell('background')">
+                    <option class="bg-white" value="bg-white"></option>
+                    <option class="bg-danger" value="bg-danger"></option>
+                    <option class="bg-warning" value="bg-warning"></option>
+                    <option class="bg-success" value="bg-success"></option>
+                    <option class="bg-info" value="bg-info"></option>
+                </select>
             </div>
         </div>
 
@@ -66,6 +73,7 @@
                 * INTERNAL IS GOING TO BE EXCLUDED FROM EXPORT
                 * starts with _
                 * */
+                _selectedColor: 'bg-white',
                 _hotInstanceSpecification: null,
                 _settings: {
                     rowHeaders: true,
@@ -264,7 +272,18 @@
 
                     for (var rowIndex = startRow; rowIndex <= endRow; rowIndex += 1) {
                         for (var columnIndex = startCol; columnIndex <= endCol; columnIndex += 1) {
-                            self.toggleCellMeta(rowIndex, columnIndex, 'className', 'spreadsheetmodule-cell-' + style);
+
+                            if (style !== "background") {
+                                self.toggleCellMeta(rowIndex, columnIndex, 'className', 'spreadsheetmodule-cell-' + style);
+                            } else {
+                                self.removeCellMeta(rowIndex, columnIndex, 'className', 'bg-white');
+                                self.removeCellMeta(rowIndex, columnIndex, 'className', 'bg-danger');
+                                self.removeCellMeta(rowIndex, columnIndex, 'className', 'bg-warning');
+                                self.removeCellMeta(rowIndex, columnIndex, 'className', 'bg-success');
+                                self.removeCellMeta(rowIndex, columnIndex, 'className', 'bg-info');
+                                self.addCellMeta(rowIndex, columnIndex, 'className', this.$data._selectedColor);
+                            }
+
                         }
                     }
 
