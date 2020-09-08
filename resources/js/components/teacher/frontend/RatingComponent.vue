@@ -4,7 +4,7 @@
 
         <!-- Course Rating Modal -->
         <div class="modal" :id="'courseRatingModal-' + course">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <!-- Modal Header -->
                     <div class="modal-header">
@@ -12,7 +12,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <div class="row-cols-1">
+                        <div class="d-flex justify-content-center">
                             <div :id="'carouselControls-' + course" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner">
                                     <div v-if="loaded" v-for="(rating, key, index) in ratings" v-bind:key="index" :class="['carousel-item', (index === 0 ? 'active' : '')]">
@@ -31,6 +31,35 @@
                                     <span class="sr-only">Next</span>
                                 </a>
                             </div>
+                        </div>
+
+                        <div class="row-cols-1" v-if="loaded">
+                            <table :id="'ratingTable-' + course" class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>{{ $t("Task") }}</th>
+                                    <th>{{ $t("Topic") }}</th>
+                                    <th>{{ $t("Student") }}</th>
+                                    <th>{{ $t("Score") }}</th>
+                                    <th>{{ $t("Max Score") }}</th>
+                                    <th>{{ $t("Used Tips") }}</th>
+                                    <th>{{ $t("Time Needed") }}</th>
+                                    <th>{{ $t("Solve Attempts") }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="rating in all">
+                                    <td>{{ rating.task }}</td>
+                                    <td>{{ rating.topic }}</td>
+                                    <td>{{ rating.studentName }}</td>
+                                    <td>{{ rating.score }}</td>
+                                    <td>{{ rating.score_max }}</td>
+                                    <td>{{ rating.used_tips }}</td>
+                                    <td>{{ rating.required_time }}</td>
+                                    <td>{{ rating.solve_attempts }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -52,6 +81,7 @@
             return {
                 loaded: false,
                 ratings: [],
+                all: []
             };
         },
         async mounted() {
@@ -60,25 +90,27 @@
                 .then(response => {
                     if (response.data.ratings) {
                         self.ratings = response.data.ratings;
+                        self.all = response.data.all;
 
-                        if (response.data.ratings.length == 0) {
-                            self.loaded = false;
-                        } else {
-                            self.loaded = true;
-                        }
-
+                        self.loaded = response.data.ratings.length != 0;
 
                         $('.carousel').carousel({
                             interval: 2000
                         });
+
+
+
                     }
                 }).catch(function (error) {
                     console.error(error);
                 });
+
+
         },
         methods: {
             showRating() {
                 $('#courseRatingModal-' + this.$props.course).modal('show');
+                $('#ratingTable-' + this.$props.course).DataTable();
             }
         }
     }

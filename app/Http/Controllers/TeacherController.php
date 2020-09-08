@@ -681,16 +681,21 @@ class TeacherController extends Controller
     {
         $course = Course::find($id);
         $ratings = array();
+        $allRatingsFromCourse = array();
 
         if ($course) {
 
             foreach ($course->topics as $topic) {
                 foreach ($topic->tasks as $task) {
                     foreach ($task->ratings as $rating) {
+
                         $rating->topic = $topic->name;
                         $rating->task = $task->name;
+                        $rating->studentName = $rating->student->name;
+                        array_push($allRatingsFromCourse, $rating);
+
                         $rating->participantsCount = count($course->participants);
-                        unset($rating->student_id);
+                        unset($rating->student);
 
                         $ratings[$rating->task_id][$rating->score][] = $rating;
                     }
@@ -700,6 +705,7 @@ class TeacherController extends Controller
 
         return response()->json([
             'ratings' => $ratings,
+            'all' => $allRatingsFromCourse
         ], \Illuminate\Http\Response::HTTP_OK);
     }
 

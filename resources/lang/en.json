@@ -222,5 +222,11 @@
     "Not enough data selected.": "Not enough data selected.",
     "To add a record, you must select the data in the table. The value in the cell that was selected first will be used as the label.": "To add a record, you must select the data in the table. The value in the cell that was selected first will be used as the label.",
     "Show my solution": "Show my solution",
-    "Edit module specific task config": "Edit module specific task config"
+    "Edit module specific task config": "Edit module specific task config",
+    "Topic": "Topic",
+    "Student": "Student",
+    "Max Score": "Max Score",
+    "Used Tips": "Used Tips",
+    "Time Needed": "Time Needed",
+    "Solve Attempts": "Solve Attempts"
 }
