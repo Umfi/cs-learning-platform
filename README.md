@@ -15,7 +15,7 @@ educational context via learning, assessment
 and scoring. 
 
 
-##Setup
+**Setup**
 
 Use the docker container!
 
@@ -34,8 +34,6 @@ Password: `password`
 
 * Create .env file : `mv .env.example .env`
 
-* Generate key: `docker-compose exec php php artisan key:generate`
-
 * Install PHP libraries using composer: `docker-compose exec php composer install` 
 
 * Fix folder permission: `docker-compose exec php chmod 777 -R storage/` 
@@ -45,4 +43,9 @@ Password: `password`
 * Create symlink for user-uploaded files: `docker-compose exec php php artisan storage:link`
 
 
+**Compile JS**
+
+Use npm to compile javascript / vue code
+
+* `npm run dev` or `npm run prod`
 
