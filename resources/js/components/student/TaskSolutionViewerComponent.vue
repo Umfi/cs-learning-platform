@@ -1,6 +1,6 @@
 <template>
     <div class="d-inline-block">
-        <button type="button" class="btn btn-secondary" :title="$t('Show my solution')" @click="openTaskSolutionModal(taskid)"><i class="fas fa-user-graduate"></i></button>
+        <button type="button" class="btn btn-secondary" :title="$t('Show my solution')" @click="openTaskSolutionModal()"><i class="fas fa-user-graduate"></i></button>
         <div class="modal" :id="'taskSolutionModuleModal-' + taskid">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -27,8 +27,8 @@
                             <hr>
 
                             <!-- List all available modules here with same ref -->
-                            <!-- <examplemodule v-if="taskmodule === 'MODULE_EXAMPLE' && loaded" :taskid="taskid" :taskdata="task"></examplemodule> -->
-                            <spreadsheet-module v-if="taskmodule === 'MODULE_SPREADSHEET' && loaded" :taskid="taskid" :taskdata="task" :type="'solution'"></spreadsheet-module>
+                            <!-- <examplemodule ref="activeModule" v-if="taskmodule === 'MODULE_EXAMPLE' && loaded" :taskid="taskid" :taskdata="task" :type="'solution'"></examplemodule> -->
+                            <spreadsheet-module ref="activeModule" v-if="taskmodule === 'MODULE_SPREADSHEET' && loaded" :taskid="taskid" :taskdata="task" :type="'solution'"></spreadsheet-module>
 
                         </div>
 
@@ -75,10 +75,15 @@
                 console.error(error);
             });
 
+
         },
         methods: {
-            openTaskSolutionModal(id) {
-                $('#taskSolutionModuleModal-' + id).modal('show');
+            openTaskSolutionModal() {
+                if (this.loaded) {
+                    $('#taskSolutionModuleModal-' + this.$props.taskid).modal('show');
+                    //on-Open Event
+                    this.$refs.activeModule._onOpen();
+                }
             }
         }
     }

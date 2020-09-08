@@ -147,12 +147,14 @@ class StudentController extends Controller
         $task = Task::find($id);
 
         if ($task) {
+            // Remove teacher default solution
             unset($task->solution);
 
             // Export property to json
             $task->intro_filetype = $task->intro_filetype;
             $task->extro_filetype = $task->extro_filetype;
 
+            // Add user solution
             $rating = Rating::where('task_id', $task->_id)->where('student_id', Auth::id())->first();
             $task->solution = json_decode($rating->solution_data);
 

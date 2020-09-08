@@ -150,7 +150,6 @@
             this._hotInstanceSpecification = this.$refs.hotTableSolutionComponent.hotInstance;
             var instSpecification = this._hotInstanceSpecification;
 
-            var self = this;
 
             // Add custom functions - mapping german, english function name
             var formulaInst = instSpecification.getPlugin('formulas');
@@ -164,61 +163,6 @@
 
             this.dataVisualizationData = this.$refs.dataviscomponent.data;
             this.dataVisualizationType = this.$refs.dataviscomponent.type;
-
-            if (this.$props.type === "assignment") {
-                $('#taskModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {
-                    var data = self.$props.taskdata;
-                    self.programming = data.specification.programming;
-                    self.dataVisualization = data.specification.dataVisualization;
-
-                    self._hotInstanceSpecification.loadData(data.specification.data);
-                    self.specificationData = self._hotInstanceSpecification.getSourceData();
-                    self.specificationCode = '' + data.specification.code;
-
-                    self.resultData = self._hotInstanceSpecification.getSourceData();
-                    self.resultCode = '' + data.specification.code;
-
-                    window.table = instSpecification;
-                    window.table.updateSettings({readOnly: self.programming});
-                });
-
-                var stepperEl = document.querySelector('#bs-stepper-' + self.$props.taskid);
-                stepperEl.addEventListener('shown.bs-stepper', function (event) {
-                    setTimeout(function(){
-                        instSpecification.render();
-                    }, 500);
-                });
-            } else if (this.$props.type === "solution") {
-
-                $('#taskSolutionModuleModal-' + this.$props.taskid).on('shown.bs.modal', function () {
-                    var data = self.$props.taskdata;
-
-                    setTimeout(function(){
-
-                        self.programming = data.specification.programming;
-                        self.dataVisualization = data.specification.dataVisualization;
-
-                        self._hotInstanceSpecification.loadData(data.solution.resultData);
-                        self.specificationData = self._hotInstanceSpecification.getSourceData();
-                        self.specificationCode = '' + data.specification.code;
-
-                        self.resultData = self._hotInstanceSpecification.getSourceData();
-                        self.resultCode = '' + data.solution.resultCode;
-
-                        if (self.dataVisualization) {
-                            self.$refs.dataviscomponent.data = data.solution.dataVisualizationData;
-                            self.$refs.dataviscomponent.type = data.solution.dataVisualizationType;
-                            self.$refs.dataviscomponent.updateChart();
-                        }
-
-                        window.table = instSpecification;
-                        window.table.updateSettings({ readOnly: self.programming});
-                        instSpecification.render();
-                    }, 500);
-                });
-            }
-
-
         },
         methods: {
             resetSpreadsheet: function() {
@@ -336,6 +280,57 @@
                 this.dataVisualizationType = this.$refs.dataviscomponent.type;
                 this.resultData = this._hotInstanceSpecification.getSourceData();
                 this.resultDataFormulaEvaluated = this._hotInstanceSpecification.getData();
+            },
+            _onOpen() {
+
+                var data = this.$props.taskdata;
+
+                if (this.$props.type === "assignment") {
+
+                    this.programming = data.specification.programming;
+                    this.dataVisualization = data.specification.dataVisualization;
+
+                    this._hotInstanceSpecification.loadData(data.specification.data);
+                    this.specificationData = this._hotInstanceSpecification.getSourceData();
+                    this.specificationCode = '' + data.specification.code;
+
+                    this.resultData = this._hotInstanceSpecification.getSourceData();
+                    this.resultCode = '' + data.specification.code;
+
+                    var instSpecification = this._hotInstanceSpecification;
+                    window.table = instSpecification;
+                    window.table.updateSettings({readOnly: this.programming});
+
+                    var stepperEl = document.querySelector('#bs-stepper-' + this.$props.taskid);
+                    stepperEl.addEventListener('shown.bs-stepper', function (event) {
+                        setTimeout(function(){
+                            instSpecification.render();
+                        }, 500);
+                    });
+                } else if (this.$props.type === "solution") {
+
+                    this.programming = data.specification.programming;
+                    this.dataVisualization = data.specification.dataVisualization;
+
+                    this._hotInstanceSpecification.loadData(data.solution.resultData);
+                    this.specificationData = this._hotInstanceSpecification.getSourceData();
+                    this.specificationCode = '' + data.specification.code;
+
+                    this.resultData = this._hotInstanceSpecification.getSourceData();
+                    this.resultCode = '' + data.solution.resultCode;
+
+                    if (this.dataVisualization) {
+                        this.$refs.dataviscomponent.data = data.solution.dataVisualizationData;
+                        this.$refs.dataviscomponent.type = data.solution.dataVisualizationType;
+                        this.$refs.dataviscomponent.updateChart();
+                    }
+
+                    var instSpecification = this._hotInstanceSpecification;
+
+                    window.table = instSpecification;
+                    window.table.updateSettings({ readOnly: this.programming});
+                    instSpecification.render();
+                }
             },
             _preparseCode(code) {
                 var tmp = '' + code;

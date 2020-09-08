@@ -1,6 +1,6 @@
 <template>
     <div class="d-inline-block">
-        <button type="button" class="btn btn-primary" :title="$t('Start task')" @click="openTaskModal(taskid)"><i class="fas fa-play"></i></button>
+        <button type="button" class="btn btn-primary" :title="$t('Start task')" @click="openTaskModal()"><i class="fas fa-play"></i></button>
         <div class="modal" :id="'taskModuleModal-' + taskid">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
@@ -203,10 +203,16 @@
             stepperEl.addEventListener('show.bs-stepper', function (event) {
                 self.currentStep = event.detail.indexStep;
             });
+
+
         },
         methods: {
-            openTaskModal(id) {
-                $('#taskModuleModal-' + id).modal('show');
+            openTaskModal() {
+                if (this.loaded) {
+                    $('#taskModuleModal-' + this.$props.taskid).modal('show');
+                    //on-Open Event
+                    this.$refs.activeModule._onOpen();
+                }
             },
             showHint() {
                 this.tipsVisible = true;

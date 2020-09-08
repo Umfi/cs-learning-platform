@@ -41,6 +41,16 @@
             _preStore() {
 
             },
+            _onOpen() {
+
+                var data = this.$props.taskdata;
+
+                if (this.$props.type === "assignment") {
+                    this.example = data.specification.example;
+                } else if (this.$props.type === "solution") {
+                    this.example = data.solution.example;
+                }
+            },
         }
     }
 </script>
