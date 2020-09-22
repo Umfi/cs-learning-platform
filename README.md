@@ -9,7 +9,7 @@ science curricula. An engaging story serves as a
 starting point for these objectives. All tasks are
 related to the narrative and use gamification
 elements to create a learner-friendly
-environment. The learning platform should
+environment. The learning platform
 support both students and teachers in an
 educational context via learning, assessment
 and scoring. 
@@ -48,4 +48,9 @@ Password: `password`
 Use npm to compile javascript / vue code
 
 * `npm run dev` or `npm run prod`
+
+**Developer Notes**
+
+Check out [this](DEVELOPER_NOTE.md) file.
+
 
